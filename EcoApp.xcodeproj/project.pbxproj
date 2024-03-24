@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		285740CB2BAF1DD600DA80B2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */; };
+		28B1E7B02BAE21B500051DB5 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1E7AF2BAE21B300051DB5 /* TabBar.swift */; };
+		28B4EBA12BA9C04D00809F15 /* Ingredients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B4EBA02BA9C04D00809F15 /* Ingredients.swift */; };
+		28D122E72BAF6ECB0068BE7E /* IngredientsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122E62BAF6ECB0068BE7E /* IngredientsViewModel.swift */; };
 		28D5EA502BA8427900BF46DD /* EcoAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D5EA4F2BA8427900BF46DD /* EcoAppApp.swift */; };
 		28D5EA522BA8427900BF46DD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D5EA512BA8427900BF46DD /* ContentView.swift */; };
 		28D5EA542BA8427D00BF46DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28D5EA532BA8427D00BF46DD /* Assets.xcassets */; };
@@ -22,6 +26,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		28B1E7AF2BAE21B300051DB5 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
+		28B4EBA02BA9C04D00809F15 /* Ingredients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredients.swift; sourceTree = "<group>"; };
+		28D122E62BAF6ECB0068BE7E /* IngredientsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsViewModel.swift; sourceTree = "<group>"; };
 		28D5EA4C2BA8427900BF46DD /* EcoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EcoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D5EA4F2BA8427900BF46DD /* EcoAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EcoAppApp.swift; sourceTree = "<group>"; };
 		28D5EA512BA8427900BF46DD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +56,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28D122E82BAF6F6A0068BE7E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				28D122E62BAF6ECB0068BE7E /* IngredientsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		28D5EA432BA8427900BF46DD = {
 			isa = PBXGroup;
 			children = (
@@ -71,11 +87,13 @@
 		28D5EA4E2BA8427900BF46DD /* EcoApp */ = {
 			isa = PBXGroup;
 			children = (
+				28D122E82BAF6F6A0068BE7E /* ViewModel */,
 				28D5EAA02BA8483900BF46DD /* View */,
 				28D5EA4F2BA8427900BF46DD /* EcoAppApp.swift */,
 				28D5EA512BA8427900BF46DD /* ContentView.swift */,
 				28D5EA532BA8427D00BF46DD /* Assets.xcassets */,
 				28D5EA552BA8427D00BF46DD /* Preview Content */,
+				285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */,
 			);
 			path = EcoApp;
 			sourceTree = "<group>";
@@ -100,6 +118,8 @@
 			children = (
 				28D5EAA12BA8484C00BF46DD /* Login.swift */,
 				28D5EAAB2BA866A400BF46DD /* Home.swift */,
+				28B4EBA02BA9C04D00809F15 /* Ingredients.swift */,
+				28B1E7AF2BAE21B300051DB5 /* TabBar.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -189,6 +209,10 @@
 				28D5EAA22BA8484C00BF46DD /* Login.swift in Sources */,
 				28D5EA522BA8427900BF46DD /* ContentView.swift in Sources */,
 				28D5EAAC2BA866A400BF46DD /* Home.swift in Sources */,
+				285740CB2BAF1DD600DA80B2 /* ImagePicker.swift in Sources */,
+				28B1E7B02BAE21B500051DB5 /* TabBar.swift in Sources */,
+				28D122E72BAF6ECB0068BE7E /* IngredientsViewModel.swift in Sources */,
+				28B4EBA12BA9C04D00809F15 /* Ingredients.swift in Sources */,
 				28D5EA502BA8427900BF46DD /* EcoAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -256,6 +280,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -311,6 +336,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

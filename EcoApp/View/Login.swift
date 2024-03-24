@@ -4,9 +4,9 @@
 //
 //  Created by Saajidah Mohamed on 18/03/2024.
 //
-
 import Foundation
 import Firebase
+import FirebaseFirestore
 import SwiftUI
 import Lottie
 
@@ -22,6 +22,10 @@ struct Login: View {
     //Alert Properties
     @State private var alertMessage: String = ""
     @State private var showAlert: Bool = false
+    
+    //Forgot Password Properties
+    @State private var showResetAlert: Bool = false
+    @State private var resetEmailAddress: String = ""
     
     @AppStorage("log_status") private var logStatus: Bool = false
     
@@ -42,52 +46,54 @@ struct Login: View {
                         
                     }
                 }
-            
+                
             header: {
-                    Picker("", selection: $activeTab) {
-                        ForEach(Tab.allCases, id:  \.rawValue) {
-                            Text($0.rawValue)
-                                .tag($0)
-                        }
-                        
+                Picker("", selection: $activeTab) {
+                    ForEach(Tab.allCases, id:  \.rawValue) {
+                        Text($0.rawValue)
+                            .tag($0)
                     }
-                    .pickerStyle(.segmented)
-                    .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
-                    .listRowSeparator(.hidden)
                     
-                } footer: {
-                    VStack(alignment: .trailing, spacing:12, content: {
-                        if activeTab == .login {
-                            Button("Forgot Password?"){
-                                
-                            }
-                            .font(.caption)
-                            .tint(Color.accentColor)
-                        }
-                        Button(action: loginAndSignUp , label: {
-                            HStack(spacing:12) {
-                                Text(activeTab == .login ? "Login" : "Create Account")
-                                
-                                Image(systemName: "arrow.right")
-                                    .font(.callout)
-                            
-                            }
-                            .padding(.horizontal, 10)
-                        })
-                        .buttonStyle(.borderedProminent)
-                        .buttonBorderShape(.capsule)
-                        .showLoadingIndiciator(isLoading)
-                        .disabled(buttonStatus)
-                        
-                    })
-                    .frame(maxWidth:.infinity, alignment: .trailing)
-                    .listRowInsets(.init(top:15, leading:0, bottom: 0, trailing: 0))
                 }
-                .disabled(isLoading)
+                .pickerStyle(.segmented)
+                .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
+                .listRowSeparator(.hidden)
+                
+            }
+       
+            footer: {
+                VStack(alignment: .trailing, spacing:12, content: {
+                    if activeTab == .login {
+                        Button("Forgot Password?"){
+                            showResetAlert = true
+                        }
+                        .font(.caption)
+                        .tint(Color.accentColor)
+                    }
+                    Button(action: loginAndSignUp , label: {
+                        HStack(spacing:12) {
+                            Text(activeTab == .login ? "Login" : "Create Account")
+                            
+                            Image(systemName: "arrow.right")
+                                .font(.callout)
+                            
+                        }
+                        .padding(.horizontal, 10)
+                    })
+                    .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.capsule)
+                    .showLoadingIndiciator(isLoading)
+                    .disabled(buttonStatus)
+                    
+                })
+                .frame(maxWidth:.infinity, alignment: .trailing)
+                .listRowInsets(.init(top:15, leading:0, bottom: 0, trailing: 0))
+            }
+            .disabled(isLoading)
             }
             .animation(.snappy, value: activeTab)
             .listStyle(.insetGrouped)
-            .navigationTitle("Welcome Back!")
+            .navigationTitle("Welcome!")
         }
         .sheet(isPresented: $showEmailVerificationView, content: {
             EmailVerificationView()
@@ -98,6 +104,15 @@ struct Login: View {
             
         })
         .alert(alertMessage, isPresented: $showAlert) { }
+        .alert("Rest Password", isPresented: $showResetAlert, actions: {
+            TextField("Email Address", text: $resetEmailAddress)
+            Button("Send Reset Link", role: .destructive, action: sendResetLink)
+            Button("Cancel", role: .cancel){
+                resetEmailAddress = ""
+            }
+        }, message :{
+            Text("Enter the email address")
+        })
         .onChange(of: activeTab, initial: false) {
             oldValue, newValue in
             password = ""
@@ -129,18 +144,18 @@ struct Login: View {
             showEmailVerificationView = false
             // Delete account in Firebase
             /** if let user = Auth.auth().currentUser{
-                user.delete { _ in
-                isLoading = false}
-            } */
+             user.delete { _ in
+             isLoading = false}
+             } */
             
         } .padding(15)
             
         })
         .padding(.bottom, 15)
         /** })
-        
-        //Verify every 2 seconds to see if verified
-        .onReceive(Timer.publish(every: 2, on: .main, in: .default).autoconnect(), perform : { _ in */
+         
+         //Verify every 2 seconds to see if verified
+         .onReceive(Timer.publish(every: 2, on: .main, in: .default).autoconnect(), perform : { _ in */
         .onReceive(Timer.publish(every: 2, on: .main, in: . default).autoconnect(),  perform: { _ in
             if let user = Auth.auth().currentUser {
                 user.reload()
@@ -152,6 +167,27 @@ struct Login: View {
             }
         })
     }
+    
+    func sendResetLink(){
+        Task {
+            do {
+                if resetEmailAddress.isEmpty {
+                    await presentAlert("Please enter an email address.")
+                    return
+                    
+                }
+                isLoading = true
+                try await Auth.auth().sendPasswordReset(withEmail: resetEmailAddress)
+                await presentAlert("Please check your email inbox and follow the steps to rest your password")
+                
+                resetEmailAddress = ""
+                isLoading = false
+            } catch {
+                await presentAlert(error.localizedDescription)
+            }
+        }
+    }
+
     
     func loginAndSignUp(){
         Task {
@@ -173,8 +209,12 @@ struct Login: View {
                     //Creating New account
                     if password == reEnterPassword {
                         let result = try await Auth.auth().createUser(withEmail: emailAddress, password: password)
-                        try await result.user.sendEmailVerification()
                         
+                        let db = Firestore.firestore()
+                                try await db.collection("users").document(result.user.uid).setData([
+                                    "email": emailAddress])
+                        
+                        try await result.user.sendEmailVerification()
                         showEmailVerificationView = true
                     } else { await presentAlert("Mismatching Password")}
                 }
@@ -185,6 +225,8 @@ struct Login: View {
         }
         
     }
+    
+    
     
     // Presenting Alert
     func presentAlert(_ message: String) async {
@@ -229,7 +271,8 @@ fileprivate extension View {
                     }
                 }
             }
-    }
+    
+}
     
     @ViewBuilder
     func customTextField(_ icon: String? = nil, _ paddingTop: CGFloat = 0, _ paddingBottom: CGFloat = 0) -> some View {
@@ -243,7 +286,7 @@ fileprivate extension View {
         }
         .padding(.horizontal, 15)
         .padding(.vertical, 12)
-        background(.bar, in:.rect(cornerRadius: 10))
+        .background(.bar, in:.rect(cornerRadius: 10))
         .padding(.horizontal, 15)
         .padding(.top, paddingTop)
         .padding(.bottom, paddingBottom)
