@@ -24,6 +24,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct EcoAppApp: App {
     //init() {FirebaseApp.configure()}
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
     var body: some Scene {
         WindowGroup {
             NavigationView {

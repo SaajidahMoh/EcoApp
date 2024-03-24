@@ -11,6 +11,10 @@ import FirebaseFirestore
 
 struct Ingredients: View {
   //  @StateObject var vm = InventoryListVM()
+  //  var id: String
+   // var name: String
+   // var quantity: String
+   // var expiry: Timestamp
     
     var body: some View {
             
