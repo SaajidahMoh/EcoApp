@@ -9,14 +9,14 @@ import SwiftUI
 import Firebase
 
 struct ContentView: View {
-    @StateObject var dataManager = DataManager()
+    @StateObject var itemsViewModel = ItemsViewModel()
     @AppStorage("log_status") private var logStatus: Bool = false
     var body: some View {
         if logStatus {
             // Home
             //Home()
             ListView()
-                . environmentObject(dataManager)
+                . environmentObject(itemsViewModel)
         } else {
             Login()
         }

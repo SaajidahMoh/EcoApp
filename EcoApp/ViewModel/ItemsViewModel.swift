@@ -1,14 +1,14 @@
 //
-//  DataManager.swift
+//  ItemsViewModel.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 24/03/2024.
-// https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
+//  Created by Saajidah Mohamed on 25/03/2024.
+//
 
 import SwiftUI
 import Firebase
 
-class DataManager : ObservableObject{
+class ItemsViewModel : ObservableObject{
     @AppStorage("log_status") private var logStatus: Bool = false
     @Published var items: [Items] = []
     
@@ -87,3 +87,5 @@ struct DataManager: View {
 #Preview {
     DataManager()
 }*/
+
+

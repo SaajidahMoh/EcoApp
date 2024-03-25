@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2801144B2BB18B6C00507B91 /* ItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2801144A2BB18B6C00507B91 /* ItemsViewModel.swift */; };
 		285740CB2BAF1DD600DA80B2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */; };
 		28B1E7B02BAE21B500051DB5 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1E7AF2BAE21B300051DB5 /* TabBar.swift */; };
 		28B4EBA12BA9C04D00809F15 /* Ingredients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B4EBA02BA9C04D00809F15 /* Ingredients.swift */; };
 		28D122EA2BB071D50068BE7E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122E92BB071D40068BE7E /* Items.swift */; };
 		28D122EC2BB0728F0068BE7E /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122EB2BB0728F0068BE7E /* DataManager.swift */; };
 		28D122EE2BB074FF0068BE7E /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122ED2BB074FF0068BE7E /* ListView.swift */; };
+		28D122F02BB0DE880068BE7E /* NewItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122EF2BB0DE870068BE7E /* NewItemView.swift */; };
 		28D5EA502BA8427900BF46DD /* EcoAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D5EA4F2BA8427900BF46DD /* EcoAppApp.swift */; };
 		28D5EA522BA8427900BF46DD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D5EA512BA8427900BF46DD /* ContentView.swift */; };
 		28D5EA542BA8427D00BF46DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28D5EA532BA8427D00BF46DD /* Assets.xcassets */; };
@@ -28,12 +30,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2801144A2BB18B6C00507B91 /* ItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsViewModel.swift; sourceTree = "<group>"; };
 		285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		28B1E7AF2BAE21B300051DB5 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		28B4EBA02BA9C04D00809F15 /* Ingredients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredients.swift; sourceTree = "<group>"; };
 		28D122E92BB071D40068BE7E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		28D122EB2BB0728F0068BE7E /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		28D122ED2BB074FF0068BE7E /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		28D122EF2BB0DE870068BE7E /* NewItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewItemView.swift; sourceTree = "<group>"; };
 		28D5EA4C2BA8427900BF46DD /* EcoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EcoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D5EA4F2BA8427900BF46DD /* EcoAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EcoAppApp.swift; sourceTree = "<group>"; };
 		28D5EA512BA8427900BF46DD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -60,6 +64,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		280114492BB18B4700507B91 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2801144A2BB18B6C00507B91 /* ItemsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		28D5EA432BA8427900BF46DD = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +95,7 @@
 		28D5EA4E2BA8427900BF46DD /* EcoApp */ = {
 			isa = PBXGroup;
 			children = (
+				280114492BB18B4700507B91 /* ViewModel */,
 				28D5EAA02BA8483900BF46DD /* View */,
 				28D5EA4F2BA8427900BF46DD /* EcoAppApp.swift */,
 				28D5EA512BA8427900BF46DD /* ContentView.swift */,
@@ -118,6 +131,7 @@
 				28B4EBA02BA9C04D00809F15 /* Ingredients.swift */,
 				28B1E7AF2BAE21B300051DB5 /* TabBar.swift */,
 				28D122E92BB071D40068BE7E /* Items.swift */,
+				28D122EF2BB0DE870068BE7E /* NewItemView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -209,9 +223,11 @@
 				28D122EE2BB074FF0068BE7E /* ListView.swift in Sources */,
 				28D5EA522BA8427900BF46DD /* ContentView.swift in Sources */,
 				28D5EAAC2BA866A400BF46DD /* Home.swift in Sources */,
+				2801144B2BB18B6C00507B91 /* ItemsViewModel.swift in Sources */,
 				285740CB2BAF1DD600DA80B2 /* ImagePicker.swift in Sources */,
 				28D122EA2BB071D50068BE7E /* Items.swift in Sources */,
 				28B1E7B02BAE21B500051DB5 /* TabBar.swift in Sources */,
+				28D122F02BB0DE880068BE7E /* NewItemView.swift in Sources */,
 				28B4EBA12BA9C04D00809F15 /* Ingredients.swift in Sources */,
 				28D5EA502BA8427900BF46DD /* EcoAppApp.swift in Sources */,
 			);
