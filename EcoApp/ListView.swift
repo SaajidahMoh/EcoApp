@@ -32,6 +32,10 @@ struct ListView: View {
             }, label: {
                 Image(systemName: "plus")
             }))
+            .sheet(isPresented:  $showPopup){
+               NewItemView()
+            }
+        
            // .sheet(isPresented: $showPopup)
              //     { NewItemView()
                 /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Sheet Content")/*@END_MENU_TOKEN@*/

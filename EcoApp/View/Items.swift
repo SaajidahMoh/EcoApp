@@ -7,9 +7,13 @@
 
 import SwiftUI
 
+
 struct Items: Identifiable {
     var id: String
     var name: String
+  //  var quantity : Int
+   // var expirydate : Date
+   // var description : String
    // var quantity: Number
     //var expiry: TimeStamp
     

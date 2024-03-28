@@ -11,12 +11,10 @@ import SwiftUI
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
-}
-
-#Preview {
-    ImagePicker()
 } */
+
 // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+// https://www.youtube.com/watch?v=5inXE5d2MUM&t=1188s&ab_channel=LetsBuildThatApp 
 
 struct ImagePicker: UIViewControllerRepresentable {
     
@@ -57,3 +55,7 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
     
 }
+/**
+#Preview {
+    ImagePicker()
+} */

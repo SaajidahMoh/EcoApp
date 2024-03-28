@@ -16,6 +16,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     FirebaseApp.configure()
       // https://firebase.google.com/docs/firestore/quickstart#swift
     //let db = Firestore.firestore()
+      //self.storage = Storage.storage()
 
     return true
   }
