@@ -33,7 +33,8 @@ struct ListView: View {
                 Image(systemName: "plus")
             }))
             .sheet(isPresented:  $showPopup){
-               NewItemView()
+                AddItem()
+              // NewItemView()
             }
         
            // .sheet(isPresented: $showPopup)

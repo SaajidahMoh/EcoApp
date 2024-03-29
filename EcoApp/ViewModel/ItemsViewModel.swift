@@ -32,6 +32,8 @@ class ItemsViewModel : ObservableObject{
                 }
     }
     
+         
+    
     func fetchItems(){
         guard let userID = userID
         else {
@@ -44,6 +46,38 @@ class ItemsViewModel : ObservableObject{
         
         let db = Firestore.firestore()
         let ref = db.collection("items").document(userID).collection("Item")
+        
+        
+        ref.addSnapshotListener { [weak self] snapshot, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print ("Error fetching items: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let snapshot = snapshot else {
+                print("Snapshot is empty")
+                return
+            }
+            self.items.removeAll()
+            
+            for document in snapshot.documents {
+                // print(document)
+                let data = document.data()
+                
+                let id = data["id"] as? String ?? ""
+                let name = data["name"] as? String ?? ""
+                
+                let item = Items(id: id, name: name)
+                self.items.append(item)
+            }
+            
+            
+            
+        }
+    }
+    /**
         //whereField("userID", isEqualTo: userID)
         // db.collection("users").document(result.user.uid).
         ref.getDocuments { snapshot, error in
@@ -51,6 +85,7 @@ class ItemsViewModel : ObservableObject{
                 print(error!.localizedDescription)
                 return
             }
+             
             if let snapshot = snapshot { //if empty
                 for document in snapshot.documents {
                    // print(document)
@@ -63,17 +98,19 @@ class ItemsViewModel : ObservableObject{
                     self.items.append(item)
                 }
             }
+            
         }
-    }
+       
+    } 
 
-    /**func AddItems(itemName: String){
-        let db = Firestore.firestore()
-        let ref = db.collection("items").document(itemName)
-        ref.setData(["name: itemName", "id" : 10] { error in
-            if let error = error{
-                print(error!.localizedDescription)
-            }})
-    } */
+     */
+
+func fetchItemsAfterButton(){
+        items.removeAll()
+    print("items removed")
+        fetchItems()
+    print("done")
+    }
 }
 
 

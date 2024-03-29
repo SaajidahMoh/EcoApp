@@ -95,7 +95,7 @@ struct NewItemView: View {
         
             .toolbar {
                 Button("  Save  "){
-                    saveItem()
+                    //saveItem()
                 }
                 .foregroundColor(.green)
                 .bold()
