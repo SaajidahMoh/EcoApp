@@ -9,12 +9,10 @@
 /* Begin PBXBuildFile section */
 		2801144B2BB18B6C00507B91 /* ItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2801144A2BB18B6C00507B91 /* ItemsViewModel.swift */; };
 		285740CB2BAF1DD600DA80B2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */; };
-		2899C1292BB6FE49007006E2 /* DataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2899C1282BB6FE48007006E2 /* DataView.swift */; };
 		2899C12B2BB70066007006E2 /* AddItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2899C12A2BB70066007006E2 /* AddItem.swift */; };
+		28A8DFFB2BB839DD001981C1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 28A8DFFA2BB839DD001981C1 /* FirebaseStorage */; };
 		28B1E7B02BAE21B500051DB5 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1E7AF2BAE21B300051DB5 /* TabBar.swift */; };
-		28B4EBA12BA9C04D00809F15 /* Ingredients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B4EBA02BA9C04D00809F15 /* Ingredients.swift */; };
 		28D122EA2BB071D50068BE7E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122E92BB071D40068BE7E /* Items.swift */; };
-		28D122EC2BB0728F0068BE7E /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122EB2BB0728F0068BE7E /* DataManager.swift */; };
 		28D122EE2BB074FF0068BE7E /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122ED2BB074FF0068BE7E /* ListView.swift */; };
 		28D122F02BB0DE880068BE7E /* NewItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122EF2BB0DE870068BE7E /* NewItemView.swift */; };
 		28D5EA502BA8427900BF46DD /* EcoAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D5EA4F2BA8427900BF46DD /* EcoAppApp.swift */; };
@@ -34,12 +32,9 @@
 /* Begin PBXFileReference section */
 		2801144A2BB18B6C00507B91 /* ItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsViewModel.swift; sourceTree = "<group>"; };
 		285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		2899C1282BB6FE48007006E2 /* DataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataView.swift; sourceTree = "<group>"; };
 		2899C12A2BB70066007006E2 /* AddItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItem.swift; sourceTree = "<group>"; };
 		28B1E7AF2BAE21B300051DB5 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
-		28B4EBA02BA9C04D00809F15 /* Ingredients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredients.swift; sourceTree = "<group>"; };
 		28D122E92BB071D40068BE7E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
-		28D122EB2BB0728F0068BE7E /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		28D122ED2BB074FF0068BE7E /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		28D122EF2BB0DE870068BE7E /* NewItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewItemView.swift; sourceTree = "<group>"; };
 		28D5EA4C2BA8427900BF46DD /* EcoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EcoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,6 +55,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28D5EA992BA8457100BF46DD /* FirebaseAuth in Frameworks */,
+				28A8DFFB2BB839DD001981C1 /* FirebaseStorage in Frameworks */,
 				28D5EA9B2BA8457E00BF46DD /* Lottie in Frameworks */,
 				28D5EA9D2BA8459100BF46DD /* FirebaseFirestoreSwift in Frameworks */,
 			);
@@ -106,9 +102,7 @@
 				28D5EA532BA8427D00BF46DD /* Assets.xcassets */,
 				28D5EA552BA8427D00BF46DD /* Preview Content */,
 				285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */,
-				28D122EB2BB0728F0068BE7E /* DataManager.swift */,
 				28D122ED2BB074FF0068BE7E /* ListView.swift */,
-				2899C1282BB6FE48007006E2 /* DataView.swift */,
 				2899C12A2BB70066007006E2 /* AddItem.swift */,
 			);
 			path = EcoApp;
@@ -134,7 +128,6 @@
 			children = (
 				28D5EAA12BA8484C00BF46DD /* Login.swift */,
 				28D5EAAB2BA866A400BF46DD /* Home.swift */,
-				28B4EBA02BA9C04D00809F15 /* Ingredients.swift */,
 				28B1E7AF2BAE21B300051DB5 /* TabBar.swift */,
 				28D122E92BB071D40068BE7E /* Items.swift */,
 				28D122EF2BB0DE870068BE7E /* NewItemView.swift */,
@@ -162,6 +155,7 @@
 				28D5EA982BA8457100BF46DD /* FirebaseAuth */,
 				28D5EA9A2BA8457E00BF46DD /* Lottie */,
 				28D5EA9C2BA8459100BF46DD /* FirebaseFirestoreSwift */,
+				28A8DFFA2BB839DD001981C1 /* FirebaseStorage */,
 			);
 			productName = EcoApp;
 			productReference = 28D5EA4C2BA8427900BF46DD /* EcoApp.app */;
@@ -225,7 +219,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				28D5EAA22BA8484C00BF46DD /* Login.swift in Sources */,
-				28D122EC2BB0728F0068BE7E /* DataManager.swift in Sources */,
 				28D122EE2BB074FF0068BE7E /* ListView.swift in Sources */,
 				28D5EA522BA8427900BF46DD /* ContentView.swift in Sources */,
 				2899C12B2BB70066007006E2 /* AddItem.swift in Sources */,
@@ -233,10 +226,8 @@
 				2801144B2BB18B6C00507B91 /* ItemsViewModel.swift in Sources */,
 				285740CB2BAF1DD600DA80B2 /* ImagePicker.swift in Sources */,
 				28D122EA2BB071D50068BE7E /* Items.swift in Sources */,
-				2899C1292BB6FE49007006E2 /* DataView.swift in Sources */,
 				28B1E7B02BAE21B500051DB5 /* TabBar.swift in Sources */,
 				28D122F02BB0DE880068BE7E /* NewItemView.swift in Sources */,
-				28B4EBA12BA9C04D00809F15 /* Ingredients.swift in Sources */,
 				28D5EA502BA8427900BF46DD /* EcoAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -466,6 +457,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		28A8DFFA2BB839DD001981C1 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 28D5EA5D2BA8431D00BF46DD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		28D5EA982BA8457100BF46DD /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 28D5EA5D2BA8431D00BF46DD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

@@ -9,11 +9,13 @@ import SwiftUI
 import Firebase
 import FirebaseCore
 import FirebaseFirestore
+import FirebaseStorage
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     FirebaseApp.configure()
+//      let storage = Storage.storage()
       // https://firebase.google.com/docs/firestore/quickstart#swift
     //let db = Firestore.firestore()
       //self.storage = Storage.storage()
