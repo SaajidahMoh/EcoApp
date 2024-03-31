@@ -88,9 +88,24 @@ struct ListView: View {
             print("Button status: \(status)")
             return status
        }
-    private func generateItems() {
+    /**private func generateItems() {
         print("Generate")
    
+    } */
+    
+    private func generateItems() {
+        let selectedItems = itemsViewModel.items.filter { $0.isChecked }.map { $0.name }
+        Networking.shared.fetchItemsRecipes(with: selectedItems) { recipes, error in
+            if let error = error {
+                print("Error fetching items' recipes: \(error.localizedDescription)")
+                return
+            }
+
+            if let recipes = recipes {
+                // Handle the fetched recipes here
+                print("Fetched recipes: \(recipes)")
+            }
+        }
     }
 }
 

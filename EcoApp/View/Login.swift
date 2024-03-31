@@ -187,7 +187,6 @@ struct Login: View {
             }
         }
     }
-
     
     func loginAndSignUp(){
         Task {
@@ -225,8 +224,6 @@ struct Login: View {
         }
         
     }
-    
-    
     
     // Presenting Alert
     func presentAlert(_ message: String) async {

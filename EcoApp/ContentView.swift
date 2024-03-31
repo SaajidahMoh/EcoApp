@@ -23,7 +23,8 @@ struct ContentView: View {
                     Label("Home", systemImage:"globe.europe.africa")
                     //.foregroundColor(Color.green)//"house"
                     }
-                    Text("Maps")
+                FoodBanks()
+                    //Text("Maps")
                     .tabItem { Label("Food Banks",
                     ////systemImage: "mappin"
                     systemImage: //"figure.walk"
