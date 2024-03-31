@@ -15,59 +15,78 @@ struct ListView: View {
     
     var body: some View {
         NavigationView {
-            Button("Logout"){
-                try? Auth.auth().signOut()
-                logStatus = false
-            }
-            List {
-                ForEach(itemsViewModel.items, id: \.id) { item in
-                    ItemRow(item: item)
-                }
-            }
-            /**
-            List(itemsViewModel.items, id: \.id ) {items in
-                Text(items.name)
-            } */
-            .navigationTitle("Ingredients")
-            .navigationBarItems(trailing: Button(action: {
-                showPopup.toggle()
-                // add
-                //dataManager.addItem(itemName: newItem)
-            }, label: {
-                Image(systemName: "plus")
-            }))
-            .sheet(isPresented:  $showPopup){
-                AddItem()
-              // NewItemView()
-            }
-        
-           // .sheet(isPresented: $showPopup)
-             //     { NewItemView()
-                /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Sheet Content")/*@END_MENU_TOKEN@*/
-              //    }
-            Button("Logout"){
-                try? Auth.auth().signOut()
-                logStatus = false
-                
-                
-            }
-            .padding(.bottom, 10)
-            
-            Button(action: generateItems){
-                Text("Generate")
+                VStack { /**
+                          Button("Logout"){
+                          try? Auth.auth().signOut()
+                          logStatus = false
+                          } */
+                    List {
+                        ForEach(itemsViewModel.items, id: \.id) { item in
+                            // ItemRow(item: item)
+                            ItemRow(item: item)
+                                .environmentObject(itemsViewModel)
+                        }
+                    }
+                    /**
+                     List(itemsViewModel.items, id: \.id ) {items in
+                     Text(items.name)
+                     } */
+                    .navigationTitle("Ingredients")
+                    .navigationBarItems(trailing: Button(action: {
+                        showPopup.toggle()
+                        // add
+                        //dataManager.addItem(itemName: newItem)
+                    }, label: {
+                        Image(systemName: "plus")
+                    }))
+                    .sheet(isPresented:  $showPopup){
+                        AddItem()
+                        // NewItemView()
+                    } //.padding(.bottom, 10)
+                    
+                    // Spacer()
+                    
+                    Button(action: generateItems) {
+                        Text("Generate")
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(buttonStatus ? Color.green : Color.gray)
+                            .cornerRadius(15)
+                    }
                     .padding()
-                    .foregroundColor(.white)
-                    .background(buttonStatus ? Color.green : Color.gray)
-                    .cornerRadius(8)
-            }
-            .padding()
-            .disabled(!buttonStatus)
+                    .disabled(!buttonStatus)
+                }
+                // .disabled(!buttonStatus)
                 
+                /** Button("Logout"){
+                 try? Auth.auth().signOut()
+                 logStatus = false
+                 } */
+                
+                // .sheet(isPresented: $showPopup)
+                //     { NewItemView()
+                /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Sheet Content")/*@END_MENU_TOKEN@*/
+                //    }
+                /**
+                 Button("Logout"){
+                 try? Auth.auth().signOut()
+                 logStatus = false
+                 
+                 
+                 } */
+                // .padding(.bottom, 10)
+                
+                
+                // .padding()
             }
         }
+    
+        
     private var buttonStatus: Bool {
-           return itemsViewModel.items.contains { $0.isChecked }
-
+           //return itemsViewModel.items.contains { $0.isChecked }
+        let status = itemsViewModel.items.contains { $0.isChecked }
+            print("Button status: \(status)")
+            return status
        }
     private func generateItems() {
         print("Generate")
@@ -77,6 +96,7 @@ struct ListView: View {
 
 struct ItemRow: View {
     let item: Items
+    @EnvironmentObject var itemsViewModel: ItemsViewModel // Inject itemsViewModel as environment object
     @State private var isChecked: Bool = false
 
     var body: some View {
@@ -87,7 +107,7 @@ struct ItemRow: View {
                 .frame(width:18, height: 18)
                 .onTapGesture {
                     isChecked.toggle()
-                   
+                    itemsViewModel.updateItem(itemID: item.id, isChecked: isChecked) // Access itemsViewModel here
                     print("\(item.name) checked : \(isChecked)")
                 }
                 .padding(.trailing, 8)
@@ -98,6 +118,7 @@ struct ItemRow: View {
             Spacer()
         }
     }
+
 }
 
 
