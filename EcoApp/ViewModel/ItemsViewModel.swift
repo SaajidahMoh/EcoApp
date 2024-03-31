@@ -69,7 +69,7 @@ class ItemsViewModel : ObservableObject{
                 let id = data["id"] as? String ?? ""
                 let name = data["name"] as? String ?? ""
                 
-                let item = Items(id: id, name: name)
+                let item = Items(id: id, name: name, isChecked: false)
                 self.items.append(item)
             }
             

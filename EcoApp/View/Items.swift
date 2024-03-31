@@ -11,6 +11,7 @@ import SwiftUI
 struct Items: Identifiable {
     var id: String
     var name: String
+    var isChecked: Bool
   //  var quantity : Int
    // var expirydate : Date
    // var description : String
