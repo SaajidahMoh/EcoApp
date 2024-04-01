@@ -44,7 +44,7 @@ struct ListView: View {
                         // NewItemView()
                     } //.padding(.bottom, 10)
                     
-                    // Spacer()
+                     Spacer()
                     
                     Button(action: generateItems) {
                         Text("Generate")
@@ -115,59 +115,6 @@ struct ItemRow: View {
     @State private var isChecked: Bool = false
     @State private var isShown = false
     
-    
-    // expiry date Red
-    private func expiryDateColor() -> Color {
-            // Calculate the difference in days between today and the expiry date
-            let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
-            
-            // If the expiry date is within 3 days from today, return red, otherwise return the default color
-            if daysDifference <= 3 && daysDifference >= 0 {
-                return .red
-            } else {
-                return .primary // Default color
-            }
-        }
-    
-    
-    
-    var body: some View {
-        HStack {
-            Image(systemName: isChecked ? "checkmark.square" : "square")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width:18, height: 18)
-                .onTapGesture {
-                    isChecked.toggle()
-                    itemsViewModel.updateItem(itemID: item.id, isChecked: isChecked) // Access itemsViewModel here
-                    print("\(item.name) checked : \(isChecked)")
-                }
-                .padding(.trailing, 8)
-            
-            Text(item.name)
-                .font(.headline)
-            
-            Text("Qty: \(item.quantity)")
-                .font(.subheadline)
-            
-            Text("\(expiryDateFormatter)")
-                .font(.subheadline)
-                .foregroundColor(expiryDateColor())
-            
-            
-                .padding(.leading, 8)
-            //own code
-                .onTapGesture {
-                    isShown.toggle()
-                }
-                .sheet(isPresented: $isShown){
-                    EachItemView(item: item)
-                }
-            
-            Spacer()
-        }
-    }
-    
     // https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b
    /** private var expiryDateFormatter: String {
         let dateFormatter = DateFormatter()
@@ -187,19 +134,90 @@ struct ItemRow: View {
         
         return dateFormatter.string(from: item.expiryDate.dateValue())
     }
+    
+    private var expiryDateStatus: String {
+        let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
+        
+        if daysDifference < 0 {
+            return "Expired on: \(expiryDateFormatter)"
+        } else if daysDifference == 0 {
+            return "Expiring today"
+        } else {
+            return "Expires: \(expiryDateFormatter)"
+        }
+    }
+    
+    // expiry date Red
+    //https://developer.apple.com/documentation/foundation/calendar/2293176-datecomponents
+    private func expiryDateRed() -> Color {
+        // Calculate the difference in days between today and the expiry date
+        // no date returns 0
+        let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
+        
+        // If the expiry date is within 3 days from today, return red, otherwise return the default color
+        /**if daysDifference <= 3 && daysDifference >= 0 {
+         return .red
+         } else {
+         return .primary // Default color
+         } */
+        if daysDifference <= 0 {
+            return .red
+        } else if daysDifference <= 3 {
+            return .brown
+        } else {
+            return .primary // Default color
+        }
+    }
+    
+    var body: some View {
+        
+        let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
+        
+        HStack {
+            Image(systemName: isChecked ? "checkmark.square" : "square")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width:18, height: 18)
+                .onTapGesture {
+                    isChecked.toggle()
+                    itemsViewModel.updateItem(itemID: item.id, isChecked: isChecked) // Access itemsViewModel here
+                    print("\(item.name) checked : \(isChecked)")
+                }
+                .padding(.trailing, 8)
+            
+            // VStack(alignment: .leading){
+            Text(item.name)
+                .font(.headline)
+            
+            Text("Qty: \(item.quantity)")
+                .font(.subheadline)
+      
+            Spacer()
+            
+            Text(expiryDateStatus)
+        // Text("\(expiryDateFormatter)")
+            .font(.subheadline)
+            .foregroundColor(expiryDateRed())
+        // .multilineTextAlignment(.trailing)
+        //.bold()
+        
+    //}
+                .padding(.leading, 8)
+            //own code
+                .onTapGesture {
+                    isShown.toggle()
+                }
+                .sheet(isPresented: $isShown){
+                    EachItemView(item: item)
+                }
+            
+           // Spacer()
+        }
+    }
 }
 
 struct EachItemView: View {
-    let item: Items
-    var body: some View{
-        VStack{
-            Text("Name: \(item.name)")
-            Text("Quantity: \(item.quantity)")
-            Text("Expiry Date: \(expiryDateFormatter)")
-            Text("Description: \(item.description)")
-        }
-        .navigationTitle("\(item.name)")
-    }
+    
     // https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b
     // https://developer.apple.com/documentation/foundation/dateformatter
     private var expiryDateFormatter: String {
@@ -209,7 +227,18 @@ struct EachItemView: View {
         
         return dateFormatter.string(from: item.expiryDate.dateValue())
     }
+
+    let item: Items
     
+    var body: some View{
+        VStack{
+            Text("Name: \(item.name)")
+            Text("Quantity: \(item.quantity)")
+            Text("Expiry Date: \(expiryDateFormatter)")
+            Text("Description: \(item.description)")
+        }
+        .navigationTitle("\(item.name)")
+    }
 }
 
 
