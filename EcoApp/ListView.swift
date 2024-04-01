@@ -123,16 +123,16 @@ struct ListView: View {
         private func scheduleNotification(for item: Items) {
             let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
             
-            
-            if daysDifference == 0 || daysDifference >= 3 {
+            //if daysDifference 0= 0 || daysDifference <= 3
+            if daysDifference >= 0 && daysDifference <= 3 {
                 let content = UNMutableNotificationContent()
                 content.title = "Your Ingredient is Expiring"
                 content.body = "\(item.name) is expiring \(daysDifference == 0 ? "today" : "very soon, use or donate")!"
                 content.sound = UNNotificationSound.default
                 
                 var triggerDate = DateComponents()
-                       triggerDate.hour = 19
-                       triggerDate.minute = 29
+                       triggerDate.hour = 20
+                       triggerDate.minute = 19
                 
                 let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
                         
