@@ -7,11 +7,32 @@
 
 import SwiftUI
 import Firebase
+import UserNotifications
 
 struct ListView: View {
     @AppStorage("log_status") private var logStatus: Bool = false
     @EnvironmentObject var itemsViewModel: ItemsViewModel
     @State private var showPopup = false
+    /**@State private var activeTab: Tab = .active
+    
+    enum Tab: String, CaseIterable {
+        case active = "Active"
+        case expired = "Expired"
+    }
+    
+    var ingredientsSection:[Items]{
+        switch activeTab{
+        case .active:
+            return itemsViewModel.items.filter { $0.expiryDate.dateValue() > Date() || $0.expiryDate.dateValue() == Date()
+            }
+        case .expired:
+            return itemsViewModel.items.filter { $0.expiryDate.dateValue() < Date()
+            }
+            
+        }
+        
+    } */
+    
     
     var body: some View {
         NavigationView {
@@ -20,11 +41,27 @@ struct ListView: View {
                           try? Auth.auth().signOut()
                           logStatus = false
                           } */
+                    
+                    /**Picker("", selection: $activeTab) {
+                        ForEach(Tab.allCases, id:  \.self) { option in
+                            Text(option.rawValue)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
+                    .listRowSeparator(.hidden)
+*/
+                    
+                    
                     List {
                         ForEach(itemsViewModel.items, id: \.id) { item in
+                        //ForEach(ingredientsSection, id: \.id) { item in
                             // ItemRow(item: item)
                             ItemRow(item: item)
                                 .environmentObject(itemsViewModel)
+                                .onAppear {
+                                    scheduleNotification(for: item)
+                                }
                         }
                     }
                     /**
@@ -79,8 +116,37 @@ struct ListView: View {
                 
                 // .padding()
             }
+        
         }
     
+    //https://vikramios.medium.com/mastering-swift-local-notifications-a-developers-guide-f56b77ab64cc
+        private func scheduleNotification(for item: Items) {
+            let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
+            
+            
+            if daysDifference == 0 || daysDifference >= 3 {
+                let content = UNMutableNotificationContent()
+                content.title = "Your Ingredient is Expiring"
+                content.body = "\(item.name) is expiring \(daysDifference == 0 ? "today" : "very soon, use or donate")!"
+                content.sound = UNNotificationSound.default
+                
+                var triggerDate = DateComponents()
+                       triggerDate.hour = 19
+                       triggerDate.minute = 29
+                
+                let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
+                        
+                        let request = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger)
+                        UNUserNotificationCenter.current().add(request) { error in
+                            if let error = error {
+                                print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
+                            } else {
+                                print("Notification scheduled successfully for \(item.name)")
+                            }
+                }
+            }
+        }
+       
         
     private var buttonStatus: Bool {
            //return itemsViewModel.items.contains { $0.isChecked }
@@ -88,10 +154,6 @@ struct ListView: View {
             print("Button status: \(status)")
             return status
        }
-    /**private func generateItems() {
-        print("Generate")
-   
-    } */
     
     private func generateItems() {
         let selectedItems = itemsViewModel.items.filter { $0.isChecked }.map { $0.name }
@@ -111,7 +173,7 @@ struct ListView: View {
 
 struct ItemRow: View {
     let item: Items
-    @EnvironmentObject var itemsViewModel: ItemsViewModel // Inject itemsViewModel as environment object
+    @EnvironmentObject var itemsViewModel: ItemsViewModel
     @State private var isChecked: Bool = false
     @State private var isShown = false
     
@@ -127,6 +189,7 @@ struct ItemRow: View {
         return dateFormatter.string(from: expiryDate)
         
     } */
+    
     private var expiryDateFormatter: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
@@ -163,7 +226,7 @@ struct ItemRow: View {
         if daysDifference <= 0 {
             return .red
         } else if daysDifference <= 3 {
-            return .brown
+            return .yellow
         } else {
             return .primary // Default color
         }
@@ -200,6 +263,14 @@ struct ItemRow: View {
             .foregroundColor(expiryDateRed())
         // .multilineTextAlignment(.trailing)
         //.bold()
+            
+            Image(systemName: "ellipsis")
+                    //"pencil")
+            //"rectangle.and.pencil.and.ellipsis")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width:12, height: 12)
+               // .padding(.trailing)
         
     //}
                 .padding(.leading, 8)
@@ -207,13 +278,16 @@ struct ItemRow: View {
                 .onTapGesture {
                     isShown.toggle()
                 }
+            
                 .sheet(isPresented: $isShown){
                     EachItemView(item: item)
                 }
-            
+                
            // Spacer()
         }
+        
     }
+       
 }
 
 struct EachItemView: View {
@@ -237,7 +311,7 @@ struct EachItemView: View {
             Text("Expiry Date: \(expiryDateFormatter)")
             Text("Description: \(item.description)")
         }
-        .navigationTitle("\(item.name)")
+        //.navigationTitle("\(item.name)")
     }
 }
 
