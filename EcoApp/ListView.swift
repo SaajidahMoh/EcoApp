@@ -113,7 +113,24 @@ struct ItemRow: View {
     let item: Items
     @EnvironmentObject var itemsViewModel: ItemsViewModel // Inject itemsViewModel as environment object
     @State private var isChecked: Bool = false
-
+    @State private var isShown = false
+    
+    
+    // expiry date Red
+    private func expiryDateColor() -> Color {
+            // Calculate the difference in days between today and the expiry date
+            let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
+            
+            // If the expiry date is within 3 days from today, return red, otherwise return the default color
+            if daysDifference <= 3 && daysDifference >= 0 {
+                return .red
+            } else {
+                return .primary // Default color
+            }
+        }
+    
+    
+    
     var body: some View {
         HStack {
             Image(systemName: isChecked ? "checkmark.square" : "square")
@@ -126,16 +143,74 @@ struct ItemRow: View {
                     print("\(item.name) checked : \(isChecked)")
                 }
                 .padding(.trailing, 8)
-
+            
             Text(item.name)
+                .font(.headline)
+            
+            Text("Qty: \(item.quantity)")
+                .font(.subheadline)
+            
+            Text("\(expiryDateFormatter)")
+                .font(.subheadline)
+                .foregroundColor(expiryDateColor())
+            
+            
                 .padding(.leading, 8)
-
+            //own code
+                .onTapGesture {
+                    isShown.toggle()
+                }
+                .sheet(isPresented: $isShown){
+                    EachItemView(item: item)
+                }
+            
             Spacer()
         }
     }
-
+    
+    // https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b
+   /** private var expiryDateFormatter: String {
+        let dateFormatter = DateFormatter()
+        //dateFormatter.dateFormat = "EEEE, dd MMM yyyy"
+        
+        // let dateStr = dateFormatter.string(from: date)
+        //  print(dateStr)
+        dateFormatter.dateStyle = .medium
+        let expiryDate = Date(timeIntervalSinceReferenceDate: item.expiryDate)
+        return dateFormatter.string(from: expiryDate)
+        
+    } */
+    private var expiryDateFormatter: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        
+        return dateFormatter.string(from: item.expiryDate.dateValue())
+    }
 }
 
+struct EachItemView: View {
+    let item: Items
+    var body: some View{
+        VStack{
+            Text("Name: \(item.name)")
+            Text("Quantity: \(item.quantity)")
+            Text("Expiry Date: \(expiryDateFormatter)")
+            Text("Description: \(item.description)")
+        }
+        .navigationTitle("\(item.name)")
+    }
+    // https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b
+    // https://developer.apple.com/documentation/foundation/dateformatter
+    private var expiryDateFormatter: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        
+        return dateFormatter.string(from: item.expiryDate.dateValue())
+    }
+    
+}
 
 
 

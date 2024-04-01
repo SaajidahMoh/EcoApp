@@ -6,16 +6,19 @@
 //
 
 import SwiftUI
+import Firebase
 
 
 struct Items: Identifiable {
     var id: String
     var name: String
     var isChecked: Bool
-  //  var quantity : Int
-   // var expirydate : Date
-   // var description : String
-   // var quantity: Number
-    //var expiry: TimeStamp
+    var quantity : Int
+    var description : String
+    // https://stackoverflow.com/questions/52367721/how-to-declare-data-type-as-timestamp-in-ios-swift
+    var expiryDate : Timestamp
+    //TimeInterval
+    //var quantity: Number
+    ///var expiry: TimeStamp
     
 }

@@ -12,6 +12,7 @@ import Firebase
 struct NewItemView: View {
     @State private var name = ""
     @State private var quantity = 1
+  //  @State private var expirydate = Date()
     @State private var expirydate = Date()
     @State private var description = ""
     

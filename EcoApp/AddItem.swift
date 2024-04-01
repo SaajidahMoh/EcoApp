@@ -15,6 +15,7 @@ struct AddItem: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var name = ""
     @State private var quantity = 1
+    //@State private var expiryDate = Date()
     @State private var expiryDate = Date()
     @State private var description = ""
     @State private var showAlert = false
