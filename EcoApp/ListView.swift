@@ -59,6 +59,7 @@ struct ListView: View {
                             // ItemRow(item: item)
                             ItemRow(item: item)
                                 .environmentObject(itemsViewModel)
+                            //notifications
                                 .onAppear {
                                     scheduleNotification(for: item)
                                 }
@@ -130,20 +131,52 @@ struct ListView: View {
                 content.body = "\(item.name) is expiring \(daysDifference == 0 ? "today" : "very soon, use or donate")!"
                 content.sound = UNNotificationSound.default
                 
+                //https://stackoverflow.com/questions/58561877/error-in-trigger-for-notifications-swift
+                //var hours = [9, 12, 18]
                 var triggerDate = DateComponents()
                        triggerDate.hour = 20
                        triggerDate.minute = 19
                 
+                var triggerDateAfternoon = DateComponents()
+                       triggerDateAfternoon.hour = 10
+                       triggerDateAfternoon.minute = 30
+                
+                var triggerDateEvening = DateComponents()
+                       triggerDateEvening.hour = 10
+                       triggerDateEvening.minute = 32
+         
                 let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
-                        
-                        let request = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger)
-                        UNUserNotificationCenter.current().add(request) { error in
-                            if let error = error {
-                                print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
-                            } else {
-                                print("Notification scheduled successfully for \(item.name)")
-                            }
+                let trigger2 = UNCalendarNotificationTrigger(dateMatching: triggerDateAfternoon, repeats: true)
+                let trigger3 = UNCalendarNotificationTrigger(dateMatching: triggerDateEvening, repeats: true)
+                
+                
+                let request = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger)
+                UNUserNotificationCenter.current().add(request) { error in
+                    if let error = error {
+                        print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
+                    } else {
+                        print("Notification scheduled successfully for \(item.name)")
+                    }
                 }
+                
+                let request2 = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger2)
+                UNUserNotificationCenter.current().add(request2) { error in
+                    if let error = error {
+                        print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
+                    } else {
+                        print("Notification scheduled successfully for \(item.name)")
+                    }
+                }
+
+                let request3 = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger3)
+                UNUserNotificationCenter.current().add(request3) { error in
+                    if let error = error {
+                        print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
+                    } else {
+                        print("Notification scheduled successfully for \(item.name)")
+                    }
+                }
+        
             }
         }
        
@@ -199,13 +232,23 @@ struct ItemRow: View {
     }
     
     private var expiryDateStatus: String {
-        let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
         
-        if daysDifference < 0 {
-            return "Expired on: \(expiryDateFormatter)"
+        //setting the day so it accurately displays the date todat
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let expiryDate = calendar.startOfDay(for: item.expiryDate.dateValue())
+        let daysDifference = Calendar.current.dateComponents([.day], from: today, to: expiryDate).day ?? 0
+        //let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
+        
+        if daysDifference == -1 {
+            return "Expired yesterday"
         } else if daysDifference == 0 {
             return "Expiring today"
-        } else {
+        } else if daysDifference == 1 {
+            return "Expiring tomorrow"
+        } else if daysDifference < 0 {
+            return "Expired on: \(expiryDateFormatter)"
+        }  else {
             return "Expires: \(expiryDateFormatter)"
         }
     }
@@ -294,6 +337,7 @@ struct EachItemView: View {
     
     // https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b
     // https://developer.apple.com/documentation/foundation/dateformatter
+    // https://www.swiftyplace.com/blog/swift-date-formatting-10-steps-guide
     private var expiryDateFormatter: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium

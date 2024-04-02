@@ -98,8 +98,14 @@ struct AddItem: View {
                             value: $quantity,in: 1...100)
                 }
                 
+                // https://www.hackingwithswift.com/forums/swiftui/help-with-onchange/24312 TimeStamp 00:00:00
                 Section(header: Text("Expiry Date")) {
                     DatePicker("Expiry Date", selection: $expiryDate, displayedComponents: .date)
+                        .onChange(of: expiryDate) { _, newValue in
+                            let calendar = Calendar.current
+                            let startOfDay = calendar.startOfDay(for: newValue)
+                            expiryDate = startOfDay
+                        }
                 }
                 
                 Section(header: Text("Description")) {
@@ -223,6 +229,7 @@ struct AddItem: View {
         
     }
 }
+    
                      
 
 #Preview {
