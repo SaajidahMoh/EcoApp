@@ -33,6 +33,8 @@ struct ListView: View {
         
     } */
     
+    var userID: String? {
+        return Auth.auth().currentUser?.uid }
     
     var body: some View {
         NavigationView {
@@ -63,7 +65,17 @@ struct ListView: View {
                                 .onAppear {
                                     scheduleNotification(for: item)
                                 }
+                            // https://peterfriese.dev/blog/2021/swiftui-listview-part4/#:~:text=of%20styling%20options)-,Swipe%2Dto%2Ddelete,loop%20inside%20a%20List%20view.
+                               /** .onDelete { indexSet in
+                                        //item.remove(atOffsets: indexSet)
+                                    itemsViewModel.deleteItem(atOffsets: indexSet)
+                                      } */
                         }
+                        // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
+                        .onDelete(perform: deleteItems)
+                        
+                        // https://www.youtube.com/watch?v=KMtdBgHwvGY&ab_channel=JohnGallaugher
+                        //.onDelete { indexSet in ItemsViewModel.remove(attOffsets: indexSet)}
                     }
                     /**
                      List(itemsViewModel.items, id: \.id ) {items in
@@ -188,6 +200,7 @@ struct ListView: View {
             return status
        }
     
+    
     private func generateItems() {
         let selectedItems = itemsViewModel.items.filter { $0.isChecked }.map { $0.name }
         Networking.shared.fetchItemsRecipes(with: selectedItems) { recipes, error in
@@ -202,6 +215,192 @@ struct ListView: View {
             }
         }
     }
+    /**
+    private func deleteItems(at offsets:IndexSet){
+        itemsViewModel.items.remove(atOffsets: offsets)
+        
+    } */
+
+    /**
+    private func deleteItems(at offsets: IndexSet) {
+        for index in offsets {
+            let item = itemsViewModel.items[index]
+            if let userID = userID {
+                let db = Firestore.firestore()
+                db.collection("items").document(userID).collection("Item").document(item.id).delete { error in
+                    if let error = error {
+                        print("Error deleting item \(item.name): \(error.localizedDescription)")
+                    } else {
+                        print("Item \(item.name) deleted successfully.")
+                    }
+                }
+            }
+        }
+        // Remove items from the ViewModel after deleting from the database
+        itemsViewModel.items.remove(atOffsets: offsets)
+    } */
+/**
+    private func deleteItems(at offsets: IndexSet) {
+        for index in offsets {
+            let item = itemsViewModel.items[index]
+            if let userID = userID {
+                let db = Firestore.firestore()
+                let collectionRef = db.collection("items").document(userID).collection("Item")
+                //let documentRef = db.collection("items").document(userID).collection("Item").document(item.id)
+                
+                
+                collectionRef.whereField("id", isEqualTo: item.id).getDocuments {
+                    (QuerySnapshot, error) in
+                    if let error = error {
+                        print("Error getting item's document for \(item.name): \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    /**guard let documents = QuerySnapshot?.documents, let document = documents.first else {
+                     print ("Document not found for item  \(item.name)")
+                     return
+                     } */
+                    
+                    guard let documents = QuerySnapshot?.documents else {
+                        print ("Document not found for item  \(item.name)")
+                        return
+                    }
+                    
+                    /**guard let document = documents.first else {
+                     print ("Document not found for item  \(item.name)")
+                     return
+                     } */
+                    
+                    if let document = documents.first {
+                        let documentID = document.documentID
+                        collectionRef.document(documentID).delete { error in
+                            if let error = error {
+                                print("Error deleting item \(item.name): \(error.localizedDescription)")
+                            } else {
+                                print("Item \(item.name) deleted successfully.")
+                                itemsViewModel.items.remove(at: index)
+                            }
+                        }
+                        /** documentRef.delete { error in
+                         if let error = error {
+                         print("Error deleting item \(item.name): \(error.localizedDescription) for \(userID) for item \(item.id)")
+                         } else {
+                         print("Item \(item.name) deleted successfully for \(userID) for item \(item.id).")
+                         // Remove item from ViewModel after successful deletion
+                         itemsViewModel.items.remove(at: index)
+                         }
+                         }
+                         } */
+                    } else {
+                        print("No document found for item \(item.name) with id \(item.id)")
+                    }
+                }
+            }
+        }
+    } */
+
+    // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
+    // https://docs.airnativeextensions.com/docs/firebase/firestore/transactions-and-batched-writes/
+    private func deleteItems(at offsets: IndexSet) {
+        var deleteFromList: [Int] = []
+        
+        for index in offsets {
+            let item = itemsViewModel.items[index]
+            if let userID = userID {
+                let db = Firestore.firestore()
+                let collectionRef = db.collection("items").document(userID).collection("Item")
+                
+                collectionRef.whereField("id", isEqualTo: item.id).getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error getting documents for item \(item.name): \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    guard let documents = querySnapshot?.documents else {
+                        print("No documents found for item \(item.name)")
+                        return
+                    }
+                    
+                    if let document = documents.first {
+                        let documentID = document.documentID
+                        collectionRef.document(documentID).delete { error in
+                            if let error = error {
+                                print("Error deleting item \(item.name): \(error.localizedDescription)")
+                            } else {
+                                print("Item \(item.name) with id \(item.id) deleted successfully.")
+                                
+                                // Add the index to the delete from list
+                                deleteFromList.append(index)
+                            }
+                        }
+                    } else {
+                        print("No document found for item \(item.name)")
+                    }
+                }
+            }
+        }
+        
+        // Remove items from ViewModel after deletion loop
+        deleteFromList.forEach { index in
+            itemsViewModel.items.remove(at: index)
+        }
+    }
+
+    
+    // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
+   /** private func deleteItems(at offsets: IndexSet){
+        
+        
+        guard let userID = userID else {
+            print("User not logged in")
+            return
+        }
+        
+        let deletedItems = offsets.map {  itemsViewModel.items[$0].id }
+        itemsViewModel.items.remove(atOffsets: offsets)
+       
+        /** for id in deletedItem {
+         if let index = itemsViewModel.items.firstIndex(where: { $0.id == id})
+         {
+         itemsViewModel.items.remove(atOffsets: offsets)
+         }
+         } */
+        //  itemsViewModel.items.remove(atOffsets: offsets)
+        
+        let db = Firestore.firestore()
+        
+        let batch = db.batch()
+        
+        
+        for id in deletedItems {
+            let attemp = db.collection("items").document(userID).collection("Item").document(id)
+            batch.deleteDocument(attemp)
+        }
+        
+        batch.commit { error in
+            if let error = error {
+                print("error")
+            } else {
+                print ("item deleted ID")
+            }
+        
+    
+           /**  attemp.delete { error in
+                if let error = error {
+                    print("error")
+                } else {
+                    print ("item deleted, ID: \(id)")
+                }
+            } */
+            
+        }
+        // https://docs.airnativeextensions.com/docs/firebase/firestore/transactions-and-batched-writes/
+        
+        
+        
+    } */
+    
+    
 }
 
 struct ItemRow: View {
@@ -277,8 +476,7 @@ struct ItemRow: View {
     
     var body: some View {
         
-        let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
-        
+       // let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
         HStack {
             Image(systemName: isChecked ? "checkmark.square" : "square")
                 .resizable()
@@ -334,6 +532,8 @@ struct ItemRow: View {
 }
 
 struct EachItemView: View {
+    let item: Items
+    @State private var editShown = false
     
     // https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b
     // https://developer.apple.com/documentation/foundation/dateformatter
@@ -345,8 +545,6 @@ struct EachItemView: View {
         
         return dateFormatter.string(from: item.expiryDate.dateValue())
     }
-
-    let item: Items
     
     var body: some View{
         VStack{
@@ -354,7 +552,32 @@ struct EachItemView: View {
             Text("Quantity: \(item.quantity)")
             Text("Expiry Date: \(expiryDateFormatter)")
             Text("Description: \(item.description)")
+            
+            Image(systemName: "ellipsis")
+                    //"pencil")
+            //"rectangle.and.pencil.and.ellipsis")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width:12, height: 12)
+               // .padding(.trailing)
+        
+    //}
+                .padding(.leading, 8)
+            //own code
+                .onTapGesture {
+                    editShown.toggle()
+                }
+                .sheet(isPresented:  $editShown){
+                    EditItem(item: item)
+            
+                }
+            
+            
+            
         }
+        
+        
+        
         //.navigationTitle("\(item.name)")
     }
 }

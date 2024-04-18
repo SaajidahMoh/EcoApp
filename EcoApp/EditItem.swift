@@ -13,8 +13,12 @@ import Firebase
 struct EditItem: View {
     // https://stackoverflow.com/questions/63927231/navigate-back-after-saving-in-swift-ui
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var itemsViewModel: ItemsViewModel
+    let item: Items
+    
     @State private var name = ""
     @State private var quantity = 1
+    
     //@State private var expiryDate = Date()
     @State private var expiryDate = Date()
     @State private var description = ""
@@ -36,31 +40,7 @@ struct EditItem: View {
         
         // Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         NavigationView{
-            /** Section(header: Text("Image")){
-             if let image =  selectedImage {
-                 Image(uiImage: image)
-                     .resizable()
-                     .scaledToFill()
-                     .frame(width: 208, height: 128)
-                    // .cornerRadius(64)
-                 //.aspectRatio(contentMode: .fit)
-                    // .frame(height: 100)
-             } else {
-                 Image(systemName: "persin.fill")
-                     .resizable()
-                     .aspectRatio(contentMode: .fit)
-                     .frame(height: 100)
-                     .padding()
-                     .foregroundColor(.gray)
-             }
-             Button("Select Image"){
-                 shouldShowImagePicker.toggle()
-             }
-             .multilineTextAlignment(.trailing)
-             .sheet(isPresented: $shouldShowImagePicker){
-                 ImagePicker(image: $selectedImage)
-             }
-                              }*/
+           
             Form {
                 Section(header: Text("Image")){
                     if let image = self.image {
@@ -199,6 +179,9 @@ struct EditItem: View {
                      
 
 #Preview {
-    EditItem()
+    AddItem()
+   // EditItem(item: item)
+   // EditItem()
 }
+
 

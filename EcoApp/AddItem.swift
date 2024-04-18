@@ -8,7 +8,7 @@
 
 import SwiftUI
 import Firebase
-//import FirebaseStorage
+import FirebaseStorage
 
 struct AddItem: View {
     // https://stackoverflow.com/questions/63927231/navigate-back-after-saving-in-swift-ui
@@ -23,9 +23,14 @@ struct AddItem: View {
     @State private var isPresented = false
     @State private var goBack  = false
     
-    @State var image: UIImage?
+    //https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
+   // @State var isPickerShowing = false
+   // @State var selectedImage: UIImage?
     
     @State var shouldShowImagePicker = false // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+    
+    @State var image: UIImage?
+    
     
     var userID: String? {
         return Auth.auth().currentUser?.uid }
@@ -62,8 +67,14 @@ struct AddItem: View {
              }
                               }*/
             Form {
-                Section(header: Text("Image")){
+                
+              //  Section(header: Text("Image")){
+                    // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
                     if let image = self.image {
+                    //if selectedImage != nil {
+                    //if let selectedImage = self.selectedImage {
+                        // https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
+                       // Image(uiImage: selectedImage!)
                         Image(uiImage: image)
                             .resizable()
                             .scaledToFill()
@@ -74,21 +85,26 @@ struct AddItem: View {
                             .resizable()
                             .font(.system(size: 64))
                             .padding()
+                        // .foregroundColor(Color(.label))
                             .foregroundColor(.gray)
                             .frame(height: 150)
                         Button("Select Image"){
                             shouldShowImagePicker.toggle()
                         }
                         .foregroundColor(.green)
-                        .sheet(isPresented: $shouldShowImagePicker, onDismiss: nil) {
-                            ImagePicker(image: $image)
+                      //  .sheet(isPresented: $isPickerShowing, onDismiss: nil) {
+                      //      ImagePicker(selectedImage: $selectedImage, isPickerShowing: $isPickerShowing)}
+                    
                             // ImagePicker(image: $self.image))
-                            
+                        // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                        .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
+                                   ImagePicker(image: $image)
+                               }
                             
                             //Image(image)
-                        }
+                        
                     }
-                }
+               // }
                 Section(header: Text("Ingredient name")) {
                     TextField("Item Name", text: $name)
                 }
@@ -203,6 +219,7 @@ struct AddItem: View {
             "expiryDate": expiryDate,
             "description": description
         ]
+        
         
        // db.collection("items").document(userID).collection("Item")
         //  let ref = db.collection("items").document(userID).collection("Item")
