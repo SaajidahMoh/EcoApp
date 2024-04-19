@@ -38,64 +38,72 @@ struct ListView: View {
     
     var body: some View {
         NavigationView {
-                VStack { /**
-                          Button("Logout"){
-                          try? Auth.auth().signOut()
-                          logStatus = false
-                          } */
-                    
-                    /**Picker("", selection: $activeTab) {
-                        ForEach(Tab.allCases, id:  \.self) { option in
-                            Text(option.rawValue)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
-                    .listRowSeparator(.hidden)
-*/
-                    
-                    
-                    List {
-                        ForEach(itemsViewModel.items, id: \.id) { item in
+            VStack { /**
+                      Button("Logout"){
+                      try? Auth.auth().signOut()
+                      logStatus = false
+                      } */
+                
+                /**Picker("", selection: $activeTab) {
+                 ForEach(Tab.allCases, id:  \.self) { option in
+                 Text(option.rawValue)
+                 }
+                 }
+                 .pickerStyle(.segmented)
+                 .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
+                 .listRowSeparator(.hidden)
+                 */
+                
+                
+                List {
+                    ForEach(itemsViewModel.items, id: \.id) { item in
                         //ForEach(ingredientsSection, id: \.id) { item in
-                            // ItemRow(item: item)
-                            ItemRow(item: item)
-                                .environmentObject(itemsViewModel)
-                            //notifications
-                                .onAppear {
-                                    scheduleNotification(for: item)
-                                }
-                            // https://peterfriese.dev/blog/2021/swiftui-listview-part4/#:~:text=of%20styling%20options)-,Swipe%2Dto%2Ddelete,loop%20inside%20a%20List%20view.
-                               /** .onDelete { indexSet in
-                                        //item.remove(atOffsets: indexSet)
-                                    itemsViewModel.deleteItem(atOffsets: indexSet)
-                                      } */
-                        }
-                        // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
-                        .onDelete(perform: deleteItems)
-                        
-                        // https://www.youtube.com/watch?v=KMtdBgHwvGY&ab_channel=JohnGallaugher
-                        //.onDelete { indexSet in ItemsViewModel.remove(attOffsets: indexSet)}
+                        // ItemRow(item: item)
+                        ItemRow(item: item)
+                            .environmentObject(itemsViewModel)
+                        //notifications
+                            .onAppear {
+                                scheduleNotification(for: item)
+                            }
+                        // https://peterfriese.dev/blog/2021/swiftui-listview-part4/#:~:text=of%20styling%20options)-,Swipe%2Dto%2Ddelete,loop%20inside%20a%20List%20view.
+                        /** .onDelete { indexSet in
+                         //item.remove(atOffsets: indexSet)
+                         itemsViewModel.deleteItem(atOffsets: indexSet)
+                         } */
                     }
-                    /**
-                     List(itemsViewModel.items, id: \.id ) {items in
-                     Text(items.name)
-                     } */
-                    .navigationTitle("Ingredients")
-                    .navigationBarItems(trailing: Button(action: {
-                        showPopup.toggle()
-                        // add
-                        //dataManager.addItem(itemName: newItem)
-                    }, label: {
-                        Image(systemName: "plus")
-                    }))
-                    .sheet(isPresented:  $showPopup){
-                        AddItem()
-                        // NewItemView()
-                    } //.padding(.bottom, 10)
+                    // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
+                    .onDelete(perform: deleteItems)
                     
-                     Spacer()
+                    // https://www.youtube.com/watch?v=KMtdBgHwvGY&ab_channel=JohnGallaugher
+                    //.onDelete { indexSet in ItemsViewModel.remove(attOffsets: indexSet)}
                     
+                    
+                }
+                
+                /**
+                 List(itemsViewModel.items, id: \.id ) {items in
+                 Text(items.name)
+                 } */
+                .navigationTitle("Ingredients")
+                .navigationBarItems(trailing: Button(action: {
+                    showPopup.toggle()
+                    // add
+                    //dataManager.addItem(itemName: newItem)
+                }, label: {
+                    Image(systemName: "plus")
+                }))
+                // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                .fullScreenCover(isPresented: $showPopup, onDismiss: nil) {
+                    AddItem()
+                }
+                /**
+                 .sheet(isPresented:  $showPopup){
+                 AddItem()
+                 // NewItemView()
+                 } //.padding(.bottom, 10)
+                 */
+                // Spacer()
+    
                     Button(action: generateItems) {
                         Text("Generate")
                             .padding()
@@ -105,7 +113,9 @@ struct ListView: View {
                     }
                     .padding()
                     .disabled(!buttonStatus)
-                }
+                
+            }
+            .background(Color(UIColor.systemGroupedBackground)) // fixes generate button background!
                 // .disabled(!buttonStatus)
                 
                 /** Button("Logout"){
@@ -519,11 +529,17 @@ struct ItemRow: View {
                 .onTapGesture {
                     isShown.toggle()
                 }
-            
+            /**
                 .sheet(isPresented: $isShown){
                     EachItemView(item: item)
                 }
-                
+             */
+            
+            // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+            .fullScreenCover(isPresented: $isShown, onDismiss: nil) {
+                EachItemView(item: item)
+                   }
+             
            // Spacer()
         }
         
@@ -534,6 +550,7 @@ struct ItemRow: View {
 struct EachItemView: View {
     let item: Items
     @State private var editShown = false
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     // https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b
     // https://developer.apple.com/documentation/foundation/dateformatter
@@ -547,12 +564,124 @@ struct EachItemView: View {
     }
     
     var body: some View{
-        VStack{
+        //VStack{
+        //HStack {
+        NavigationView {
+            // ZStack(alignment: .topLeading){
+            Form {
+                
+                /** Section(header: Text("Ingredient name")) {
+                 Text("Name: \(item.name)")
+                 }
+                 */
+                
+                
+                Section(header: Text("Ingredient name")) {
+                    Text(" \(item.name)")
+                }
+                
+                Section(header: Text("Quantity")) {
+                    Text("\(item.quantity)")
+                }
+                
+                Section(header: Text("Expiry date")) {
+                    Text("\(expiryDateFormatter)")
+                }
+                
+                /**
+                 Section(header: Text("Description")) {
+                 Text("\(item.description)")
+                 }*/
+                
+                if !item.description.isEmpty {
+                    Section(header: Text("Description")) {
+                        Text("\(item.description)")
+                    }
+                }
+            }
+            
+    
+            .navigationTitle("Ingredient Details")
+            .navigationBarItems(leading:
+                                    Button(action : {
+                self.presentationMode.wrappedValue.dismiss()
+                //isPresented = false
+                //showEmailVerificationView = false
+            }) { Image(systemName: "arrow.left")}
+                .padding()
+                                
+                .foregroundColor(.green), trailing:
+                                    Button("Edit") {
+            
+                
+            } .foregroundColor(.green)
+                .bold()
+            
+                    
+            
+            )
+            
+            
+        
+        /** }
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "arrow.left")
+                
+                }
+                .padding()
+                
+                Button(action: {
+                    editShown.toggle()
+                }) {
+                    Image(systemName: "ellipsis")
+                
+                }
+                .padding()
+                
+    
+                
+            }
+              .navigationTitle("Ingredient Details")
+              
+              .sheet(isPresented: $editShown, onDismiss: nil) {
+                  //
+              }//.foregroundColor(.green)
+               // .bold()
+
+ */
+            
+                /**
+                
+                //  .navigationTitle("Ingredients")
+                 .navigationBarItems(trailing: Button(action: {
+                     editShown.toggle()
+                 }) { Image(systemName: "ellipses")}
+                                     )
+                 
+                 
+                .navigationBarItems(trailing: Button(action: {
+                    editShown.toggle()
+                    // add
+                    //dataManager.addItem(itemName: newItem)
+                }, label: {
+                    Image(systemName: "ellipsis")
+                }))
+                // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                .sheet(isPresented: $editShown, onDismiss: nil) {
+                    // EditItem()
+                } */
+            }
+        
+            /**
             Text("Name: \(item.name)")
             Text("Quantity: \(item.quantity)")
             Text("Expiry Date: \(expiryDateFormatter)")
-            Text("Description: \(item.description)")
-            
+            Text("Description: \(item.description)") */
+         
+        
+        /**
             Image(systemName: "ellipsis")
                     //"pencil")
             //"rectangle.and.pencil.and.ellipsis")
@@ -572,11 +701,8 @@ struct EachItemView: View {
             
                 }
             
-            
-            
-        }
         
-        
+        */
         
         //.navigationTitle("\(item.name)")
     }
