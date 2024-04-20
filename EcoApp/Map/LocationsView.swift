@@ -9,6 +9,8 @@
 
 import SwiftUI
 import MapKit
+
+
 /**
 class LocationsViewModel : ObservableObject {
     
@@ -25,6 +27,7 @@ struct LocationsView: View {
     //@StateObject private var vm = LocationsViewModel()
     @EnvironmentObject private var vm: LocationsViewModel
    /** @State private var mapRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.49888499999999, longitude: -0.138101), span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)) */
+    @StateObject var viewModel = ContentViewModel()
     
     var body:some View {
        // Text("Hello")
@@ -42,9 +45,10 @@ struct LocationsView: View {
             VStack (spacing: 0){
                 
                 Spacer() //at bototm
-                locationsPreviewStack
-                
-    
+               // locationsPreviewStack
+                if vm.showLocationsPreview{ //own code , ADDED THIS LINE
+                    locationsPreviewStack
+                }
                 
             }
         }
@@ -53,7 +57,7 @@ struct LocationsView: View {
         //Map(coordinateRegion: $vm.mapRegion)
         // anntoation item is the pin
         //annotation content is for each location, what do u want to put on the map?
-        Map(coordinateRegion: $vm.mapRegion,
+        Map(coordinateRegion: viewModel.binding, showsUserLocation: true, userTrackingMode: .constant(.none), // userTrackingMode: .constant(.follow)
             annotationItems: vm.locations,
             annotationContent: { location in
             MapAnnotation(coordinate: location.coordinates) {
@@ -64,13 +68,19 @@ struct LocationsView: View {
                 
                     .onTapGesture {
                        // vm.selectLocation(location)
+                      //  locationsPreviewStack
                         vm.showNextLocation(location: location)
+                       
       //     ( location: location)
                        // vm.show
                     }
             }
+            
            // MapMarker(coordinate: location.coordinates, tint: .blue)
         })
+        .onAppear(perform: {
+                            viewModel.checkIfLocationIsEnabled()
+                        })
         
     }
     
@@ -88,6 +98,67 @@ struct LocationsView: View {
     }
     
 }
+
+final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+    var locationManager: CLLocationManager?
+
+    @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.52843913061934, longitude: -0.10237656930940268), span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2))
+
+    var binding: Binding<MKCoordinateRegion> {
+        Binding {
+            self.mapRegion
+        } set: { newRegion in
+            self.mapRegion = newRegion
+        }
+    }
+
+    func checkIfLocationIsEnabled() {
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager = CLLocationManager()
+            locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager!.delegate = self
+        } else {
+            print("Show an alert letting them know this is off")
+        }
+    }
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let previousAuthorizationStatus = manager.authorizationStatus
+        manager.requestWhenInUseAuthorization()
+        if manager.authorizationStatus != previousAuthorizationStatus {
+            checkLocationAuthorization()
+        }
+    }
+
+    private func checkLocationAuthorization() {
+        guard let location = locationManager else {
+            return
+        }
+
+        switch location.authorizationStatus {
+        case .notDetermined:
+            print("Location authorization is not determined.")
+        case .restricted:
+            print("Location is restricted.")
+        case .denied:
+            print("Location permission denied.")
+        case .authorizedAlways, .authorizedWhenInUse:
+            if let location = location.location {
+                mapRegion = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2))
+            }
+
+        default:
+            break
+        }
+    }
+}
+
+
+/**
+final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+    var locationManager: CLLocationManager?
+}*/
+
 
 /**struct MapView: View {
  // https://www.hackingwithswift.com/quick-start/swiftui/how-to-show-a-map-view

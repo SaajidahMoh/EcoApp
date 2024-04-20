@@ -17,6 +17,7 @@ class LocationsViewModel : ObservableObject {
     @Published var selectedLocation : Location?
     
     @Published var showLocationsList: Bool = false
+    @Published var showLocationsPreview: Bool = false //own code 
     
     //only one location the current
         //current location on map https://www.youtube.com/watch?v=EA4lQBrnvds&list=PLwvDm4Vfkdpha5eVTjLM0eRlJ7-yDDwBk&index=4&ab_channel=SwiftfulThinking
@@ -42,6 +43,7 @@ class LocationsViewModel : ObservableObject {
         withAnimation(.easeInOut){
             mapLocation = location
             showLocationsList = false
+            showLocationsPreview = true //own code
         }
         
     }
