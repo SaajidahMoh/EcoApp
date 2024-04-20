@@ -17,6 +17,7 @@ struct Items: Identifiable {
     var description : String
     // https://stackoverflow.com/questions/52367721/how-to-declare-data-type-as-timestamp-in-ios-swift
     var expiryDate : Timestamp
+    var imageURL : String 
     //TimeInterval
     //var quantity: Number
     ///var expiry: TimeStamp

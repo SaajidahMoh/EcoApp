@@ -22,6 +22,11 @@ struct AddItem: View {
     @State private var alertMessage = ""
     @State private var isPresented = false
     @State private var goBack  = false
+    @State private var imageURL = ""
+    
+//https://www.youtube.com/watch?v=YgjYVbg1oiA&t=1327s&ab_channel=CodeWithChris
+    @State var isPickerShowing = false
+    @State var selectedImage: UIImage?
     
     //https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
    // @State var isPickerShowing = false
@@ -68,20 +73,49 @@ struct AddItem: View {
                               }*/
             Form {
                 
-              //  Section(header: Text("Image")){
-                    // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-                    if let image = self.image {
-                    //if selectedImage != nil {
-                    //if let selectedImage = self.selectedImage {
-                        // https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
-                       // Image(uiImage: selectedImage!)
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 128, height: 128)
-                        // .cornerRadius(64)
-                        
-                    } else {Image(systemName: "photo")
+                //  Section(header: Text("Image")){
+                // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                 if let image = self.image {
+                 //if selectedImage != nil {
+                 //if let selectedImage = self.selectedImage {
+                 // https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
+                 // Image(uiImage: selectedImage!)
+                 Image(uiImage: image)
+                 .resizable()
+                 .scaledToFill()
+                 .frame(width: 128, height: 128)
+                 // .cornerRadius(64)
+                 
+                 }
+                /**
+                if selectedImage != nil {
+                    Image(uiImage: selectedImage!)
+                        .resizable()
+                        .frame(width: 200, height:200)
+                } 
+                Button
+                {
+                    isPickerShowing = true
+                } label : {
+                    Text("Select a photo")
+                }
+                 .sheet(isPresented: $isPickerShowing,  onDismiss: nil) {
+                    ImagePicker(image:  $selectedImage)
+                }
+                if selectedImage == nil {
+                    Image(systemName: "photo")
+                                  .resizable()
+                                  .font(.system(size: 64))
+                                  .padding()
+                              // .foregroundColor(Color(.label))
+                                  .foregroundColor(.gray)
+                                  .frame(height: 150)
+                    Button("Select Image"){
+                        isPickerShowing.toggle()
+                    }
+                } */
+                
+                else {Image(systemName: "photo")
                             .resizable()
                             .font(.system(size: 64))
                             .padding()
@@ -103,7 +137,8 @@ struct AddItem: View {
                             
                             //Image(image)
                         
-                    }
+                    } 
+                
                // }
                 Section(header: Text("Ingredient name")) {
                     TextField("Item Name", text: $name)
@@ -180,7 +215,7 @@ struct AddItem: View {
                 //isPresented = false
                 self.presentationMode.wrappedValue.dismiss()
                 itemsViewModel.fetchItemsAfterButton()
-                //self.persistImageToStorage() //copied LBTA
+              //  self.persistImageToStorage() //copied LBTA
                
                     // goBack = true
             })
@@ -189,13 +224,63 @@ struct AddItem: View {
         
     }
     
-    private func persistImageToStorage(){
+   /** private func persistImageToStorage(){
+        guard let userID = userID else {
+            print("User not logged in")
+            return
+        }
+        // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+        // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+        let ref = Storage.storage().reference(withPath: userID)
         
+        //"images/\(userID)/\(UUID().uuidString).jpg")
         
+               guard let imageData = self.image?.jpegData(compressionQuality: 0.5) else { return }
         
+        ref.putData(imageData, metadata: nil) { metadata, err in
+                    if let err = err {
+                        showAlert(message: "Failed to push image to Storage: \(err)")
+                        return
+                    }
+                    
+                    ref.downloadURL { url, err in
+                        if let err = err {
+                            showAlert(message: "Failed to retrieve downloadURL: \(err)")
+                            return
+                        }
+                        
+                        showAlert(message: "Successfully stored image with url: \(url?.absoluteString ?? "")")
+                        
+                        print(url?.absoluteString)
+                        
+                        // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Installing-Firestore-and-Saving-User-Data-Collection
+                      //  self.storeItemImage(imageItemUrl: url)
+                    }
+                }
+            
+        
+    } */
+    // https://www.youtube.com/watch?v=YgjYVbg1oiA&t=1327s&ab_channel=CodeWithChris
+    func uploadPhoto(){
+        guard selectedImage != nil else {
+            return
+        }
+        
+        let storageRef = Storage.storage().reference()
         
         
     }
+    /**private func storeItemImage(imageItemUrl: URL) {
+        guard let userID = userID else {
+            print("User not logged in")
+            return
+        }
+    
+        Storage.storage.firestore.collection("items").document(userID).collection("Item").addDoc
+        
+        
+        
+    } */
     func saveItem() {
         guard let userID = userID else {
             print("User not logged in")
@@ -217,7 +302,8 @@ struct AddItem: View {
             "name": name,
             "quantity": quantity,
             "expiryDate": expiryDate,
-            "description": description
+            "description": description,
+            "imageURL": imageURL
         ]
         
         
@@ -232,6 +318,7 @@ struct AddItem: View {
                 quantity = 1
                 expiryDate = Date()
                 description = ""
+                imageURL = ""
                     // image = nil
                 //ListView()
                 //isPresented = false

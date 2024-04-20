@@ -10,7 +10,9 @@ import Firebase
 
 struct ContentView: View {
     @StateObject var itemsViewModel = ItemsViewModel()
+    @StateObject private var vm = LocationsViewModel()
     @AppStorage("log_status") private var logStatus: Bool = false
+    
     var body: some View {
         if logStatus {
             // Home
@@ -23,7 +25,10 @@ struct ContentView: View {
                     Label("Home", systemImage:"globe.europe.africa")
                     //.foregroundColor(Color.green)//"house"
                     }
-                FoodBanks()
+               // MapView()
+                LocationsView()
+                    .environmentObject(vm)
+                //FoodBanks()
                     //Text("Maps")
                     .tabItem { Label("Food Banks",
                     ////systemImage: "mappin"

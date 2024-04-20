@@ -4,7 +4,7 @@
 //
 //  Created by Saajidah Mohamed on 31/03/2024.
 //
-
+/**
 import SwiftUI
 import MapKit
 
@@ -19,18 +19,18 @@ struct FoodBanks: View {
     }
     var body: some View {
         Map{
-            ForEach(locations) { location in
+           /** ForEach(locations) { location in
                 Marker(location.name, coordinate: location.coordinate)
-            }
+            } */
         }
         //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-        .task {
+        /** .task {
             await loadLocations()
-        }
+        } */
     }
 }
 
 
 #Preview {
     FoodBanks()
-}
+} */

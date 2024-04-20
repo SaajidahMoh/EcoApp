@@ -5,7 +5,7 @@
 //  Created by Saajidah Mohamed on 31/03/2024.
 //https://www.youtube.com/watch?v=gWtipirALjI&ab_channel=azamsharp
 //create one generic client, instead of loads^
-
+/**
 import Foundation
 
 
@@ -27,7 +27,7 @@ struct LocationClient {
             throw LocClientError.invalidResponse
         }
         do {
-            return try JSONDecoder().decode([Location].self, from:data)
+          //  return try JSONDecoder().decode([Location].self, from:data)
         } catch {
             throw LocClientError.decodingError(error)
         }
@@ -35,3 +35,4 @@ struct LocationClient {
     }
 
 }
+*/

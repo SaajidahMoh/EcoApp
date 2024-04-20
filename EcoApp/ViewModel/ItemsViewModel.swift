@@ -71,8 +71,9 @@ class ItemsViewModel : ObservableObject{
                 let description = data["description"] as? String ?? ""
                 let quantity = data["quantity"] as? Int ?? 1
                 let expiryDate = data["expiryDate"] as? Timestamp ?? Timestamp() //Date ?? Date()
+                let imageURL = data["imageURL"] as? String ?? ""
                 
-                let item = Items(id: id, name: name, isChecked: false, quantity:quantity, description: description, expiryDate: expiryDate)
+                let item = Items(id: id, name: name, isChecked: false, quantity:quantity, description: description, expiryDate: expiryDate, imageURL: imageURL)
                 self.items.append(item)
             }
             

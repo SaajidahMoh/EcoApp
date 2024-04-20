@@ -7,7 +7,7 @@
 
 import Foundation
 import MapKit
-
+/*
 struct Location: Decodable, Identifiable {
     let id: Int
     let name: String
@@ -18,5 +18,5 @@ struct Location: Decodable, Identifiable {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 
-}
+}*/
 

@@ -567,6 +567,7 @@ struct EachItemView: View {
         //VStack{
         //HStack {
         NavigationView {
+            
             // ZStack(alignment: .topLeading){
             Form {
                 
@@ -602,7 +603,40 @@ struct EachItemView: View {
             
     
             .navigationTitle("Ingredient Details")
+            /**
+            .navigationBarItems(trailing: Button(action: {
+                editShown.toggle()
+                // add
+                //dataManager.addItem(itemName: newItem)
+            }, label: {
+                Image(systemName: "pencil.circle")
+            }))
+            // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+            .fullScreenCover(isPresented: $editShown, onDismiss: nil) {
+                EditItem()
+            }
+            */
+            
+            /**
             .navigationBarItems(leading:
+                                    Button("Cancel") {
+                self.presentationMode.wrappedValue.dismiss()
+                //isPresented = false
+                //showEmailVerificationView = false
+            }
+                .foregroundColor(.green), trailing:
+                                    Button("Edit") {
+                EditItem()
+                
+            } .foregroundColor(.green)
+                .bold()
+            
+                    
+            
+            ) */
+            
+            /**
+           .navigationBarItems(leading:
                                     Button(action : {
                 self.presentationMode.wrappedValue.dismiss()
                 //isPresented = false
@@ -612,102 +646,57 @@ struct EachItemView: View {
                                 
                 .foregroundColor(.green), trailing:
                                     Button("Edit") {
-            
-                
+                EditItem()
             } .foregroundColor(.green)
                 .bold()
             
                     
             
-            )
+            ) */
             
             
         
-        /** }
-                Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
-                }) {
-                    Image(systemName: "arrow.left")
-                
-                }
-                .padding()
-                
-                Button(action: {
-                    editShown.toggle()
-                }) {
-                    Image(systemName: "ellipsis")
-                
-                }
-                .padding()
-                
-    
-                
-            }
-              .navigationTitle("Ingredient Details")
-              
-              .sheet(isPresented: $editShown, onDismiss: nil) {
-                  //
-              }//.foregroundColor(.green)
-               // .bold()
-
- */
             
-                /**
+                
                 
                 //  .navigationTitle("Ingredients")
-                 .navigationBarItems(trailing: Button(action: {
+               /**  .navigationBarItems(trailing: Button(action: {
                      editShown.toggle()
                  }) { Image(systemName: "ellipses")}
-                                     )
+                                     ) */
                  
                  
-                .navigationBarItems(trailing: Button(action: {
+            .navigationBarItems(leading: Button(action : {
+               // editShown = false
+                self.presentationMode.wrappedValue.dismiss()
+            }, label : {
+                Image(systemName: "arrow.left")
+                    .foregroundColor(.green)
+            }),
+                    
+                    trailing: Button(action: {
                     editShown.toggle()
                     // add
                     //dataManager.addItem(itemName: newItem)
                 }, label: {
-                    Image(systemName: "ellipsis")
+                    Image(systemName: "rectangle.and.pencil.and.ellipsis")
+                        .foregroundColor(.green)
                 }))
+           // .foregroundColor(.green)
+             //   .bold()
                 // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
                 .sheet(isPresented: $editShown, onDismiss: nil) {
-                    // EditItem()
-                } */
+                    EditItem()
+                   // EditItem(item: item)
+                }
+                
             }
         
-            /**
-            Text("Name: \(item.name)")
-            Text("Quantity: \(item.quantity)")
-            Text("Expiry Date: \(expiryDateFormatter)")
-            Text("Description: \(item.description)") */
-         
-        
-        /**
-            Image(systemName: "ellipsis")
-                    //"pencil")
-            //"rectangle.and.pencil.and.ellipsis")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width:12, height: 12)
-               // .padding(.trailing)
-        
-    //}
-                .padding(.leading, 8)
-            //own code
-                .onTapGesture {
-                    editShown.toggle()
-                }
-                .sheet(isPresented:  $editShown){
-                    EditItem(item: item)
-            
-                }
-            
-        
-        */
+
         
         //.navigationTitle("\(item.name)")
     }
 }
-
 
 
 
