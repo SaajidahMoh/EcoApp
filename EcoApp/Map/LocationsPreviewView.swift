@@ -36,8 +36,14 @@ struct LocationsPreviewView: View {
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(.ultraThinMaterial))
+        /**.onTapGesture {
+            withAnimation {
+                isSwiped.toggle()
+            }
+        } */
         
         // https://developer.apple.com/tutorials/sample-apps/recognizinggestures
+        // https://medium.com/@mohitgupta_48195/chapter-17-understanding-gestures-46254b783a77
         .gesture(DragGesture()
                  .onEnded({ (value) in
                      if (value.translation.height < 0) {
@@ -51,6 +57,7 @@ struct LocationsPreviewView: View {
                          }
                      }
              }))
+        
     }
     
     private var titleSection: some View {

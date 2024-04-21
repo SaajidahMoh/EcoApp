@@ -14,24 +14,24 @@ struct ListView: View {
     @EnvironmentObject var itemsViewModel: ItemsViewModel
     @State private var showPopup = false
     /**@State private var activeTab: Tab = .active
-    
-    enum Tab: String, CaseIterable {
-        case active = "Active"
-        case expired = "Expired"
-    }
-    
-    var ingredientsSection:[Items]{
-        switch activeTab{
-        case .active:
-            return itemsViewModel.items.filter { $0.expiryDate.dateValue() > Date() || $0.expiryDate.dateValue() == Date()
-            }
-        case .expired:
-            return itemsViewModel.items.filter { $0.expiryDate.dateValue() < Date()
-            }
-            
-        }
-        
-    } */
+     
+     enum Tab: String, CaseIterable {
+     case active = "Active"
+     case expired = "Expired"
+     }
+     
+     var ingredientsSection:[Items]{
+     switch activeTab{
+     case .active:
+     return itemsViewModel.items.filter { $0.expiryDate.dateValue() > Date() || $0.expiryDate.dateValue() == Date()
+     }
+     case .expired:
+     return itemsViewModel.items.filter { $0.expiryDate.dateValue() < Date()
+     }
+     
+     }
+     
+     } */
     
     var userID: String? {
         return Auth.auth().currentUser?.uid }
@@ -103,112 +103,112 @@ struct ListView: View {
                  } //.padding(.bottom, 10)
                  */
                 // Spacer()
-    
-                    Button(action: generateItems) {
-                        Text("Generate")
-                            .padding()
-                            .foregroundColor(.white)
-                            .background(buttonStatus ? Color.green : Color.gray)
-                            .cornerRadius(15)
-                    }
-                    .padding()
-                    .disabled(!buttonStatus)
+                
+                Button(action: generateItems) {
+                    Text("Generate")
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(buttonStatus ? Color.green : Color.gray)
+                        .cornerRadius(15)
+                }
+                .padding()
+                .disabled(!buttonStatus)
                 
             }
             .background(Color(UIColor.systemGroupedBackground)) // fixes generate button background!
-                // .disabled(!buttonStatus)
-                
-                /** Button("Logout"){
-                 try? Auth.auth().signOut()
-                 logStatus = false
-                 } */
-                
-                // .sheet(isPresented: $showPopup)
-                //     { NewItemView()
-                /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Sheet Content")/*@END_MENU_TOKEN@*/
-                //    }
-                /**
-                 Button("Logout"){
-                 try? Auth.auth().signOut()
-                 logStatus = false
-                 
-                 
-                 } */
-                // .padding(.bottom, 10)
-                
-                
-                // .padding()
-            }
-        
+            // .disabled(!buttonStatus)
+            
+            /** Button("Logout"){
+             try? Auth.auth().signOut()
+             logStatus = false
+             } */
+            
+            // .sheet(isPresented: $showPopup)
+            //     { NewItemView()
+            /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Sheet Content")/*@END_MENU_TOKEN@*/
+            //    }
+            /**
+             Button("Logout"){
+             try? Auth.auth().signOut()
+             logStatus = false
+             
+             
+             } */
+            // .padding(.bottom, 10)
+            
+            
+            // .padding()
         }
+        
+    }
     
     //https://vikramios.medium.com/mastering-swift-local-notifications-a-developers-guide-f56b77ab64cc
-        private func scheduleNotification(for item: Items) {
-            let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
+    private func scheduleNotification(for item: Items) {
+        let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
+        
+        //if daysDifference 0= 0 || daysDifference <= 3
+        if daysDifference >= 0 && daysDifference <= 3 {
+            let content = UNMutableNotificationContent()
+            content.title = "Your Ingredient is Expiring"
+            content.body = "\(item.name) is expiring \(daysDifference == 0 ? "today" : "very soon, use or donate")!"
+            content.sound = UNNotificationSound.default
             
-            //if daysDifference 0= 0 || daysDifference <= 3
-            if daysDifference >= 0 && daysDifference <= 3 {
-                let content = UNMutableNotificationContent()
-                content.title = "Your Ingredient is Expiring"
-                content.body = "\(item.name) is expiring \(daysDifference == 0 ? "today" : "very soon, use or donate")!"
-                content.sound = UNNotificationSound.default
-                
-                //https://stackoverflow.com/questions/58561877/error-in-trigger-for-notifications-swift
-                //var hours = [9, 12, 18]
-                var triggerDate = DateComponents()
-                       triggerDate.hour = 20
-                       triggerDate.minute = 19
-                
-                var triggerDateAfternoon = DateComponents()
-                       triggerDateAfternoon.hour = 10
-                       triggerDateAfternoon.minute = 30
-                
-                var triggerDateEvening = DateComponents()
-                       triggerDateEvening.hour = 10
-                       triggerDateEvening.minute = 32
-         
-                let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
-                let trigger2 = UNCalendarNotificationTrigger(dateMatching: triggerDateAfternoon, repeats: true)
-                let trigger3 = UNCalendarNotificationTrigger(dateMatching: triggerDateEvening, repeats: true)
-                
-                
-                let request = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger)
-                UNUserNotificationCenter.current().add(request) { error in
-                    if let error = error {
-                        print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
-                    } else {
-                        print("Notification scheduled successfully for \(item.name)")
-                    }
+            //https://stackoverflow.com/questions/58561877/error-in-trigger-for-notifications-swift
+            //var hours = [9, 12, 18]
+            var triggerDate = DateComponents()
+            triggerDate.hour = 20
+            triggerDate.minute = 19
+            
+            var triggerDateAfternoon = DateComponents()
+            triggerDateAfternoon.hour = 10
+            triggerDateAfternoon.minute = 30
+            
+            var triggerDateEvening = DateComponents()
+            triggerDateEvening.hour = 10
+            triggerDateEvening.minute = 32
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
+            let trigger2 = UNCalendarNotificationTrigger(dateMatching: triggerDateAfternoon, repeats: true)
+            let trigger3 = UNCalendarNotificationTrigger(dateMatching: triggerDateEvening, repeats: true)
+            
+            
+            let request = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger)
+            UNUserNotificationCenter.current().add(request) { error in
+                if let error = error {
+                    print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
+                } else {
+                    print("Notification scheduled successfully for \(item.name)")
                 }
-                
-                let request2 = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger2)
-                UNUserNotificationCenter.current().add(request2) { error in
-                    if let error = error {
-                        print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
-                    } else {
-                        print("Notification scheduled successfully for \(item.name)")
-                    }
-                }
-
-                let request3 = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger3)
-                UNUserNotificationCenter.current().add(request3) { error in
-                    if let error = error {
-                        print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
-                    } else {
-                        print("Notification scheduled successfully for \(item.name)")
-                    }
-                }
-        
             }
+            
+            let request2 = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger2)
+            UNUserNotificationCenter.current().add(request2) { error in
+                if let error = error {
+                    print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
+                } else {
+                    print("Notification scheduled successfully for \(item.name)")
+                }
+            }
+            
+            let request3 = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger3)
+            UNUserNotificationCenter.current().add(request3) { error in
+                if let error = error {
+                    print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
+                } else {
+                    print("Notification scheduled successfully for \(item.name)")
+                }
+            }
+            
         }
-       
-        
+    }
+    
+    
     private var buttonStatus: Bool {
-           //return itemsViewModel.items.contains { $0.isChecked }
+        //return itemsViewModel.items.contains { $0.isChecked }
         let status = itemsViewModel.items.contains { $0.isChecked }
-            print("Button status: \(status)")
-            return status
-       }
+        print("Button status: \(status)")
+        return status
+    }
     
     
     private func generateItems() {
@@ -218,7 +218,7 @@ struct ListView: View {
                 print("Error fetching items' recipes: \(error.localizedDescription)")
                 return
             }
-
+            
             if let recipes = recipes {
                 // Handle the fetched recipes here
                 print("Fetched recipes: \(recipes)")
@@ -226,101 +226,107 @@ struct ListView: View {
         }
     }
     /**
-    private func deleteItems(at offsets:IndexSet){
-        itemsViewModel.items.remove(atOffsets: offsets)
-        
-    } */
-
+     private func deleteItems(at offsets:IndexSet){
+     itemsViewModel.items.remove(atOffsets: offsets)
+     
+     } */
+    
     /**
-    private func deleteItems(at offsets: IndexSet) {
-        for index in offsets {
-            let item = itemsViewModel.items[index]
-            if let userID = userID {
-                let db = Firestore.firestore()
-                db.collection("items").document(userID).collection("Item").document(item.id).delete { error in
-                    if let error = error {
-                        print("Error deleting item \(item.name): \(error.localizedDescription)")
-                    } else {
-                        print("Item \(item.name) deleted successfully.")
-                    }
-                }
-            }
-        }
-        // Remove items from the ViewModel after deleting from the database
-        itemsViewModel.items.remove(atOffsets: offsets)
-    } */
-/**
-    private func deleteItems(at offsets: IndexSet) {
-        for index in offsets {
-            let item = itemsViewModel.items[index]
-            if let userID = userID {
-                let db = Firestore.firestore()
-                let collectionRef = db.collection("items").document(userID).collection("Item")
-                //let documentRef = db.collection("items").document(userID).collection("Item").document(item.id)
-                
-                
-                collectionRef.whereField("id", isEqualTo: item.id).getDocuments {
-                    (QuerySnapshot, error) in
-                    if let error = error {
-                        print("Error getting item's document for \(item.name): \(error.localizedDescription)")
-                        return
-                    }
-                    
-                    /**guard let documents = QuerySnapshot?.documents, let document = documents.first else {
-                     print ("Document not found for item  \(item.name)")
-                     return
-                     } */
-                    
-                    guard let documents = QuerySnapshot?.documents else {
-                        print ("Document not found for item  \(item.name)")
-                        return
-                    }
-                    
-                    /**guard let document = documents.first else {
-                     print ("Document not found for item  \(item.name)")
-                     return
-                     } */
-                    
-                    if let document = documents.first {
-                        let documentID = document.documentID
-                        collectionRef.document(documentID).delete { error in
-                            if let error = error {
-                                print("Error deleting item \(item.name): \(error.localizedDescription)")
-                            } else {
-                                print("Item \(item.name) deleted successfully.")
-                                itemsViewModel.items.remove(at: index)
-                            }
-                        }
-                        /** documentRef.delete { error in
-                         if let error = error {
-                         print("Error deleting item \(item.name): \(error.localizedDescription) for \(userID) for item \(item.id)")
-                         } else {
-                         print("Item \(item.name) deleted successfully for \(userID) for item \(item.id).")
-                         // Remove item from ViewModel after successful deletion
-                         itemsViewModel.items.remove(at: index)
-                         }
-                         }
-                         } */
-                    } else {
-                        print("No document found for item \(item.name) with id \(item.id)")
-                    }
-                }
-            }
-        }
-    } */
-
+     private func deleteItems(at offsets: IndexSet) {
+     for index in offsets {
+     let item = itemsViewModel.items[index]
+     if let userID = userID {
+     let db = Firestore.firestore()
+     db.collection("items").document(userID).collection("Item").document(item.id).delete { error in
+     if let error = error {
+     print("Error deleting item \(item.name): \(error.localizedDescription)")
+     } else {
+     print("Item \(item.name) deleted successfully.")
+     }
+     }
+     }
+     }
+     // Remove items from the ViewModel after deleting from the database
+     itemsViewModel.items.remove(atOffsets: offsets)
+     } */
+    /**
+     private func deleteItems(at offsets: IndexSet) {
+     for index in offsets {
+     let item = itemsViewModel.items[index]
+     if let userID = userID {
+     let db = Firestore.firestore()
+     let collectionRef = db.collection("items").document(userID).collection("Item")
+     //let documentRef = db.collection("items").document(userID).collection("Item").document(item.id)
+     
+     
+     collectionRef.whereField("id", isEqualTo: item.id).getDocuments {
+     (QuerySnapshot, error) in
+     if let error = error {
+     print("Error getting item's document for \(item.name): \(error.localizedDescription)")
+     return
+     }
+     
+     /**guard let documents = QuerySnapshot?.documents, let document = documents.first else {
+      print ("Document not found for item  \(item.name)")
+      return
+      } */
+     
+     guard let documents = QuerySnapshot?.documents else {
+     print ("Document not found for item  \(item.name)")
+     return
+     }
+     
+     /**guard let document = documents.first else {
+      print ("Document not found for item  \(item.name)")
+      return
+      } */
+     
+     if let document = documents.first {
+     let documentID = document.documentID
+     collectionRef.document(documentID).delete { error in
+     if let error = error {
+     print("Error deleting item \(item.name): \(error.localizedDescription)")
+     } else {
+     print("Item \(item.name) deleted successfully.")
+     itemsViewModel.items.remove(at: index)
+     }
+     }
+     /** documentRef.delete { error in
+      if let error = error {
+      print("Error deleting item \(item.name): \(error.localizedDescription) for \(userID) for item \(item.id)")
+      } else {
+      print("Item \(item.name) deleted successfully for \(userID) for item \(item.id).")
+      // Remove item from ViewModel after successful deletion
+      itemsViewModel.items.remove(at: index)
+      }
+      }
+      } */
+     } else {
+     print("No document found for item \(item.name) with id \(item.id)")
+     }
+     }
+     }
+     }
+     } */
+    
     // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
     // https://docs.airnativeextensions.com/docs/firebase/firestore/transactions-and-batched-writes/
+    
+    // https://www.youtube.com/watch?v=KcOvWU3xp1I&t=273s&ab_channel=JohnGallaugher
     private func deleteItems(at offsets: IndexSet) {
-        var deleteFromList: [Int] = []
+        // var itemsToDelete: [Items] = []
         
         for index in offsets {
             let item = itemsViewModel.items[index]
+            
             if let userID = userID {
                 let db = Firestore.firestore()
+                // https://firebase.google.com/docs/firestore/query-data/queries
+                // https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+                //https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
                 let collectionRef = db.collection("items").document(userID).collection("Item")
                 
-                collectionRef.whereField("id", isEqualTo: item.id).getDocuments { (querySnapshot, error) in
+                collectionRef.whereField("id", isEqualTo: item.id).addSnapshotListener { (querySnapshot, error) in
                     if let error = error {
                         print("Error getting documents for item \(item.name): \(error.localizedDescription)")
                         return
@@ -339,8 +345,13 @@ struct ListView: View {
                             } else {
                                 print("Item \(item.name) with id \(item.id) deleted successfully.")
                                 
-                                // Add the index to the delete from list
-                                deleteFromList.append(index)
+                                // chat GPT: https://chat.openai.com/share/b7135e73-7ca1-4b11-aae4-717e57f26e82
+                                DispatchQueue.main.async {
+                                    if let index = itemsViewModel.items.firstIndex(where: { $0.id == item.id}) {
+                                        itemsViewModel.items.remove(at: index)
+                                    }
+                                    
+                                }
                             }
                         }
                     } else {
@@ -349,69 +360,12 @@ struct ListView: View {
                 }
             }
         }
-        
-        // Remove items from ViewModel after deletion loop
-        deleteFromList.forEach { index in
-            itemsViewModel.items.remove(at: index)
-        }
     }
-
-    
-    // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
-   /** private func deleteItems(at offsets: IndexSet){
-        
-        
-        guard let userID = userID else {
-            print("User not logged in")
-            return
-        }
-        
-        let deletedItems = offsets.map {  itemsViewModel.items[$0].id }
-        itemsViewModel.items.remove(atOffsets: offsets)
-       
-        /** for id in deletedItem {
-         if let index = itemsViewModel.items.firstIndex(where: { $0.id == id})
-         {
-         itemsViewModel.items.remove(atOffsets: offsets)
-         }
-         } */
-        //  itemsViewModel.items.remove(atOffsets: offsets)
-        
-        let db = Firestore.firestore()
-        
-        let batch = db.batch()
-        
-        
-        for id in deletedItems {
-            let attemp = db.collection("items").document(userID).collection("Item").document(id)
-            batch.deleteDocument(attemp)
-        }
-        
-        batch.commit { error in
-            if let error = error {
-                print("error")
-            } else {
-                print ("item deleted ID")
-            }
-        
-    
-           /**  attemp.delete { error in
-                if let error = error {
-                    print("error")
-                } else {
-                    print ("item deleted, ID: \(id)")
-                }
-            } */
-            
-        }
-        // https://docs.airnativeextensions.com/docs/firebase/firestore/transactions-and-batched-writes/
-        
-        
-        
-    } */
-    
-    
 }
+    
+    
+    
+
 
 struct ItemRow: View {
     let item: Items
@@ -686,7 +640,7 @@ struct EachItemView: View {
              //   .bold()
                 // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
                 .sheet(isPresented: $editShown, onDismiss: nil) {
-                    EditItem()
+                    EditItem(item: item)
                    // EditItem(item: item)
                 }
                 

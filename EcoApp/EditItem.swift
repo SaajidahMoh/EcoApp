@@ -32,6 +32,7 @@ struct EditItem: View {
     
     @State var image: UIImage?
     
+    let item: Items
     
     var userID: String? {
         return Auth.auth().currentUser?.uid }
@@ -42,31 +43,6 @@ struct EditItem: View {
         
         // Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         NavigationView{
-            /** Section(header: Text("Image")){
-             if let image =  selectedImage {
-                 Image(uiImage: image)
-                     .resizable()
-                     .scaledToFill()
-                     .frame(width: 208, height: 128)
-                    // .cornerRadius(64)
-                 //.aspectRatio(contentMode: .fit)
-                    // .frame(height: 100)
-             } else {
-                 Image(systemName: "persin.fill")
-                     .resizable()
-                     .aspectRatio(contentMode: .fit)
-                     .frame(height: 100)
-                     .padding()
-                     .foregroundColor(.gray)
-             }
-             Button("Select Image"){
-                 shouldShowImagePicker.toggle()
-             }
-             .multilineTextAlignment(.trailing)
-             .sheet(isPresented: $shouldShowImagePicker){
-                 ImagePicker(image: $selectedImage)
-             }
-                              }*/
             Form {
                 
               //  Section(header: Text("Image")){
@@ -109,11 +85,17 @@ struct EditItem: View {
                // }
                 Section(header: Text("Ingredient name")) {
                     TextField("Item Name", text: $name)
+                        .onAppear {
+                            name = item.name
+                        }
                 }
                 
                 Section(header: Text("Quantity")) {
                     Stepper("\(quantity)",
                             value: $quantity,in: 1...100)
+                    .onAppear {
+                        quantity = item.quantity
+                    }
                 }
                 
                 // https://www.hackingwithswift.com/forums/swiftui/help-with-onchange/24312 TimeStamp 00:00:00
@@ -124,6 +106,9 @@ struct EditItem: View {
                             let startOfDay = calendar.startOfDay(for: newValue)
                             expiryDate = startOfDay
                         }
+                        .onAppear {
+                            expiryDate = item.expiryDate.dateValue()
+                        }
                 }
                 
                 Section(header: Text("Description")) {
@@ -132,7 +117,9 @@ struct EditItem: View {
                     //.frame(minHeight: 80)
                     //.frame(height: 40)
                         .multilineTextAlignment(.leading)
-                    
+                        .onAppear {
+                            description = item.description
+                        }
                 }
                 
             }
@@ -151,12 +138,10 @@ struct EditItem: View {
             } .foregroundColor(.green)
                 .bold()
             
-                    
-            
             )
            
 
-        
+
             
           /**  .toolbar {
                 Button("  Save  "){
@@ -243,46 +228,63 @@ struct EditItem: View {
             print("User not logged in")
             return
         }
-        let db = Firestore.firestore()
-        
-        //https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-
-        
         
         guard !name.isEmpty else {
             showAlert(message: "Please enter an item name.")
             return
         }
         
-        let itemData : [String:Any] = [
-            "id" : UUID().uuidString,
-            "name": name,
-            "quantity": quantity,
-            "expiryDate": expiryDate,
-            "description": description,
-            "imageURL": imageURL
-        ]
         
+        let db = Firestore.firestore()
+        let collectionRef = db.collection("items").document(userID).collection("Item")
         
-       // db.collection("items").document(userID).collection("Item")
-        //  let ref = db.collection("items").document(userID).collection("Item")
-        db.collection("items").document(userID).collection("Item").addDocument(data:itemData) { error in
+        // https://firebase.google.com/docs/firestore/query-data/queries
+        // https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+    //https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
+        
+        collectionRef.whereField("id", isEqualTo: item.id).addSnapshotListener { (querySnapshot, error) in
             if let error = error {
-                showAlert(message: "Error saving :\(error.localizedDescription)")
+                print("Error getting documents for item \(item.name): \(error.localizedDescription)")
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents else {
+                print("No documents found for item \(item.name)")
+                return
+            }
+            
+            if let document = documents.first {
+                let documentID = document.documentID
+                
+                let updateData: [String:Any] = [
+                    "id" : UUID().uuidString,
+                    "name": name,
+                    "quantity": quantity,
+                    "expiryDate": expiryDate,
+                    "description": description,
+                    "imageURL": imageURL
+                ]
+                
+                
+                // https://firebase.google.com/docs/firestore/manage-data/add-data
+                collectionRef.document(documentID).setData(updateData, merge: true){ error in
+                    if let error = error {
+                        print("Error updating item \(item.name): \(error.localizedDescription)")
+                    } else {
+                        print("Item \(item.name) with id \(item.id) updated successfully.")
+                        
+                        // Add the index to the delete from list
+                    }
+                }
             } else {
-                showAlert(message: "Item updated.")
-                name = ""
-                quantity = 1
-                expiryDate = Date()
-                description = ""
-                imageURL = ""
-                    // image = nil
-                //ListView()
-                //isPresented = false
+                print("No document found for item \(item.name)")
             }
         }
+
+
         
     }
+    
     
         func showAlert(message:String){
             alertMessage = message
@@ -292,7 +294,8 @@ struct EditItem: View {
 }
     
                      
-
+/**
 #Preview {
-    EditItem()
+    EditItem(item: item)
 }
+*/

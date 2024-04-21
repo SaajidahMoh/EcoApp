@@ -66,15 +66,16 @@ struct LocationsView: View {
                 LocationMapAnnotationView()
                     .scaleEffect(vm.mapLocation == location ? 1 : 0.7)
                     .shadow(radius:10)
-                
                     .onTapGesture {
                        // vm.selectLocation(location)
                       //  locationsPreviewStack
                         vm.showNextLocation(location: location)
                        
+                        vm.isSwiped.toggle()
       //     ( location: location)
                        // vm.show
                     }
+
             }
             
            // MapMarker(coordinate: location.coordinates, tint: .blue)
@@ -87,7 +88,8 @@ struct LocationsView: View {
     
     private var locationsPreviewStack: some View   {
         ForEach(vm.locations) { location in
-            if vm.mapLocation == location {
+                //shows preview only when tapped on the pin
+            if vm.mapLocation == location && vm.isSwiped == true{
                 LocationsPreviewView(location: location)
                     .shadow(color: Color.black.opacity(0.3),
                             radius: 20)
