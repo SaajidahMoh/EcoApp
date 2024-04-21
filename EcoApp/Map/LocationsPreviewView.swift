@@ -10,6 +10,7 @@ import SwiftUI
 
 
 struct LocationsPreviewView: View {
+    @State private var isSwiped: Bool = false
     
     let location: Location
     
@@ -18,50 +19,80 @@ struct LocationsPreviewView: View {
     var body: some View {
         
         VStack(spacing: 16) {
-           titleSection
-            
+            VStack(alignment: .leading) {
+                titleSection
+            }
             HStack {
                 websiteSection
                 emailSection
                 callsection
             }
+            if isSwiped == true {
+                moreInfoSection
+            }
            
         }
-        .padding(25)
+        .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(.ultraThinMaterial))
         
-            /**
-            VStack(alignment: .leading, spacing: 4){
-               // HStack{
-                    Text("\(location.name) - \(location.cityName)")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                       // .font(.title3)
-                //}
-            Text(location.address)
-                    //.font(.subheadline)
-            Text(location.postcode)
-            Text(location.phone)
-               // Phone, extension,
-                // Text(location.email)
-             //   Text(location.link)
-        }
-    } */
+        // https://developer.apple.com/tutorials/sample-apps/recognizinggestures
+        .gesture(DragGesture()
+                 .onEnded({ (value) in
+                     if (value.translation.height < 0) {
+                         //animation
+                         withAnimation {
+                             isSwiped = true
+                         }
+                     } else if (value.translation.height > 0) {
+                         withAnimation {
+                             isSwiped = false
+                         }
+                     }
+             }))
     }
     
     private var titleSection: some View {
         VStack(alignment: .leading, spacing: 4){
+            Text("\(location.name) - \(location.cityName)")
+                .font(.title2)
+                .fontWeight(.bold)
+            Text(location.address)
+            Text(location.postcode)
+        }
+    }
 
-                Text("\(location.name) - \(location.cityName)")
-                    .font(.title2)
-                    .fontWeight(.bold)
-        Text(location.address)
-        Text(location.postcode)
-        Text(location.phone)
+    
+    private var moreInfoSection: some View {
+        VStack(alignment: .leading, spacing: 10){
+            
+            Section(header: Text("Address")
+                .font(.title3)
+                .fontWeight(.bold)){
+                    Text(location.address)}
+            //  Text("\(item.quantity)")
+            
+            Section(header: Text("Postcode")
+                .font(.title3)
+                .fontWeight(.bold)
+            ){
+                Text(location.postcode)
+            }
+            
+            Section(header: Text("Phone Number")
+                .font(.title3)
+                .fontWeight(.bold)) {
+                    Text(location.phone)}
+            
+            Section(header: Text("Website URL")
+                .font(.title3)
+                .fontWeight(.bold)) {
+                    Text(location.link)
+                }
+        }
     }
-    }
+
     
     private var websiteSection: some View {
         Button {

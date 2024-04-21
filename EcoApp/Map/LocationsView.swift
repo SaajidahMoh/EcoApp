@@ -29,6 +29,7 @@ struct LocationsView: View {
    /** @State private var mapRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.49888499999999, longitude: -0.138101), span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)) */
     @StateObject var viewModel = ContentViewModel()
     
+    
     var body:some View {
        // Text("Hello")
         /** List {
@@ -98,7 +99,8 @@ struct LocationsView: View {
     }
     
 }
-
+// https://medium.com/@meet237/displaying-current-location-on-map-using-cllocationmanager-and-mapkit-in-swiftui-f42ea94391ed#:~:text=To%20display%20the%20map%20within,the%20showsUserLocation%20property%20to%20true%20.&text=MapKit%20provides%20a%20variety%20of,to%20improve%20the%20map%20experience.
+// https://medium.com/@meet237/displaying-current-location-on-map-using-cllocationmanager-and-mapkit-in-swiftui-f42ea94391ed for user location
 final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     var locationManager: CLLocationManager?
 
