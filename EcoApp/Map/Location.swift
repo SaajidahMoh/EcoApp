@@ -1,5 +1,5 @@
 //
-//  Location .swift
+//  Location.swift
 //  EcoApp
 //
 //  Created by Saajidah Mohamed on 20/04/2024.
