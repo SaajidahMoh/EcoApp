@@ -29,6 +29,11 @@ struct LocationsPreviewView: View {
             }
             if isSwiped == true {
                 moreInfoSection
+            } else if isSwiped == false {
+                HStack {
+                    Text ("Swipe up for more information")
+                    Image(systemName: "arrow.up")
+                } .bold()
             }
            
         }
@@ -92,30 +97,66 @@ struct LocationsPreviewView: View {
                 .fontWeight(.bold)) {
                     Text(location.phone)}
             
+            Section(header: Text("Email")
+                .font(.title3)
+                    
+                .fontWeight(.bold)) {
+                    // Text(location.email)}
+                    // https://forums.developer.apple.com/forums/thread/67733
+                    Link(destination: URL(string: "\(location.email)")!){
+                        Text(location.email)
+                    }
+                }
+        
+            
             Section(header: Text("Website URL")
                 .font(.title3)
                 .fontWeight(.bold)) {
-                    Text(location.link)
+                    // https://forums.developer.apple.com/forums/thread/67733
+                    Link(destination: URL(string: "\(location.link)")!){
+                        Text(location.link)
+                    }
                 }
         }
     }
 
     
     private var websiteSection: some View {
-        Button {
-        } label : {
-            Text("Website")
-                .font(.headline)
-                .frame(width: 80, height: 35)
-        }
-        .buttonStyle(.borderedProminent)
-      //  .background(.green)
-       // .foregroundColor(.green)
-        
+       // Link(destination: URL(string: "\(location.link)")!) {
+        // https://stackoverflow.com/questions/58643888/swiftui-how-do-i-make-a-button-open-a-url-in-safari
+            Button(action: {
+                if let url = URL(string: "\(location.link)") {
+                   UIApplication.shared.open(url)
+                }
+            }) {
+           // } label : {
+                Text("Website")
+                    .font(.headline)
+                    .frame(width: 80, height: 35)
+            }
+            .buttonStyle(.borderedProminent)
+            //  .background(.green)
+            // .foregroundColor(.green)
+     //   }
     }
     
     private var emailSection: some View {
         
+      /**
+        Button("Website") {
+            if let emailLink = URL(string: "mailto:\(location.email)"),
+               UIApplication.shared.canOpenURL(emailLink){
+                UIApplication.shared.open(emailLink)
+            }
+        }
+        //) {
+       // } label : {
+        //    Text("Website")
+        //        .font(.headline)
+         //       .frame(width: 80, height: 35)
+      //  }
+        
+        */
         //Button 2
         Button {
         } label : {

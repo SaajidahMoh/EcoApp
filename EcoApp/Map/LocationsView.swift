@@ -69,11 +69,14 @@ struct LocationsView: View {
                     .onTapGesture {
                        // vm.selectLocation(location)
                       //  locationsPreviewStack
-                        vm.showNextLocation(location: location)
+                       // vm.showNextLocation(location: location)
                        
-                        vm.isSwiped.toggle()
+                     //   vm.isSwiped.toggle()
       //     ( location: location)
                        // vm.show
+                        
+                        //chat gpt
+                        vm.toggleLocationPreview(location: location)
                     }
 
             }
@@ -89,7 +92,10 @@ struct LocationsView: View {
     private var locationsPreviewStack: some View   {
         ForEach(vm.locations) { location in
                 //shows preview only when tapped on the pin
-            if vm.mapLocation == location && vm.isSwiped == true{
+           // if vm.mapLocation == location && vm.isSwiped == true{
+            
+            // chay gpt for this line
+            if vm.mapLocation == location && vm.showLocationsPreview{
                 LocationsPreviewView(location: location)
                     .shadow(color: Color.black.opacity(0.3),
                             radius: 20)

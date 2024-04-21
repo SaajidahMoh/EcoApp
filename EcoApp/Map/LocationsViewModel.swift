@@ -41,6 +41,16 @@ class LocationsViewModel : ObservableObject {
         self.updateMapRegion(location: locations.first!)
     }
     
+    // Method to toggle preview view
+       func toggleLocationPreview(location: Location) {
+           if mapLocation == location {
+               showLocationsPreview.toggle()
+           } else {
+               showLocationsPreview = true
+               mapLocation = location
+           }
+       }
+    
     func showNextLocation(location: Location){
         withAnimation(.easeInOut){
             mapLocation = location
