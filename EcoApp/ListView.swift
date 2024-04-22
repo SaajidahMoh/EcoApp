@@ -14,6 +14,10 @@ struct ListView: View {
     @EnvironmentObject var itemsViewModel: ItemsViewModel
     @State private var showPopup = false
     @State private var showAddItem = false
+    
+    @State private var barcode_string: String?
+    @State private var foundProduct: Product?
+    @State private var showScanItem = false
     /**@State private var activeTab: Tab = .active
      
      enum Tab: String, CaseIterable {
@@ -97,7 +101,10 @@ struct ListView: View {
                                                 Label("Add Item", systemImage: "text.badge.plus")
                                             }
 
-                                            Button(action: {}) {
+                                            Button(action: {
+                                                //showScanItem.toggle()
+                                                showScanItem = true
+                                            }) {
                                                 Label("Scan Item", systemImage: "barcode.viewfinder")
                                             }
                                         }
@@ -124,6 +131,23 @@ struct ListView: View {
                             } .fullScreenCover(isPresented: $showAddItem, onDismiss: nil) {
                                 AddItem()
                             }
+                            .fullScreenCover(isPresented: $showScanItem) {
+                                ScannerView()
+                               // BarcodeScanning(barcode_string: $barcode_string, foundProduct:$foundProduct)
+                            }
+               /** Button(action: {
+                    showAddItem = true
+                                                                       // self.isPresented.toggle()
+                                                                    }) {
+                                                                        Image(systemName: "barcode")
+                                                                    }.sheet(isPresented: $showScanItem) {
+                                                                        ScannerViewUI()
+                                                                        //BarcodeScanning(barcode_string: $barcode_string, foundProduct:$foundProduct)
+                                                                    } */
+                
+                //            .fullScreenCover(isPresented: $showScanItem, onDismiss: nil) {
+                 //               BarcodeScanning(barcode_string: $barcode_string, foundProduct:$foundProduct)
+                   //         }
                 
                 /**
                 .navigationBarItems(trailing: Button(action: {
