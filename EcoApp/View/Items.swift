@@ -14,10 +14,11 @@ struct Items: Identifiable {
     var name: String
     var isChecked: Bool
     var quantity : Int
+    var expiryDate : Timestamp
+    var selection : String
     var description : String
     // https://stackoverflow.com/questions/52367721/how-to-declare-data-type-as-timestamp-in-ios-swift
-    var expiryDate : Timestamp
-    var imageURL : String 
+    var imageURL : String
     //TimeInterval
     //var quantity: Number
     ///var expiry: TimeStamp

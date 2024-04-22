@@ -13,6 +13,7 @@ struct ListView: View {
     @AppStorage("log_status") private var logStatus: Bool = false
     @EnvironmentObject var itemsViewModel: ItemsViewModel
     @State private var showPopup = false
+    @State private var showAddItem = false
     /**@State private var activeTab: Tab = .active
      
      enum Tab: String, CaseIterable {
@@ -85,6 +86,46 @@ struct ListView: View {
                  Text(items.name)
                  } */
                 .navigationTitle("Ingredients")
+                // https://swiftwithmajid.com/2020/08/05/menus-in-swiftui/
+                .toolbar {
+                                ToolbarItem(placement: .primaryAction) {
+                                    Menu {
+                                        Section {
+                                            Button(action: {
+                                                showAddItem.toggle()
+                                            }) {
+                                                Label("Add Item", systemImage: "text.badge.plus")
+                                            }
+
+                                            Button(action: {}) {
+                                                Label("Scan Item", systemImage: "barcode.viewfinder")
+                                            }
+                                        }
+
+                                        Section(header: Text("Sorting")) {
+                                            Button(action: {}) {
+                                                Label("Sort By Date", systemImage: "arrow.up.arrow.down")
+                                                    .foregroundColor(.red)
+                                            }
+                                            Button(action: {}) {
+                                                Label("Sort By Category", systemImage: "list.star")
+                                                    .foregroundColor(.red)
+                                            }
+                                            Button(action: {}) {
+                                                Label("Remove old files", systemImage: "trash")
+                                                    .foregroundColor(.red)
+                                            }
+                                        }
+                                    }
+                                    label: {
+                                        Label("Add", systemImage: "plus")
+                                    }
+                                }
+                            } .fullScreenCover(isPresented: $showAddItem, onDismiss: nil) {
+                                AddItem()
+                            }
+                
+                /**
                 .navigationBarItems(trailing: Button(action: {
                     showPopup.toggle()
                     // add
@@ -95,7 +136,7 @@ struct ListView: View {
                 // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
                 .fullScreenCover(isPresented: $showPopup, onDismiss: nil) {
                     AddItem()
-                }
+                } */
                 /**
                  .sheet(isPresented:  $showPopup){
                  AddItem()
@@ -313,9 +354,11 @@ struct ListView: View {
     // https://docs.airnativeextensions.com/docs/firebase/firestore/transactions-and-batched-writes/
     
     // https://www.youtube.com/watch?v=KcOvWU3xp1I&t=273s&ab_channel=JohnGallaugher
+    // https://www.youtube.com/watch?v=KMtdBgHwvGY&list=PL9VJ9OpT-IPSM6dFSwQCIl409gNBsqKTe&index=64&ab_channel=JohnGallaugher
     private func deleteItems(at offsets: IndexSet) {
         // var itemsToDelete: [Items] = []
         
+        //
         for index in offsets {
             let item = itemsViewModel.items[index]
             
@@ -324,6 +367,7 @@ struct ListView: View {
                 // https://firebase.google.com/docs/firestore/query-data/queries
                 // https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
                 //https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
+           // https://www.youtube.com/watch?v=KcOvWU3xp1I&list=PL9VJ9OpT-IPSM6dFSwQCIl409gNBsqKTe&index=102&ab_channel=JohnGallaugher??
                 let collectionRef = db.collection("items").document(userID).collection("Item")
                 
                 collectionRef.whereField("id", isEqualTo: item.id).addSnapshotListener { (querySnapshot, error) in
@@ -541,6 +585,10 @@ struct EachItemView: View {
                 
                 Section(header: Text("Expiry date")) {
                     Text("\(expiryDateFormatter)")
+                }
+                
+                Section(header: Text("Category")) {
+                    Text("\(item.selection)")
                 }
                 
                 /**

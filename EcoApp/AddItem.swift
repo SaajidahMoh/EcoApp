@@ -24,6 +24,10 @@ struct AddItem: View {
     @State private var goBack  = false
     @State private var imageURL = ""
     
+//https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
+    @State private var selection = "Fridge"
+    let place = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer"]
+    
 //https://www.youtube.com/watch?v=YgjYVbg1oiA&t=1327s&ab_channel=CodeWithChris
     @State var isPickerShowing = false
     @State var selectedImage: UIImage?
@@ -159,6 +163,22 @@ struct AddItem: View {
                         }
                 }
                 
+                Section(header: Text("Category")) {
+                    //VStack(alignment: .leading){
+                   //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
+                    Picker("Select A Category", selection: $selection) {
+                        ForEach(place, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                  //  Text("Selected category: \(selection)")
+                    //.frame(minHeight: 80)
+                    //.frame(height: 40)
+                        .multilineTextAlignment(.leading)
+                    
+                }
+                
                 Section(header: Text("Description")) {
                     //VStack(alignment: .leading){
                     TextField("Description - Optional", text: $description)
@@ -223,15 +243,17 @@ struct AddItem: View {
         }
         
     }
-    
-   /** private func persistImageToStorage(){
+    /**
+    private func persistImageToStorage(){
         guard let userID = userID else {
             print("User not logged in")
             return
         }
         // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
         // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-        let ref = Storage.storage().reference(withPath: userID)
+        let storeImage = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "images/\(userID)/\(storeImage)")
+        
         
         //"images/\(userID)/\(UUID().uuidString).jpg")
         
@@ -248,7 +270,6 @@ struct AddItem: View {
                             showAlert(message: "Failed to retrieve downloadURL: \(err)")
                             return
                         }
-                        
                         showAlert(message: "Successfully stored image with url: \(url?.absoluteString ?? "")")
                         
                         print(url?.absoluteString)
@@ -259,7 +280,9 @@ struct AddItem: View {
                 }
             
         
-    } */
+    }
+     */
+    /**
     // https://www.youtube.com/watch?v=YgjYVbg1oiA&t=1327s&ab_channel=CodeWithChris
     func uploadPhoto(){
         guard selectedImage != nil else {
@@ -269,7 +292,7 @@ struct AddItem: View {
         let storageRef = Storage.storage().reference()
         
         
-    }
+    } */
     /**private func storeItemImage(imageItemUrl: URL) {
         guard let userID = userID else {
             print("User not logged in")
@@ -289,42 +312,108 @@ struct AddItem: View {
         let db = Firestore.firestore()
         
         //https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-
         
         
-        guard !name.isEmpty else {
-            showAlert(message: "Please enter an item name.")
-            return
-        }
-        
-        let itemData : [String:Any] = [
-            "id" : UUID().uuidString,
-            "name": name,
-            "quantity": quantity,
-            "expiryDate": expiryDate,
-            "description": description,
-            "imageURL": imageURL
-        ]
-        
-        
-       // db.collection("items").document(userID).collection("Item")
-        //  let ref = db.collection("items").document(userID).collection("Item")
-        db.collection("items").document(userID).collection("Item").addDocument(data:itemData) { error in
-            if let error = error {
-                showAlert(message: "Error saving :\(error.localizedDescription)")
-            } else {
-                showAlert(message: "Item saved.")
-                name = ""
-                quantity = 1
-                expiryDate = Date()
-                description = ""
-                imageURL = ""
-                    // image = nil
-                //ListView()
-                //isPresented = false
+        if let image = image {
+            let storeImage = UUID().uuidString
+            let ref = Storage.storage().reference(withPath: "images/\(userID)/\(storeImage).jpg")
+            
+            guard let imageData = self.image?.jpegData(compressionQuality: 0.5) else { return }
+            
+            ref.putData(imageData, metadata: nil) { metadata, err in
+                if let err = err {
+                    showAlert(message: "Failed to push image to Storage: \(err)")
+                    return
+                }
+                
+                ref.downloadURL { url, err in
+                    if let err = err {
+                        showAlert(message: "Failed to retrieve downloadURL: \(err)")
+                        return
+                    }
+                    // showAlert(message: "Successfully stored image with url: \(url?.absoluteString ?? "")")
+                    guard let imageURLstring = url?.absoluteString else {
+                        showAlert(message: "Unable to store image with url: \(url?.absoluteString ?? "")")
+                        return
+                    }
+                    
+                    guard !name.isEmpty else {
+                        showAlert(message: "Please enter an item name.")
+                        return
+                    }
+                    
+                    guard !selection.isEmpty else {
+                        showAlert(message: "Please select a category.")
+                        return
+                    }
+                    
+                    
+                    let itemData : [String:Any] = [
+                        "id" : UUID().uuidString,
+                        "name": name,
+                        "quantity": quantity,
+                        "expiryDate": expiryDate,
+                        "selection": selection,
+                        "description": description,
+                        "imageURL": imageURLstring
+                    ]
+                    
+                    
+                    // db.collection("items").document(userID).collection("Item")
+                    //  let ref = db.collection("items").document(userID).collection("Item")
+                    db.collection("items").document(userID).collection("Item").addDocument(data:itemData) { error in
+                        if let error = error {
+                            showAlert(message: "Error saving :\(error.localizedDescription)")
+                        } else {
+                            showAlert(message: "Item saved with photo")
+                            name = ""
+                            quantity = 1
+                            expiryDate = Date()
+                            selection = ""
+                            description = ""
+                            imageURL = ""
+                            // image = nil
+                            //ListView()
+                            //isPresented = false
+                        }
+                    }
+                    
+                }
+                
             }
         }
-        
+        else {
+            let itemData : [String:Any] = [
+                "id" : UUID().uuidString,
+                "name": name,
+                "quantity": quantity,
+                "expiryDate": expiryDate,
+                "selection": selection,
+                "description": description,
+                "imageURL": imageURL,
+            ]
+            
+            
+            // db.collection("items").document(userID).collection("Item")
+            //  let ref = db.collection("items").document(userID).collection("Item")
+            db.collection("items").document(userID).collection("Item").addDocument(data:itemData) { error in
+                if let error = error {
+                    showAlert(message: "Error saving :\(error.localizedDescription)")
+                } else {
+                    showAlert(message: "Item saved.")
+                    name = ""
+                    quantity = 1
+                    expiryDate = Date()
+                    selection = ""
+                    description = ""
+                    imageURL = ""
+                    // image = nil
+                    //ListView()
+                    //isPresented = false
+                }
+                
+            }
+        }
     }
     
         func showAlert(message:String){

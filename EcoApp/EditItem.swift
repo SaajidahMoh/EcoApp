@@ -24,6 +24,10 @@ struct EditItem: View {
     @State private var goBack  = false
     @State private var imageURL = ""
     
+    //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
+        @State private var selection = ""
+        let place = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer"]
+    
     //https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
    // @State var isPickerShowing = false
    // @State var selectedImage: UIImage?
@@ -111,6 +115,26 @@ struct EditItem: View {
                         }
                 }
                 
+                Section(header: Text("Category")) {
+                    //VStack(alignment: .leading){
+                   //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
+                    Picker("Select A Cateogry", selection: $selection){
+                        ForEach(place, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .onAppear {
+                        selection = item.selection
+                    }
+                  //  Text("Selected category: \(selection)")
+                    //.frame(minHeight: 80)
+                    //.frame(height: 40)
+                        .multilineTextAlignment(.leading)
+                    
+                }
+                
+                
                 Section(header: Text("Description")) {
                     //VStack(alignment: .leading){
                     TextField("Description - Optional", text: $description)
@@ -167,7 +191,7 @@ struct EditItem: View {
                 //isPresented = false
                 self.presentationMode.wrappedValue.dismiss()
                 itemsViewModel.fetchItemsAfterButton()
-                self.persistImageToStorage() //copied LBTA
+             //   self.persistImageToStorage() //copied LBTA
                
                     // goBack = true
             })
@@ -176,7 +200,7 @@ struct EditItem: View {
         
     }
     
-    private func persistImageToStorage(){
+    /**private func persistImageToStorage(){
         guard let userID = userID else {
             print("User not logged in")
             return
@@ -203,7 +227,7 @@ struct EditItem: View {
                         
                         showAlert(message: "Successfully stored image with url: \(url?.absoluteString ?? "")")
                         
-                        print(url?.absoluteString)
+                       // print(url?.absoluteString)
                         
                         // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Installing-Firestore-and-Saving-User-Data-Collection
                       //  self.storeItemImage(imageItemUrl: url)
@@ -211,7 +235,7 @@ struct EditItem: View {
                 }
             
         
-    }
+    }*/
     /**private func storeItemImage(imageItemUrl: URL) {
         guard let userID = userID else {
             print("User not logged in")
@@ -262,6 +286,7 @@ struct EditItem: View {
                     "quantity": quantity,
                     "expiryDate": expiryDate,
                     "description": description,
+                    "selection": selection,
                     "imageURL": imageURL
                 ]
                 
