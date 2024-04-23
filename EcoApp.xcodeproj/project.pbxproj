@@ -23,6 +23,7 @@
 		285740CB2BAF1DD600DA80B2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */; };
 		2899C12B2BB70066007006E2 /* AddItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2899C12A2BB70066007006E2 /* AddItem.swift */; };
 		28A8DFFB2BB839DD001981C1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 28A8DFFA2BB839DD001981C1 /* FirebaseStorage */; };
+		28AAF0332BD85ACA00720304 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 28AAF0322BD85ACA00720304 /* Kingfisher */; };
 		28BC59242BD301C800F66D4F /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BC59232BD301C800F66D4F /* LocationsView.swift */; };
 		28C445D72BD3D547002D60D1 /* LocationsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C445D62BD3D547002D60D1 /* LocationsDataService.swift */; };
 		28D122EA2BB071D50068BE7E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122E92BB071D40068BE7E /* Items.swift */; };
@@ -84,6 +85,7 @@
 				28A8DFFB2BB839DD001981C1 /* FirebaseStorage in Frameworks */,
 				28D5EA9B2BA8457E00BF46DD /* Lottie in Frameworks */,
 				28D5EA9D2BA8459100BF46DD /* FirebaseFirestoreSwift in Frameworks */,
+				28AAF0332BD85ACA00720304 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,6 +213,7 @@
 				28D5EA9A2BA8457E00BF46DD /* Lottie */,
 				28D5EA9C2BA8459100BF46DD /* FirebaseFirestoreSwift */,
 				28A8DFFA2BB839DD001981C1 /* FirebaseStorage */,
+				28AAF0322BD85ACA00720304 /* Kingfisher */,
 			);
 			productName = EcoApp;
 			productReference = 28D5EA4C2BA8427900BF46DD /* EcoApp.app */;
@@ -243,6 +246,7 @@
 			packageReferences = (
 				28D5EA5D2BA8431D00BF46DD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				28D5EA942BA8441C00BF46DD /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				28AAF0312BD85ACA00720304 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 28D5EA4D2BA8427900BF46DD /* Products */;
 			projectDirPath = "";
@@ -439,6 +443,8 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We want to access your location";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Audio is recorded to transcribe the ingredient and will be discarded once complete.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "You can see your voice note in the app";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -472,6 +478,8 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We want to access your location";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Audio is recorded to transcribe the ingredient and will be discarded once complete.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "You can see your voice note in the app";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -514,6 +522,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		28AAF0312BD85ACA00720304 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
 		28D5EA5D2BA8431D00BF46DD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -537,6 +553,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 28D5EA5D2BA8431D00BF46DD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		28AAF0322BD85ACA00720304 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 28AAF0312BD85ACA00720304 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		28D5EA982BA8457100BF46DD /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;

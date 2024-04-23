@@ -10,6 +10,7 @@ import SwiftUI
 import Firebase
 import FirebaseStorage
 
+
 struct AddItem: View {
     // https://stackoverflow.com/questions/63927231/navigate-back-after-saving-in-swift-ui
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -89,7 +90,11 @@ struct AddItem: View {
                  .scaledToFill()
                  .frame(width: 128, height: 128)
                  // .cornerRadius(64)
-                 
+                     Button("Select Image"){
+                         shouldShowImagePicker.toggle()
+                     }
+                     .foregroundColor(.green)
+                     
                  }
                 /**
                 if selectedImage != nil {
@@ -313,8 +318,8 @@ struct AddItem: View {
         
         //https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
         
-        
-        if let image = image {
+        if image != nil {
+        //if let image = image {
             let storeImage = UUID().uuidString
             let ref = Storage.storage().reference(withPath: "images/\(userID)/\(storeImage).jpg")
             

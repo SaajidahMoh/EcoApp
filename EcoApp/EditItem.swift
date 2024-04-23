@@ -9,6 +9,7 @@
 import SwiftUI
 import Firebase
 import FirebaseStorage
+import Kingfisher
 
 struct EditItem: View {
     // https://stackoverflow.com/questions/63927231/navigate-back-after-saving-in-swift-ui
@@ -22,7 +23,8 @@ struct EditItem: View {
     @State private var alertMessage = ""
     @State private var isPresented = false
     @State private var goBack  = false
-    @State private var imageURL = ""
+    //@State private var imageURL = ""
+    @State private var imageURL : URL?
     
     //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
         @State private var selection = ""
@@ -51,16 +53,24 @@ struct EditItem: View {
                 
               //  Section(header: Text("Image")){
                     // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-                    if let image = self.image {
+                   // if let image = self.image {
                     //if selectedImage != nil {
                     //if let selectedImage = self.selectedImage {
                         // https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
                        // Image(uiImage: selectedImage!)
-                        Image(uiImage: image)
+                       // Image(uiImage: image)
+                
+               // if let imageURL = URL(string: imageURL) {
+                if let imageURL = imageURL {
+                    KFImage(imageURL)
                             .resizable()
                             .scaledToFill()
                             .frame(width: 128, height: 128)
                         // .cornerRadius(64)
+                        Button("Select Image"){
+                            shouldShowImagePicker.toggle()
+                        }
+                        .foregroundColor(.green)
                         
                     } else {Image(systemName: "photo")
                             .resizable()
@@ -81,10 +91,18 @@ struct EditItem: View {
                         .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
                                    ImagePicker(image: $image)
                                }
+                        
+                        .onAppear {
+                            imageURL = URL(string: item.imageURL)
+                        }
+                        
+                       // .onAppear {
+                         //   image = item.name
+                        // }
                             
                             //Image(image)
                         
-                    }
+                    } 
                 
                // }
                 Section(header: Text("Ingredient name")) {
@@ -287,7 +305,8 @@ struct EditItem: View {
                     "expiryDate": expiryDate,
                     "description": description,
                     "selection": selection,
-                    "imageURL": imageURL
+                 //   "imageURL": imageURL
+                    "imageURL": imageURL?.absoluteString ?? ""
                 ]
                 
                 

@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import UserNotifications
+import Kingfisher
 
 struct ListView: View {
     @AppStorage("log_status") private var logStatus: Bool = false
@@ -18,7 +19,49 @@ struct ListView: View {
     @State private var barcode_string: String?
     @State private var foundProduct: Product?
     @State private var showScanItem = false
+    @State private var sortedTab: Tab = .defaultSetting
+   // @State private var sortedTab1: Tab = .defaultSetting
+    
+    //@State private var activeTab: seperateTab = .active
+    @State private var activeTab: seperateTab = .active
+    
+    enum seperateTab: String, CaseIterable {
+    case active = "Active"
+    case expired = "Expired"
+    }
+    
+    enum Tab: String, CaseIterable{
+        case defaultSetting
+        case expiryDate
+        case category
+    }
+    
+    var sortedItems:[Items]{
+        switch sortedTab {
+        case .defaultSetting:
+            return itemsViewModel.items
+        case .expiryDate:
+            return itemsViewModel.items.sorted(by: {$0.expiryDate.dateValue() < $1.expiryDate.dateValue() })
+        case .category:
+            return itemsViewModel.items
+        }
+    }
+    
+   /** var ingredientsSection:[Items]{
+    switch activeTab{
+    case .active:
+    return itemsViewModel.items.filter { $0.expiryDate.dateValue() > Date() || $0.expiryDate.dateValue() == Date()
+    }
+    case .expired:
+    return itemsViewModel.items.filter { $0.expiryDate.dateValue() < Date()
+    }
+    
+    }
+    
+    } */
     /**@State private var activeTab: Tab = .active
+     
+
      
      enum Tab: String, CaseIterable {
      case active = "Active"
@@ -49,8 +92,8 @@ struct ListView: View {
                       logStatus = false
                       } */
                 
-                /**Picker("", selection: $activeTab) {
-                 ForEach(Tab.allCases, id:  \.self) { option in
+               /** Picker("", selection: $activeTab) {
+                 ForEach(seperateTab.allCases, id:  \.self) { option in
                  Text(option.rawValue)
                  }
                  }
@@ -59,9 +102,33 @@ struct ListView: View {
                  .listRowSeparator(.hidden)
                  */
                 
+                /**if activeTab == .active {
+                            Picker("", selection: $activeTab) {
+                                ForEach(seperateTab.allCases, id:  \.self) { option in
+                                    Text(option.rawValue)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                            .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
+                            .listRowSeparator(.hidden)
+                        }
+                if activeTab == .expired {
+                            Picker("", selection: $activeTab) {
+                                ForEach(seperateTab.allCases, id:  \.self) { option in
+                                    Text(option.rawValue)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                            .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
+                            .listRowSeparator(.hidden)
+                        }
+*/
                 
                 List {
-                    ForEach(itemsViewModel.items, id: \.id) { item in
+                    
+                    
+                    ForEach(sortedItems, id: \.id) { item in
+                   // ForEach(itemsViewModel.items, id: \.id) { item in
                         //ForEach(ingredientsSection, id: \.id) { item in
                         // ItemRow(item: item)
                         ItemRow(item: item)
@@ -110,19 +177,29 @@ struct ListView: View {
                                         }
 
                                         Section(header: Text("Sorting")) {
-                                            Button(action: {}) {
-                                                Label("Sort By Date", systemImage: "arrow.up.arrow.down")
-                                                    .foregroundColor(.red)
+                                            Button(action: {
+                                                sortedTab = .expiryDate
+                                            }) {
+                                                Label("Sort By Date", systemImage: sortedTab == .expiryDate ? "checkmark" : "arrow.up.arrow.down")
+                                                   // .foregroundColor(.red)
                                             }
-                                            Button(action: {}) {
-                                                Label("Sort By Category", systemImage: "list.star")
-                                                    .foregroundColor(.red)
+                                            Button(action: {sortedTab = .category}) {
+                                                Label("Sort By Category", systemImage: sortedTab == .category ? "checkmark" : "list.star")
+                                               //     .foregroundColor(.red)
                                             }
-                                            Button(action: {}) {
-                                                Label("Remove old files", systemImage: "trash")
-                                                    .foregroundColor(.red)
-                                            }
-                                        }
+                                            
+                                           /** Button(action: {activeTab = .active}) {
+                                                Label("Active vs Expired", systemImage: activeTab == .active ? "checkmark" : "list.star")
+                                               //     .foregroundColor(.red)
+                                            } */
+
+                                            
+                                            
+                                            Button(action:  {sortedTab = .defaultSetting}) {
+                                                Label("Default", systemImage: sortedTab == .defaultSetting ? "checkmark" : "" )
+                                                 //   .foregroundColor(sortedTab == .defaultSetting ? .red : .green)
+                                            }  //.foregroundColor(sortedTab == .defaultSetting ? .red : .green)
+                                        }.foregroundColor(.red)
                                     }
                                     label: {
                                         Label("Add", systemImage: "plus")
@@ -413,6 +490,10 @@ struct ListView: View {
                             } else {
                                 print("Item \(item.name) with id \(item.id) deleted successfully.")
                                 
+                                // https://stackoverflow.com/questions/71391214/how-to-remove-pending-notification-request-when-using-uuidstring-as-identifier-s
+                                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [item.id])
+                                
+                                
                                 // chat GPT: https://chat.openai.com/share/b7135e73-7ca1-4b11-aae4-717e57f26e82
                                 DispatchQueue.main.async {
                                     if let index = itemsViewModel.items.firstIndex(where: { $0.id == item.id}) {
@@ -597,7 +678,15 @@ struct EachItemView: View {
                  Text("Name: \(item.name)")
                  }
                  */
-                
+                if !item.imageURL.isEmpty{
+                    Section(header: Text("IMAGE")){
+                        KFImage(URL(string: "\(item.imageURL)")!)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 128, height: 128)
+                    }
+                }
+
                 
                 Section(header: Text("Ingredient name")) {
                     Text(" \(item.name)")
