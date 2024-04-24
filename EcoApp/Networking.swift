@@ -4,7 +4,7 @@
 //
 //  Created by Frankie Murillo on 11/14/21.
 //
-
+/**
 import SwiftUI
 import FirebaseAuth
 
@@ -61,3 +61,4 @@ class Networking {
         }.resume()
     }
 }
+*/

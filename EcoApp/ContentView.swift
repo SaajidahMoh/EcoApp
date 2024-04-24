@@ -35,7 +35,8 @@ struct ContentView: View {
                     systemImage: //"figure.walk"
                     "mappin.and.ellipse")}
                     
-                    Text("Recipes")
+                recipeSearch()
+                    //Text("Recipes")
                     .tabItem { Label("Recipes", systemImage: "fork.knife")
                     // .foregroundColor(Color.green)
                     }

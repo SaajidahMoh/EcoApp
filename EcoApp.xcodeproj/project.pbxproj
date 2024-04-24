@@ -24,6 +24,11 @@
 		2899C12B2BB70066007006E2 /* AddItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2899C12A2BB70066007006E2 /* AddItem.swift */; };
 		28A8DFFB2BB839DD001981C1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 28A8DFFA2BB839DD001981C1 /* FirebaseStorage */; };
 		28AAF0332BD85ACA00720304 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 28AAF0322BD85ACA00720304 /* Kingfisher */; };
+		28AAF0362BD9222600720304 /* networkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF0352BD9222600720304 /* networkModel.swift */; };
+		28AAF0382BD9222D00720304 /* recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF0372BD9222D00720304 /* recipe.swift */; };
+		28AAF03B2BD9247800720304 /* recipeSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF0392BD9247800720304 /* recipeSearchView.swift */; };
+		28AAF03C2BD9247800720304 /* recipeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF03A2BD9247800720304 /* recipeSearch.swift */; };
+		28AAF0402BD92A6300720304 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF03F2BD92A6200720304 /* Network.swift */; };
 		28BC59242BD301C800F66D4F /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BC59232BD301C800F66D4F /* LocationsView.swift */; };
 		28C445D72BD3D547002D60D1 /* LocationsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C445D62BD3D547002D60D1 /* LocationsDataService.swift */; };
 		28D122EA2BB071D50068BE7E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122E92BB071D40068BE7E /* Items.swift */; };
@@ -59,6 +64,11 @@
 		284DBC5D2BBA26C40027EA3C /* NewItemForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewItemForm.swift; sourceTree = "<group>"; };
 		285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		2899C12A2BB70066007006E2 /* AddItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItem.swift; sourceTree = "<group>"; };
+		28AAF0352BD9222600720304 /* networkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = networkModel.swift; sourceTree = "<group>"; };
+		28AAF0372BD9222D00720304 /* recipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = recipe.swift; sourceTree = "<group>"; };
+		28AAF0392BD9247800720304 /* recipeSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = recipeSearchView.swift; sourceTree = "<group>"; };
+		28AAF03A2BD9247800720304 /* recipeSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = recipeSearch.swift; sourceTree = "<group>"; };
+		28AAF03F2BD92A6200720304 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		28BC59232BD301C800F66D4F /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
 		28C445D62BD3D547002D60D1 /* LocationsDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsDataService.swift; sourceTree = "<group>"; };
 		28D122E92BB071D40068BE7E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
@@ -111,6 +121,17 @@
 			path = Scan;
 			sourceTree = "<group>";
 		};
+		28AAF0342BD9220E00720304 /* Recipe */ = {
+			isa = PBXGroup;
+			children = (
+				28AAF03A2BD9247800720304 /* recipeSearch.swift */,
+				28AAF0392BD9247800720304 /* recipeSearchView.swift */,
+				28AAF0372BD9222D00720304 /* recipe.swift */,
+				28AAF0352BD9222600720304 /* networkModel.swift */,
+			);
+			path = Recipe;
+			sourceTree = "<group>";
+		};
 		28BC59252BD3CFFA00F66D4F /* Map */ = {
 			isa = PBXGroup;
 			children = (
@@ -147,6 +168,8 @@
 		28D5EA4E2BA8427900BF46DD /* EcoApp */ = {
 			isa = PBXGroup;
 			children = (
+				28AAF03F2BD92A6200720304 /* Network.swift */,
+				28AAF0342BD9220E00720304 /* Recipe */,
 				281D781A2BD6CC2A00A24BA7 /* Scan */,
 				28BC59252BD3CFFA00F66D4F /* Map */,
 				284DBC5D2BBA26C40027EA3C /* NewItemForm.swift */,
@@ -280,10 +303,12 @@
 				28D5EAA22BA8484C00BF46DD /* Login.swift in Sources */,
 				281D78252BD6E9C100A24BA7 /* ScannerView.swift in Sources */,
 				28D122EE2BB074FF0068BE7E /* ListView.swift in Sources */,
+				28AAF03B2BD9247800720304 /* recipeSearchView.swift in Sources */,
 				28D5EA522BA8427900BF46DD /* ContentView.swift in Sources */,
 				28C445D72BD3D547002D60D1 /* LocationsDataService.swift in Sources */,
 				284DBC532BB9BFDA0027EA3C /* Networking.swift in Sources */,
 				2899C12B2BB70066007006E2 /* AddItem.swift in Sources */,
+				28AAF0382BD9222D00720304 /* recipe.swift in Sources */,
 				2830130C2BD3FB2E0013900D /* LocationMapAnnotationView.swift in Sources */,
 				281D78202BD6CC4900A24BA7 /* barcodeScanning.swift in Sources */,
 				283013082BD3DF3A0013900D /* LocationsViewModel.swift in Sources */,
@@ -294,13 +319,16 @@
 				284DBC5E2BBA26C50027EA3C /* NewItemForm.swift in Sources */,
 				2817C1912BBB13F4008256EE /* EditItem.swift in Sources */,
 				281D781E2BD6CC4300A24BA7 /* Barcode.swift in Sources */,
+				28AAF03C2BD9247800720304 /* recipeSearch.swift in Sources */,
 				2819535E2BD5C99900685A77 /* Location.swift in Sources */,
 				28D122EA2BB071D50068BE7E /* Items.swift in Sources */,
 				2830130A2BD3E6370013900D /* LocationsPreviewView.swift in Sources */,
 				281D781C2BD6CC3800A24BA7 /* barcodeToWord.swift in Sources */,
 				28D122F02BB0DE880068BE7E /* NewItemView.swift in Sources */,
 				28D5EA502BA8427900BF46DD /* EcoAppApp.swift in Sources */,
+				28AAF0362BD9222600720304 /* networkModel.swift in Sources */,
 				281D78222BD6CD5C00A24BA7 /* ScanItem.swift in Sources */,
+				28AAF0402BD92A6300720304 /* Network.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

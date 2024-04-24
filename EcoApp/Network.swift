@@ -1,12 +1,67 @@
 //
-//  barcodeToWord.swift
-//  barcode_scanner
+//  Network.swift
+//  EcoApp
 //
-//  Created by Saajidah Mohamed on 03/04/2024.
+//  Created by Saajidah Mohamed on 14/04/2024.
 // https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
 //
-/**
+
 import Foundation
+
+class networkModel {
+    func sendRequest(searchTerm :String,completion : @escaping (RecipeData) -> Void ) {
+        /* Configure session, choose between:
+           * defaultSessionConfiguration
+           * ephemeralSessionConfiguration
+           * backgroundSessionConfigurationWithIdentifier:
+         And set session-wide properties, such as: HTTPAdditionalHeaders,
+         HTTPCookieAcceptPolicy, requestCachePolicy or timeoutIntervalForRequest.
+         */
+        let sessionConfig = URLSessionConfiguration.default
+
+        /* Create session, and optionally set a URLSessionDelegate. */
+        let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+
+        /* Create the Request:
+           searchingredient (GET https://api.spoonacular.com/recipes/findByIngredients)
+         */
+        
+         
+        guard var URL = URL(string: "https://api.edamam.com/api/recipes/v2") else {return}
+        let URLParams = [
+            "type": "public",
+            "q": "\(searchTerm)",
+            "app_id": "1291286b",
+            "app_key": "61c071f471412a3b577915de627c1ed2",
+               ]
+        URL = URL.appendingQueryParameters(URLParams)
+        var request = URLRequest(url: URL)
+        request.httpMethod = "GET"
+
+        /* Start a new Task */
+        let task = session.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
+            if (error == nil) {
+                // Success
+                let statusCode = (response as! HTTPURLResponse).statusCode
+                print("URL Session Task Succeeded: HTTP \(statusCode)")
+                guard let jsonData = data else {return}
+                do {
+                    let productData = try JSONDecoder().decode(RecipeData.self, from: jsonData)
+                    completion(productData)
+                    print(productData)
+                } catch {
+                    print(error)
+                }
+            }
+            else {
+                // Failure
+                print("URL Session Task Failed: %@", error!.localizedDescription);
+            }
+        })
+        task.resume()
+        session.finishTasksAndInvalidate()
+    }
+}
 
 class barcodeToWord {
     func getProductName(barcode :String,completion : @escaping (Product) -> Void ) {
@@ -96,5 +151,3 @@ extension URL {
         return URL(string: URLString)!
     }
 }
-*/
-

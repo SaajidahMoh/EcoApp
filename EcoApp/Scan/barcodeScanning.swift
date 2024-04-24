@@ -98,6 +98,7 @@ struct BarcodeScanning : UIViewControllerRepresentable {
             print(code)
             parent.barcode_string = code
             
+          //  let barcodeToWordBe = BarcodeToWord()
             barcodeToWord().getProductName(barcode: code) { productinfo in
                 DispatchQueue.main.async {
                     self.parent.foundProduct = productinfo

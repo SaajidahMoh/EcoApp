@@ -1,15 +1,14 @@
 //
-//  barcodeToWord.swift
-//  barcode_scanner
+//  networkModel.swift
+//  EcoApp
 //
-//  Created by Saajidah Mohamed on 03/04/2024.
-// https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
+//  Created by Saajidah Mohamed on 14/04/2024.
 //
 /**
 import Foundation
 
-class barcodeToWord {
-    func getProductName(barcode :String,completion : @escaping (Product) -> Void ) {
+class networkModel {
+    func sendRequest(searchTerm :String,completion : @escaping (RecipeData) -> Void ) {
         /* Configure session, choose between:
            * defaultSessionConfiguration
            * ephemeralSessionConfiguration
@@ -23,13 +22,17 @@ class barcodeToWord {
         let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
 
         /* Create the Request:
-           searchingredient (GET https://world.openfoodfacts.org/api/v2/product)
+           searchingredient (GET https://api.spoonacular.com/recipes/findByIngredients)
          */
-
-        guard var URL = URL(string: "https://world.openfoodfacts.org/api/v2/product/\(barcode)") else {return}
+        
+         
+        guard var URL = URL(string: "https://api.edamam.com/api/recipes/v2") else {return}
         let URLParams = [
-            "fields": "product_name",
-        ]
+            "type": "public",
+            "q": "\(searchTerm)",
+            "app_id": "1291286b",
+            "app_key": "61c071f471412a3b577915de627c1ed2",
+               ]
         URL = URL.appendingQueryParameters(URLParams)
         var request = URLRequest(url: URL)
         request.httpMethod = "GET"
@@ -40,12 +43,11 @@ class barcodeToWord {
                 // Success
                 let statusCode = (response as! HTTPURLResponse).statusCode
                 print("URL Session Task Succeeded: HTTP \(statusCode)")
-                
                 guard let jsonData = data else {return}
-                
                 do {
-                    let productData = try JSONDecoder().decode(Product.self, from: jsonData)
+                    let productData = try JSONDecoder().decode(RecipeData.self, from: jsonData)
                     completion(productData)
+                    print(productData)
                 } catch {
                     print(error)
                 }
@@ -97,4 +99,3 @@ extension URL {
     }
 }
 */
-

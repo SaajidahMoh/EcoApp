@@ -286,7 +286,15 @@ struct ListView: View {
     
     //https://vikramios.medium.com/mastering-swift-local-notifications-a-developers-guide-f56b77ab64cc
     private func scheduleNotification(for item: Items) {
-        let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
+        let today = Date()
+        let expiryDate = item.expiryDate.dateValue()
+        
+        guard expiryDate >= today else {
+            return
+        }
+        let daysDifference = Calendar.current.dateComponents([.day], from: today, to: expiryDate).day ?? 0
+        
+     //   let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
         
         //if daysDifference 0= 0 || daysDifference <= 3
         if daysDifference >= 0 && daysDifference <= 3 {
@@ -297,24 +305,25 @@ struct ListView: View {
             
             //https://stackoverflow.com/questions/58561877/error-in-trigger-for-notifications-swift
             //var hours = [9, 12, 18]
-            var triggerDate = DateComponents()
-            triggerDate.hour = 20
-            triggerDate.minute = 19
+            /**var triggerDate = DateComponents()
+            triggerDate.hour = 11
+            triggerDate.minute = 40
             
             var triggerDateAfternoon = DateComponents()
-            triggerDateAfternoon.hour = 10
-            triggerDateAfternoon.minute = 30
+            triggerDateAfternoon.hour = 11
+            triggerDateAfternoon.minute = 41
+            */
             
             var triggerDateEvening = DateComponents()
-            triggerDateEvening.hour = 10
-            triggerDateEvening.minute = 32
+            triggerDateEvening.hour = 11
+            triggerDateEvening.minute = 56
             
-            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
-            let trigger2 = UNCalendarNotificationTrigger(dateMatching: triggerDateAfternoon, repeats: true)
+                /** let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
+            let trigger2 = UNCalendarNotificationTrigger(dateMatching: triggerDateAfternoon, repeats: true) */
             let trigger3 = UNCalendarNotificationTrigger(dateMatching: triggerDateEvening, repeats: true)
             
             
-            let request = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger)
+           /** let request = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger)
             UNUserNotificationCenter.current().add(request) { error in
                 if let error = error {
                     print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
@@ -330,7 +339,7 @@ struct ListView: View {
                 } else {
                     print("Notification scheduled successfully for \(item.name)")
                 }
-            }
+            } */
             
             let request3 = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger3)
             UNUserNotificationCenter.current().add(request3) { error in
@@ -354,7 +363,7 @@ struct ListView: View {
     
     
     private func generateItems() {
-        let selectedItems = itemsViewModel.items.filter { $0.isChecked }.map { $0.name }
+       /** let selectedItems = itemsViewModel.items.filter { $0.isChecked }.map { $0.name }
         Networking.shared.fetchItemsRecipes(with: selectedItems) { recipes, error in
             if let error = error {
                 print("Error fetching items' recipes: \(error.localizedDescription)")
@@ -365,7 +374,7 @@ struct ListView: View {
                 // Handle the fetched recipes here
                 print("Fetched recipes: \(recipes)")
             }
-        }
+        } */
     }
     /**
      private func deleteItems(at offsets:IndexSet){
