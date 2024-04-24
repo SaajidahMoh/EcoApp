@@ -31,6 +31,7 @@ struct RecipeCardView : View {
                             .font(.headline)
                             .padding(.leading)
                             .padding(.vertical)
+                            
                         
                         Spacer()
                         
@@ -46,8 +47,11 @@ struct RecipeCardView : View {
                         .padding(.vertical)
                 }
                 }
-                .background(Color.white)
-                .padding(.horizontal)
+       // let lightest = Color(red: 0.4627, green: 0.8392, blue: 1.0)
+       // .background(Color(UIColor.lightGray)) // https://stackoverflow.com/questions/59149705/how-to-set-the-background-color-of-a-swiftui-to-lightgray
+              
+        .background(Color(.systemGray5))
+        .padding(.horizontal)
             }
         }
         
