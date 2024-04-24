@@ -25,7 +25,7 @@
 		28A8DFFB2BB839DD001981C1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 28A8DFFA2BB839DD001981C1 /* FirebaseStorage */; };
 		28AAF0332BD85ACA00720304 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 28AAF0322BD85ACA00720304 /* Kingfisher */; };
 		28AAF0362BD9222600720304 /* networkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF0352BD9222600720304 /* networkModel.swift */; };
-		28AAF0382BD9222D00720304 /* recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF0372BD9222D00720304 /* recipe.swift */; };
+		28AAF0382BD9222D00720304 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF0372BD9222D00720304 /* Recipe.swift */; };
 		28AAF03B2BD9247800720304 /* RecipeSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF0392BD9247800720304 /* RecipeSearchView.swift */; };
 		28AAF03C2BD9247800720304 /* recipeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF03A2BD9247800720304 /* recipeSearch.swift */; };
 		28AAF0402BD92A6300720304 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF03F2BD92A6200720304 /* Network.swift */; };
@@ -66,7 +66,7 @@
 		285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		2899C12A2BB70066007006E2 /* AddItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItem.swift; sourceTree = "<group>"; };
 		28AAF0352BD9222600720304 /* networkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = networkModel.swift; sourceTree = "<group>"; };
-		28AAF0372BD9222D00720304 /* recipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = recipe.swift; sourceTree = "<group>"; };
+		28AAF0372BD9222D00720304 /* Recipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		28AAF0392BD9247800720304 /* RecipeSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeSearchView.swift; sourceTree = "<group>"; };
 		28AAF03A2BD9247800720304 /* recipeSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = recipeSearch.swift; sourceTree = "<group>"; };
 		28AAF03F2BD92A6200720304 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
@@ -129,7 +129,7 @@
 				28AAF03A2BD9247800720304 /* recipeSearch.swift */,
 				28AAF0412BD9577600720304 /* RecipeCardView.swift */,
 				28AAF0392BD9247800720304 /* RecipeSearchView.swift */,
-				28AAF0372BD9222D00720304 /* recipe.swift */,
+				28AAF0372BD9222D00720304 /* Recipe.swift */,
 				28AAF0352BD9222600720304 /* networkModel.swift */,
 			);
 			path = Recipe;
@@ -311,7 +311,7 @@
 				28C445D72BD3D547002D60D1 /* LocationsDataService.swift in Sources */,
 				284DBC532BB9BFDA0027EA3C /* Networking.swift in Sources */,
 				2899C12B2BB70066007006E2 /* AddItem.swift in Sources */,
-				28AAF0382BD9222D00720304 /* recipe.swift in Sources */,
+				28AAF0382BD9222D00720304 /* Recipe.swift in Sources */,
 				2830130C2BD3FB2E0013900D /* LocationMapAnnotationView.swift in Sources */,
 				281D78202BD6CC4900A24BA7 /* barcodeScanning.swift in Sources */,
 				283013082BD3DF3A0013900D /* LocationsViewModel.swift in Sources */,
