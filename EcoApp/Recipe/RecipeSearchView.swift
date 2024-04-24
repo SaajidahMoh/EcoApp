@@ -12,7 +12,7 @@ enum sortCookingTime {
     case asc;
     case desc;
 }
-struct PlayerView: View {
+struct RecipeSearchView: View {
     let title: String
     let ingredients: [String]
     let cuisineTypes: [String]
@@ -70,5 +70,5 @@ struct PlayerView: View {
 }
 
 /**#Preview {
-   PlayerView()
-}*/
+  RecipeSearchView()
+} */

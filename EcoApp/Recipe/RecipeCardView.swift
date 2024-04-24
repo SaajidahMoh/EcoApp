@@ -1,5 +1,5 @@
 //
-// Recipe.swift
+// RecipeCardView.swift
 //  EcoApp
 //
 //  Created by Saajidah Mohamed on 20/04/2024.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct RecipeCardView : View{
+struct RecipeCardView : View {
     @State private var isSaved : Bool = false
     let hit: Hit
     
@@ -21,10 +21,9 @@ struct RecipeCardView : View{
                             .resizable()
                             .scaledToFill()
                     } placeholder: {
-                        Color.secondary.opacity(0.1)
+                        ProgressView()
                     }
                     .frame(width: 350 ,height: 120)
-                    //.cornerRadius(10)
                     .clipped()
                     
                     HStack {
@@ -43,9 +42,9 @@ struct RecipeCardView : View{
                                 .frame(width: 20, height: 20)
                         
                     }
-                        .padding([.trailing, .vertical])
+                        .padding(.trailing)
+                        .padding(.vertical)
                 }
-                .background(Color.white)
                 }
                 .background(Color.white)
                 .padding(.horizontal)

@@ -23,7 +23,7 @@ struct recipeSearch: View {
             
             NavigationView {
                 List(recipes, id: \.recipe.url) { hit in
-                    NavigationLink(destination: PlayerView(title: hit.recipe.label, ingredients: hit.recipe.ingredientLines, cuisineTypes: hit.recipe.cuisineType, image: hit.recipe.image, totalTime: hit.recipe.totalTime, url: hit.recipe.url)) {
+                    NavigationLink(destination: RecipeSearchView(title: hit.recipe.label, ingredients: hit.recipe.ingredientLines, cuisineTypes: hit.recipe.cuisineType, image: hit.recipe.image, totalTime: hit.recipe.totalTime, url: hit.recipe.url)) {
                         RecipeCardView(hit: hit)
                             .padding(.vertical, 2)
                     }
