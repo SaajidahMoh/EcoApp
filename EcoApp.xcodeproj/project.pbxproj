@@ -29,6 +29,7 @@
 		28AAF03B2BD9247800720304 /* recipeSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF0392BD9247800720304 /* recipeSearchView.swift */; };
 		28AAF03C2BD9247800720304 /* recipeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF03A2BD9247800720304 /* recipeSearch.swift */; };
 		28AAF0402BD92A6300720304 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF03F2BD92A6200720304 /* Network.swift */; };
+		28AAF0422BD9577700720304 /* RecipeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF0412BD9577600720304 /* RecipeCardView.swift */; };
 		28BC59242BD301C800F66D4F /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BC59232BD301C800F66D4F /* LocationsView.swift */; };
 		28C445D72BD3D547002D60D1 /* LocationsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C445D62BD3D547002D60D1 /* LocationsDataService.swift */; };
 		28D122EA2BB071D50068BE7E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122E92BB071D40068BE7E /* Items.swift */; };
@@ -69,6 +70,7 @@
 		28AAF0392BD9247800720304 /* recipeSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = recipeSearchView.swift; sourceTree = "<group>"; };
 		28AAF03A2BD9247800720304 /* recipeSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = recipeSearch.swift; sourceTree = "<group>"; };
 		28AAF03F2BD92A6200720304 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		28AAF0412BD9577600720304 /* RecipeCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeCardView.swift; sourceTree = "<group>"; };
 		28BC59232BD301C800F66D4F /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
 		28C445D62BD3D547002D60D1 /* LocationsDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsDataService.swift; sourceTree = "<group>"; };
 		28D122E92BB071D40068BE7E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				28AAF03A2BD9247800720304 /* recipeSearch.swift */,
+				28AAF0412BD9577600720304 /* RecipeCardView.swift */,
 				28AAF0392BD9247800720304 /* recipeSearchView.swift */,
 				28AAF0372BD9222D00720304 /* recipe.swift */,
 				28AAF0352BD9222600720304 /* networkModel.swift */,
@@ -321,6 +324,7 @@
 				281D781E2BD6CC4300A24BA7 /* Barcode.swift in Sources */,
 				28AAF03C2BD9247800720304 /* recipeSearch.swift in Sources */,
 				2819535E2BD5C99900685A77 /* Location.swift in Sources */,
+				28AAF0422BD9577700720304 /* RecipeCardView.swift in Sources */,
 				28D122EA2BB071D50068BE7E /* Items.swift in Sources */,
 				2830130A2BD3E6370013900D /* LocationsPreviewView.swift in Sources */,
 				281D781C2BD6CC3800A24BA7 /* barcodeToWord.swift in Sources */,
