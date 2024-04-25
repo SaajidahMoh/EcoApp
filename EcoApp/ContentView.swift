@@ -11,6 +11,7 @@ import Firebase
 struct ContentView: View {
     @StateObject var itemsViewModel = ItemsViewModel()
     @StateObject private var vm = LocationsViewModel()
+   // @StateObject var viewModel = FavViewModel()
     @AppStorage("log_status") private var logStatus: Bool = false
     
     var body: some View {
@@ -40,8 +41,13 @@ struct ContentView: View {
                     .tabItem { Label("Recipes", systemImage: "fork.knife")
                     // .foregroundColor(Color.green)
                     }
-                    
-                    Text("Favourites")
+                //FavouritesCardView(recipeDocument: recipeDocument)
+                     /// RecipeListView()
+                //    .environmentObject(viewModel)
+              
+                   // Text("Favourites")
+                //RecipeCardsView()
+               // RecipeListView()
                     .tabItem { Label("Favourites", systemImage: "star")}
                     
                     //Text("Settings")

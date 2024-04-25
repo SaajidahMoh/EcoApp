@@ -17,6 +17,7 @@ struct Hit: Decodable {
 }
 
 struct Recipe: Decodable {
+//let id: String
     let label: String
     let image: String
     let totalTime: Float
@@ -25,6 +26,7 @@ struct Recipe: Decodable {
     let url: String
 }
 
+/**
 // Foodpedia
 struct ReceipeModel : Codable , Hashable{
     
@@ -54,3 +56,4 @@ struct ReceipeIngredient : Codable , Hashable {
 //    let servings: String
 //    let instructions: String
 //}
+*/

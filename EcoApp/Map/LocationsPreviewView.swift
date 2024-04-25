@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 
 struct LocationsPreviewView: View {
@@ -23,10 +24,11 @@ struct LocationsPreviewView: View {
                 titleSection
             }
             HStack {
+                directionsection
                 websiteSection
-                emailSection
-                callsection
             }
+            .multilineTextAlignment(.center)
+            
             if isSwiped == true {
                 moreInfoSection
             } else if isSwiped == false {
@@ -35,33 +37,33 @@ struct LocationsPreviewView: View {
                     Image(systemName: "arrow.up")
                 } .bold()
             }
-           
+            
         }
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(.ultraThinMaterial))
         /**.onTapGesture {
-            withAnimation {
-                isSwiped.toggle()
-            }
-        } */
+         withAnimation {
+         isSwiped.toggle()
+         }
+         } */
         
         // https://developer.apple.com/tutorials/sample-apps/recognizinggestures
         // https://medium.com/@mohitgupta_48195/chapter-17-understanding-gestures-46254b783a77
         .gesture(DragGesture()
-                 .onEnded({ (value) in
-                     if (value.translation.height < 0) {
-                         //animation
-                         withAnimation {
-                             isSwiped = true
-                         }
-                     } else if (value.translation.height > 0) {
-                         withAnimation {
-                             isSwiped = false
-                         }
-                     }
-             }))
+            .onEnded({ (value) in
+                if (value.translation.height < 0) {
+                    //animation
+                    withAnimation {
+                        isSwiped = true
+                    }
+                } else if (value.translation.height > 0) {
+                    withAnimation {
+                        isSwiped = false
+                    }
+                }
+            }))
         
     }
     
@@ -74,7 +76,7 @@ struct LocationsPreviewView: View {
             Text(location.postcode)
         }
     }
-
+    
     
     private var moreInfoSection: some View {
         VStack(alignment: .leading, spacing: 10){
@@ -107,7 +109,7 @@ struct LocationsPreviewView: View {
                         Text(location.email)
                     }
                 }
-        
+            
             
             Section(header: Text("Website URL")
                 .font(.title3)
@@ -119,65 +121,43 @@ struct LocationsPreviewView: View {
                 }
         }
     }
-
+    
     
     private var websiteSection: some View {
-       // Link(destination: URL(string: "\(location.link)")!) {
+        // Link(destination: URL(string: "\(location.link)")!) {
         // https://stackoverflow.com/questions/58643888/swiftui-how-do-i-make-a-button-open-a-url-in-safari
-            Button(action: {
-                if let url = URL(string: "\(location.link)") {
-                   UIApplication.shared.open(url)
-                }
-            }) {
-           // } label : {
-                Text("Website")
-                    .font(.headline)
-                    .frame(width: 80, height: 35)
+        Button(action: {
+            if let url = URL(string: "\(location.link)") {
+                UIApplication.shared.open(url)
             }
-            .buttonStyle(.borderedProminent)
-            //  .background(.green)
-            // .foregroundColor(.green)
-     //   }
-    }
-    
-    private var emailSection: some View {
-        
-      /**
-        Button("Website") {
-            if let emailLink = URL(string: "mailto:\(location.email)"),
-               UIApplication.shared.canOpenURL(emailLink){
-                UIApplication.shared.open(emailLink)
-            }
-        }
-        //) {
-       // } label : {
-        //    Text("Website")
-        //        .font(.headline)
-         //       .frame(width: 80, height: 35)
-      //  }
-        
-        */
-        //Button 2
-        Button {
-        } label : {
-            Text("Email")
+        }) { Label("Website", systemImage: "link")
                 .font(.headline)
-                .frame(width: 80, height: 35)
+                .frame(width: 132, height: 35)
         }
         .buttonStyle(.bordered)
         .foregroundColor(.green)
     }
     
-    private var callsection: some View {
+    
+    private var directionsection: some View {
         //Button 3
-        Button {
-        } label : {
-            Text("Call")
+        Button(action: {
+            self.openMaps(coordinate: self.location.coordinates) //  // https://www.youtube.com/watch?v=YVKuMJPGCj8&t=464s&ab_channel=ASwiftlyTiltingPlanet 20 minutes
+        }) {
+            Label("Directions", systemImage: "car")
                 .font(.headline)
-                .frame(width: 80, height: 35)
+                .frame(width: 138, height: 35)
         }
-        .buttonStyle(.bordered)
-        .foregroundColor(.green)
+        .buttonStyle(.borderedProminent)
+        
+        
+        
+        
+    }
+    // https://www.youtube.com/watch?v=YVKuMJPGCj8&t=464s&ab_channel=ASwiftlyTiltingPlanet 20 minutes
+    func openMaps(coordinate: CLLocationCoordinate2D){
+        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate))
+        mapItem.openInMaps()
     }
 }
 

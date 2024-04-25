@@ -66,7 +66,7 @@ struct recipeSearch: View {
 
 
 #Preview {
-    ContentView()
+  recipeSearch()
 }
 
 

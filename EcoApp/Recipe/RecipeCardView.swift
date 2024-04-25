@@ -49,8 +49,11 @@ struct RecipeCardView : View {
                 {
                     Image(systemName: isSaved ? "star.fill" : "star")
                         .resizable()
-                        .frame(width: 20, height: 20)
+                        .frame(width: 26, height: 26)
                     
+                }
+                .onAppear {
+                    loadSavedState()
                 }
                 .padding(.trailing)
                 .padding(.vertical)
@@ -63,6 +66,35 @@ struct RecipeCardView : View {
         .padding(.horizontal)
     }
     
+    private func loadSavedState() {
+            guard let userID = userID else {
+                print("User not logged in")
+                return
+            }
+            
+            let db = Firestore.firestore()
+            let favouritesRef = db.collection("favourites").document(userID).collection("Saved")
+            
+            favouritesRef.whereField("label", isEqualTo: hit.recipe.label)
+                .whereField("url", isEqualTo: hit.recipe.url)
+                .getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error getting documents: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    guard let documents = querySnapshot?.documents else {
+                        print("No documents found")
+                        return
+                    }
+                    
+                    if let document = documents.first {
+                        // Recipe found in Firestore, set isSaved to true
+                        self.isSaved = true
+                    }
+                }
+        }
+    
     private func storeRecipe(){
         guard let userID = userID else {
             print("user not logged in")
@@ -70,17 +102,20 @@ struct RecipeCardView : View {
         }
         
         let db = Firestore.firestore()
-        let favouritesRef = db.collection("favourites").document(userID).collection("Saved")
+        //let favouritesRef = db.collection("favourites").document(userID).collection("Saved")
         
-        favouritesRef.addDocument (data:[
+        let favData : [String:Any] = [
+       //     "id" : UUID().uuidString, //hit.recipe.id, //UUID().uuidString,
             "imageURL": hit.recipe.image,
             "label": hit.recipe.label,
             "totalTime": hit.recipe.totalTime,
             "cuisineTypes": hit.recipe.cuisineType,
             "ingredients": hit.recipe.ingredientLines,
-            "url": hit.recipe.url]
-                                   
-        ) { error in
+            "url": hit.recipe.url
+        ]
+        
+       // favouritesRef.addDocument
+        db.collection("favourites").document(userID).collection("Saved").addDocument(data:favData) { error in
             if let error = error {
             print("Error Saving Recipe: \(error.localizedDescription)")
             } else {
@@ -89,15 +124,48 @@ struct RecipeCardView : View {
             
         }
         
-        
     }
     
     
     private func removeRecipe(){
         
+        guard let userID = userID else {
+            print("user not logged in")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let favouritesRef = db.collection("favourites").document(userID).collection("Saved")
+        
+        favouritesRef.whereField("label", isEqualTo: hit.recipe.label)
+            .whereField("url", isEqualTo: hit.recipe.url).getDocuments {(querySnapshot, error) in
+            if let error = error {
+                print("Error getting documents for item : \(error.localizedDescription)")
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents else {
+                print("No documents found for item ")
+                return
+            }
+            
+           if let document = documents.first {
+               let documentID = document.documentID
+               favouritesRef.document(documentID).delete { error in
+                   if let error = error {
+                       print("Error deleting: \(error.localizedDescription)")
+                   } else {
+                       print("deleted successfully.")
+                       // let favouritesRef = db.collection("favourites").document(userID).collection("Saved")
+                   }
+        
+        
     }
 }
-
+            else { print("none")
+            }
+                             }}}
+                             
 
 /**Preview {
    RecipeCardView()

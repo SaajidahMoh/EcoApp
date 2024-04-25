@@ -55,12 +55,12 @@ struct SettingsView: View {
                         }.foregroundColor(.red)
                         
                         // clear saved recipes
-                        /**  Button(action: {
+                         Button(action: {
                          showDeleteFav = true
                          
                          }) {
                          Text("Delete All Saved Recipes")
-                         }.foregroundColor(.red) */
+                         }.foregroundColor(.red)
                         
                     }
                 }
@@ -74,6 +74,16 @@ struct SettingsView: View {
                           message: Text("Are you sure you want to do this?"),
                           primaryButton: .destructive(Text("Yes")){
                         clearIngredients()
+                        showDeleteAlert = false
+                    }, secondaryButton: .cancel(Text("Cancel"))
+                    )
+
+                }
+                .alert(isPresented: $showDeleteFav){
+                    Alert(title: Text( "Deleting All stored recipes"),
+                          message: Text("Are you sure you want to do this?"),
+                          primaryButton: .destructive(Text("Yes")){
+                        clearSaved()
                         showDeleteAlert = false
                     }, secondaryButton: .cancel(Text("Cancel"))
                     )
@@ -160,6 +170,42 @@ struct SettingsView: View {
         }
 
     }
+    
+    func clearSaved(){
+        if let userID = userID {
+            let db = Firestore.firestore()
+           // let usersRef = db.collection("users").document(userID)
+            
+            // Delete the user document
+          //  usersRef.delete { error in
+          //     if let error = error {
+            //        print("Error deleting user document: \(error.localizedDescription)")
+              //  } else {
+                //    print("User document deleted successfully.")
+                    
+                    // delete the entire "Item" collection associated with the user
+                    let itemCollectionRef = db.collection("favoruites").document(userID).collection("Saved")
+                    itemCollectionRef.getDocuments { (querySnapshot, error) in
+                        if let error = error {
+                            print("Error getting documents from 'Item' collection: \(error.localizedDescription)")
+                            return
+                        }
+                        
+                        for document in querySnapshot!.documents {
+                            document.reference.delete()
+                        }
+                        
+                        print("All favoruites are cleared.")
+                    }
+                
+            
+        } else {
+            print("No documents to clear")
+        }
+
+    }
+    
+    
     
         func showAlert(message:String){
             alertMessage = message

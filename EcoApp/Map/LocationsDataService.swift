@@ -560,16 +560,170 @@ cityName: "London",
         phone:"02086987945",
       email:"info@wdcfplus.org.uk",
        link:"http://wdcfplus.org.uk"
-    )
+    ),
 // https://www.givefood.org.uk/api/2/foodbanks/search/?address=E11bj
 // https://www.givefood.org.uk/api/2/foodbanks/search/?address=W30AD
 // https://www.givefood.org.uk/api/2/foodbanks/search/?address=E177JR
 // https://www.givefood.org.uk/api/2/foodbanks/search/?address=SW25BZ
 // https://www.givefood.org.uk/api/2/foodbanks/search/?address=SE129PP
+   // https://www.givefood.org.uk/api/2/foodbanks/search/?address=IG39RX
+    
+Location(
+    name:"Chapters Food Bank",
+address:"29 Telegraph Mews, Goodmayes, Ilford",
+    cityName: "London",
+  postcode: "IG3 8TA",
+    coordinates: CLLocationCoordinate2D(latitude:51.56712779999999, longitude: 0.1104231),
+    phone:"07752415343",
+  email:"info@chaptersfoodbank.org",
+   link: "http://chaptersfoodbank.org/current-needs/"
+),
+    
+    Location(
+        name:"The Beaver Centre, Barking",
+    address:"Unit 1, Selinas Lane, Dagenham",
+    cityName: "London",
+      postcode:"RM8 1QH",
+        coordinates: CLLocationCoordinate2D(latitude: 51.56826299999999, longitude: 0.1402502),
+        phone:"02088610660",
+      email:"barkingfoodbank@gmail.com",
+       link:"https://barking.foodbank.org.uk/give-help/donate-food/"
+    ),
+    
+    Location(
+        name:"Jubilee Church, Redbridge",
+    address:"14 Granville Road, Ilford",
+    cityName: "London",
+      postcode:"IG1 4JY",
+        coordinates: CLLocationCoordinate2D(latitude: 51.5645184, longitude: 0.0703049),
+        phone:"02085180056",
+      email:"info@redbridgefoodbank.org",
+       link:"https://redbridge.foodbank.org.uk/give-help/donate-food/"
+    ),
+    
+    Location(
+        name:"RCCG House Of Faith Connection, Dagenham",
+        address:"The BEACON, 104 New Road, Essex",
+    cityName: "London",
+      postcode:"RM9 6PE",
+        coordinates: CLLocationCoordinate2D(latitude: 51.5289556, longitude: 0.1547146),
+        phone:"02085950122",
+      email:"info@dagenham.foodbank.org.uk",
+       link: "https://dagenham.foodbank.org.uk/give-help/donate-food/"
+    ),
+    
+    Location(
+        name:"Collier Row & Romford",
+    address:"The Wykeham Centre and Church House, Market Place",
+    cityName: "London",
+      postcode:"RM1 3AB",
+        coordinates: CLLocationCoordinate2D(latitude: 51.5792555, longitude: 0.1818896),
+        phone:"07548674958",
+      email:"info@collierrowromford.foodbank.org.uk",
+       link:"https://collierrowromford.foodbank.org.uk/give-help/donate-food/"
+    ),
+    
+    Location(
+        name:"Rainham",
+    address:"First Floor, The Mick Fury House, Lowen Road",
+    cityName: "London",
+      postcode:"RM13 8HT",
+        coordinates: CLLocationCoordinate2D(latitude: 51.528875, longitude: 0.169613),
+        phone:"01708397484",
+      email:"info@rainham.foodbank.org.uk",
+       link:"https://rainham.foodbank.org.uk/give-help/donate-food/"
+    ),
+    
+    Location(
+        name:"St Marks Centre, Newham",
+    address:"218 Tollgate Road, Beckton",
+    cityName: "London",
+      postcode:"E6 5YA",
+        coordinates: CLLocationCoordinate2D(latitude: 51.5158572, longitude: 0.0556153),
+        phone:"07483159872",
+      email: "info@newhamfoodbank.org.uk",
+       link:"https://newhamfoodbank.org.uk"
+    ),
+    
+    Location(
+        name:"Ascension Church Centre, Newham District",
+    address:"Baxter Road",
+    cityName: "London",
+      postcode: "E16 3HJ",
+        coordinates: CLLocationCoordinate2D(latitude:51.5112398, longitude:0.03734710000000001),
+        phone: "02075111232",
+      email:"info@newhamdistrict.foodbank.org.uk",
+       link:"https://newhamdistrict.foodbank.org.uk/give-help/donate-food/"
+    ),
+    
+    //https://www.givefood.org.uk/api/2/foodbanks/search/?address=HA13HP
 
-
-
-
+    
+    Location(
+        name:"Harrow Food Bank",
+    address:"Unit H2, Phoenix Business Centre",
+    cityName: "London",
+      postcode: "HA1 2SP",
+        coordinates: CLLocationCoordinate2D(latitude:51.588673, longitude: -0.3287718),
+        phone: "02084167344",
+      email:"info@harrow.foodbank.org.uk",
+       link:"https://harrow.foodbank.org.uk/give-help/donate-food/"
+    ),
+    
+    Location(
+        name:"Trinity Church, Colindale",
+    address:"Northwest Centre, Avion Crescent, Grahame Park Way",
+    cityName: "London",
+      postcode: "NW9 5QY",
+        coordinates: CLLocationCoordinate2D(latitude:51.6015024, longitude:-0.2393656),
+        phone: "07415223963",
+      email:"info@colindale.foodbank.org.uk",
+       link: "https://colindale.foodbank.org.uk/give-help/donate-food/"
+    ),
+    
+    Location(
+        name:"Red Trust Bushey",
+    address:"120-122 High Street, Bushey",
+    cityName: "London",
+      postcode: "WD23 3DE",
+        coordinates: CLLocationCoordinate2D(latitude:51.6446773, longitude:-0.3639859),
+        phone: "07483260440",
+      email:"foodbank@redtrustbushey.org",
+       link:"https://redtrustbushey.org/foodbank"
+    ),
+    
+    Location(
+        name:"St Anselm",
+    address:"St Anselm, Hayes",
+    cityName: "London",
+      postcode:"UB3 4DF",
+        coordinates: CLLocationCoordinate2D(latitude:51.5052629, longitude:-0.4194649),
+        phone: "02038550113",
+      email:"office@stanselm.co.uk",
+       link:"https://www.stanselm.co.uk/foodbank/"
+    ),
+    
+    Location(
+        name: "GoKula Vegetarian",
+    address:"65 Market Street, Watford",
+    cityName: "London",
+      postcode:  "WD18 0PR",
+        coordinates: CLLocationCoordinate2D(latitude:51.6541326, longitude:-0.3994297),
+        phone: "0",
+      email:"info@newhamdistrict.foodbank.org.uk",
+       link:"https://www.facebook.com/GoKulaCafe/"
+    ),
+    
+    Location(
+        name:"Hillingdon",
+    address: "4 New Windsor Street, Uxbridge",
+    cityName: "London",
+      postcode: "UB8 2TU",
+        coordinates: CLLocationCoordinate2D(latitude:51.5445343, longitude:-0.4824173999999999),
+        phone: "07859710747",
+      email:"hillingdonfoodbank@kingsborough.org.uk",
+       link:"https://hillingdon.foodbank.org.uk/give-help/donate-food/"
+    )
     
 
     
