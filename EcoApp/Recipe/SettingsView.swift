@@ -89,6 +89,16 @@ struct SettingsView: View {
                     )
 
                 }
+                Button("Logout"){
+                    try? Auth.auth().signOut()
+                    logStatus = false
+                }
+                
+                Button("Delete Account"){
+                    Auth.auth().currentUser?.delete()
+                    try? Auth.auth().signOut()
+                    logStatus = false
+                }
                 //.onAppear {
                   //  getUserEmail()
                 //}
