@@ -13,12 +13,16 @@ enum sortCookingTime {
     case desc;
 }
 struct RecipeSearchView: View {
+    @State private var isSaved : Bool = false
     let title: String
     let ingredients: [String]
     let cuisineTypes: [String]
     let image: String
     let totalTime: Float
     let url: String
+    
+  //  @State private var isSaved= false
+   
     
     var body: some View {
             ScrollView(.vertical, showsIndicators: false){
@@ -35,17 +39,36 @@ struct RecipeSearchView: View {
                             .resizable()
                             .scaledToFit()
                             .clipped()
+                            /**.overlay(
+                            Image(systemName: isSaved ? "star.fill" : "star")
+                                        .resizable()
+                                        .frame(width: 45, height: 45)
+                                       // .foregroundColor(.darkGreen)
+                                        .padding(5),
+                            alignment: .bottomTrailing
+                            ) */
                     } placeholder: {
                         ProgressView()
                     }
                     
                     Group {
-                        Text("\(title)")
-                            .font(.system(.title))
-                            .fontWeight(.bold)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(Color (.systemGreen))
-                            .padding(.top, 10)
+                      //  HStack {
+                            Text("\(title)")
+                                .font(.system(.title))
+                                .fontWeight(.bold)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(Color (.systemGreen))
+                                .padding(.top, 10)
+                           /** Spacer()
+                            
+                            Image(systemName: isSaved ? "star.fill" : "star")
+                                .resizable()
+                                .frame(width: 28, height: 28)
+                                .foregroundColor(.green)
+                            // .foregroundColor(.darkGreen)
+                                .padding(5)
+                            
+                        } */
                     }
                     .padding(.horizontal, 24)
                     .padding(.vertical, 12)

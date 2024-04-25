@@ -44,7 +44,8 @@ struct ContentView: View {
                     Text("Favourites")
                     .tabItem { Label("Favourites", systemImage: "star")}
                     
-                    Text("Settings")
+                    //Text("Settings")
+                SettingsView()
                     .tabItem { Label("Settings", systemImage:
                     //shape
                     "gear")}

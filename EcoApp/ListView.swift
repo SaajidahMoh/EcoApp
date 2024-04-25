@@ -24,6 +24,7 @@ struct ListView: View {
     
     //@State private var activeTab: seperateTab = .active
     @State private var activeTab: seperateTab = .active
+    //private var ingredientsQuery: String = ""
     
     enum seperateTab: String, CaseIterable {
     case active = "Active"
@@ -246,6 +247,24 @@ struct ListView: View {
                  */
                 // Spacer()
                 
+                
+               /** Button(action: generateItems) {
+                       { networkModel().getCurrentRecipesIfNeeded { recipes in
+                        if let recipes = recipes {
+                            print ("Recipes fetched: \(recipes)")
+                        } else { print("No recipes")
+                        }}
+                }){
+                    Text("Generate")
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(buttonStatus ? Color.green : Color.gray)
+                        .cornerRadius(15)
+                }
+                .padding()
+                .disabled(!buttonStatus)
+            */
+                
                 Button(action: generateItems) {
                     Text("Generate")
                         .padding()
@@ -282,6 +301,12 @@ struct ListView: View {
             // .padding()
         }
         
+    }
+    
+     func updateIngredientsList() {
+        let checkedItems = itemsViewModel.items.filter({ $0.isChecked })
+       let ingredientsQuery = checkedItems.map {$0.name}.joined(separator: ",")
+         
     }
     
     //https://vikramios.medium.com/mastering-swift-local-notifications-a-developers-guide-f56b77ab64cc

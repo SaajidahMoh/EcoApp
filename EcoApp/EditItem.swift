@@ -27,12 +27,12 @@ struct EditItem: View {
     @State private var imageURL : URL?
     
     //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
-        @State private var selection = ""
-        let place = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer"]
+    @State private var selection = ""
+    let place = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer"]
     
     //https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
-   // @State var isPickerShowing = false
-   // @State var selectedImage: UIImage?
+    // @State var isPickerShowing = false
+    // @State var selectedImage: UIImage?
     
     @State var shouldShowImagePicker = false // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
     
@@ -51,60 +51,67 @@ struct EditItem: View {
         NavigationView{
             Form {
                 
-              //  Section(header: Text("Image")){
-                    // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-                   // if let image = self.image {
-                    //if selectedImage != nil {
-                    //if let selectedImage = self.selectedImage {
-                        // https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
-                       // Image(uiImage: selectedImage!)
-                       // Image(uiImage: image)
+                //  Section(header: Text("Image")){
+                // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                // if let image = self.image {
+                //if selectedImage != nil {
+                //if let selectedImage = self.selectedImage {
+                // https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
+                // Image(uiImage: selectedImage!)
+                // Image(uiImage: image)
                 
-               // if let imageURL = URL(string: imageURL) {
-                if let imageURL = imageURL {
-                    KFImage(imageURL)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 128, height: 128)
-                        // .cornerRadius(64)
-                        Button("Select Image"){
-                            shouldShowImagePicker.toggle()
-                        }
-                        .foregroundColor(.green)
-                        
-                    } else {Image(systemName: "photo")
-                            .resizable()
-                            .font(.system(size: 64))
-                            .padding()
-                        // .foregroundColor(Color(.label))
-                            .foregroundColor(.gray)
-                            .frame(height: 150)
-                        Button("Select Image"){
-                            shouldShowImagePicker.toggle()
-                        }
-                        .foregroundColor(.green)
-                      //  .sheet(isPresented: $isPickerShowing, onDismiss: nil) {
-                      //      ImagePicker(selectedImage: $selectedImage, isPickerShowing: $isPickerShowing)}
+                // if let imageURL = URL(string: imageURL) {
+                if let selectedImage = self.image{
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 128, height: 128)
                     
-                            // ImagePicker(image: $self.image))
-                        // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-                        .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
-                                   ImagePicker(image: $image)
-                               }
-                        
-                        .onAppear {
-                            imageURL = URL(string: item.imageURL)
-                        }
-                        
-                       // .onAppear {
-                         //   image = item.name
-                        // }
-                            
-                            //Image(image)
-                        
-                    } 
+                }
+                else if let imageURL = imageURL {
+                    KFImage(imageURL)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 128, height: 128)
+                    // .cornerRadius(64)
+                    Button("Select Image"){
+                        shouldShowImagePicker.toggle()
+                    }
+                    .foregroundColor(.green)
+                    
+                } else {Image(systemName: "photo")
+                        .resizable()
+                        .font(.system(size: 64))
+                        .padding()
+                    // .foregroundColor(Color(.label))
+                        .foregroundColor(.gray)
+                        .frame(height: 150)
+                    Button("Select Image"){
+                        shouldShowImagePicker.toggle()
+                    }
+                    .foregroundColor(.green)
+                    //  .sheet(isPresented: $isPickerShowing, onDismiss: nil) {
+                    //      ImagePicker(selectedImage: $selectedImage, isPickerShowing: $isPickerShowing)}
+                    
+                    // ImagePicker(image: $self.image))
+                    // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                    .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
+                        ImagePicker(image: $image)
+                    }
+                    
+                    .onAppear {
+                        imageURL = URL(string: item.imageURL)
+                    }
+                    
+                    // .onAppear {
+                    //   image = item.name
+                    // }
+                    
+                    //Image(image)
+                    
+                }
                 
-               // }
+                // }
                 Section(header: Text("Ingredient name")) {
                     TextField("Item Name", text: $name)
                         .onAppear {
@@ -135,7 +142,7 @@ struct EditItem: View {
                 
                 Section(header: Text("Category")) {
                     //VStack(alignment: .leading){
-                   //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
+                    //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
                     Picker("Select A Cateogry", selection: $selection){
                         ForEach(place, id: \.self) {
                             Text($0)
@@ -145,10 +152,10 @@ struct EditItem: View {
                     .onAppear {
                         selection = item.selection
                     }
-                  //  Text("Selected category: \(selection)")
+                    //  Text("Selected category: \(selection)")
                     //.frame(minHeight: 80)
                     //.frame(height: 40)
-                        .multilineTextAlignment(.leading)
+                    .multilineTextAlignment(.leading)
                     
                 }
                 
@@ -179,92 +186,92 @@ struct EditItem: View {
                 
             } .foregroundColor(.green)
                 .bold()
-            
+                                
             )
-           
-
-
             
-          /**  .toolbar {
-                Button("  Save  "){
-                }
-                .foregroundColor(.green)
-                .bold()
-                
-                .overlay(alignment: .topTrailing, content:{ Button("Cancel"){
-                    showEmailVerificationView = false
-                    // Delete account in Firebase
-                    /** if let user = Auth.auth().currentUser{
-                     user.delete { _ in
-                     isLoading = false}
-                     } */
-                    
-                } .padding(15)
-                })
-               .padding(.bottom, 15)
-            } */
+            
+            
+            
+            /**  .toolbar {
+             Button("  Save  "){
+             }
+             .foregroundColor(.green)
+             .bold()
+             
+             .overlay(alignment: .topTrailing, content:{ Button("Cancel"){
+             showEmailVerificationView = false
+             // Delete account in Firebase
+             /** if let user = Auth.auth().currentUser{
+              user.delete { _ in
+              isLoading = false}
+              } */
+             
+             } .padding(15)
+             })
+             .padding(.bottom, 15)
+             } */
         }
         .alert(isPresented: $showAlert){
             Alert(title: Text("Alert"), message:Text(alertMessage), dismissButton: .default(Text("Ok")) {
                 //isPresented = false
                 self.presentationMode.wrappedValue.dismiss()
                 itemsViewModel.fetchItemsAfterButton()
-             //   self.persistImageToStorage() //copied LBTA
-               
-                    // goBack = true
+                //   self.persistImageToStorage() //copied LBTA
+                
+                // goBack = true
             })
-
+            
         }
         
     }
     
     /**private func persistImageToStorage(){
-        guard let userID = userID else {
-            print("User not logged in")
-            return
-        }
-        // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-        // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-        let ref = Storage.storage().reference(withPath: userID)
-        
-        //"images/\(userID)/\(UUID().uuidString).jpg")
-        
-               guard let imageData = self.image?.jpegData(compressionQuality: 0.5) else { return }
-        
-        ref.putData(imageData, metadata: nil) { metadata, err in
-                    if let err = err {
-                        showAlert(message: "Failed to push image to Storage: \(err)")
-                        return
-                    }
-                    
-                    ref.downloadURL { url, err in
-                        if let err = err {
-                            showAlert(message: "Failed to retrieve downloadURL: \(err)")
-                            return
-                        }
-                        
-                        showAlert(message: "Successfully stored image with url: \(url?.absoluteString ?? "")")
-                        
-                       // print(url?.absoluteString)
-                        
-                        // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Installing-Firestore-and-Saving-User-Data-Collection
-                      //  self.storeItemImage(imageItemUrl: url)
-                    }
-                }
-            
-        
-    }*/
+     guard let userID = userID else {
+     print("User not logged in")
+     return
+     }
+     // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+     // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+     let ref = Storage.storage().reference(withPath: userID)
+     
+     //"images/\(userID)/\(UUID().uuidString).jpg")
+     
+     guard let imageData = self.image?.jpegData(compressionQuality: 0.5) else { return }
+     
+     ref.putData(imageData, metadata: nil) { metadata, err in
+     if let err = err {
+     showAlert(message: "Failed to push image to Storage: \(err)")
+     return
+     }
+     
+     ref.downloadURL { url, err in
+     if let err = err {
+     showAlert(message: "Failed to retrieve downloadURL: \(err)")
+     return
+     }
+     
+     showAlert(message: "Successfully stored image with url: \(url?.absoluteString ?? "")")
+     
+     // print(url?.absoluteString)
+     
+     // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Installing-Firestore-and-Saving-User-Data-Collection
+     //  self.storeItemImage(imageItemUrl: url)
+     }
+     }
+     
+     
+     }*/
     /**private func storeItemImage(imageItemUrl: URL) {
-        guard let userID = userID else {
-            print("User not logged in")
-            return
-        }
-    
-        Storage.storage.firestore.collection("items").document(userID).collection("Item").addDoc
-        
-        
-        
-    } */
+     guard let userID = userID else {
+     print("User not logged in")
+     return
+     }
+     
+     Storage.storage.firestore.collection("items").document(userID).collection("Item").addDoc
+     
+     
+     
+     } */
     func updateNewItem() {
         guard let userID = userID else {
             print("User not logged in")
@@ -282,7 +289,7 @@ struct EditItem: View {
         
         // https://firebase.google.com/docs/firestore/query-data/queries
         // https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
-    //https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
+        //https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
         
         collectionRef.whereField("id", isEqualTo: item.id).addSnapshotListener { (querySnapshot, error) in
             if let error = error {
@@ -298,48 +305,85 @@ struct EditItem: View {
             if let document = documents.first {
                 let documentID = document.documentID
                 
-                let updateData: [String:Any] = [
+                var updateData: [String:Any] = [
                     "id" : UUID().uuidString,
                     "name": name,
                     "quantity": quantity,
                     "expiryDate": expiryDate,
                     "description": description,
                     "selection": selection,
-                 //   "imageURL": imageURL
+                    //   "imageURL": imageURL
                     "imageURL": imageURL?.absoluteString ?? ""
                 ]
                 
-                
-                // https://firebase.google.com/docs/firestore/manage-data/add-data
-                collectionRef.document(documentID).setData(updateData, merge: true){ error in
-                    if let error = error {
-                        print("Error updating item \(item.name): \(error.localizedDescription)")
-                    } else {
-                        print("Item \(item.name) with id \(item.id) updated successfully.")
+                if let newImage = image {
+                    let storeImage = UUID().uuidString
+                    let ref = Storage.storage().reference(withPath: "images/\(userID)/\(storeImage).jpg")
+                    
+                    guard let imageData = self.image?.jpegData(compressionQuality: 0.5) else { return }
+                    
+                    ref.putData(imageData, metadata: nil) { metadata, err in
+                        if let err = err {
+                            showAlert(message: "Failed to push image to Storage: \(err)")
+                            return
+                        }
                         
-                        // Add the index to the delete from list
+                        ref.downloadURL { url, err in
+                            if let err = err {
+                                showAlert(message: "Failed to retrieve downloadURL: \(err)")
+                                return
+                            }
+                            guard let imageURLstring = url?.absoluteString else {
+                                showAlert(message: "Unable to store image with url: \(url?.absoluteString ?? "")")
+                                return
+                            }
+                            
+                            updateData["imageURL"] = imageURLstring
+                            
+                            
+                            // https://firebase.google.com/docs/firestore/manage-data/add-data
+                            collectionRef.document(documentID).setData(updateData, merge: true){ error in
+                                if let error = error {
+                                    print("Error updating item \(item.name): \(error.localizedDescription)")
+                                } else {
+                                    print("Item \(item.name) with id \(item.id) updated successfully.")
+                                    
+                                    // Add the index to the delete from list
+                                }
+                            }
+                        } }
+                }else {
+                    collectionRef.document(documentID).setData(updateData, merge: true){ error in
+                        if let error = error {
+                            print("Error updating item \(item.name): \(error.localizedDescription)")
+                        } else {
+                            print("Item \(item.name) with id \(item.id) updated successfully.")
+                            
+                            // Add the index to the delete from list
+                        }
                     }
                 }
             } else {
-                print("No document found for item \(item.name)")
+                print("\(item.name) failed to save")
             }
         }
-
-
+        
+        
         
     }
     
     
-        func showAlert(message:String){
-            alertMessage = message
-            showAlert = true
+    func showAlert(message:String){
+        alertMessage = message
+        showAlert = true
         
     }
 }
-    
-                     
+
+
 /**
-#Preview {
-    EditItem(item: item)
-}
-*/
+ #Preview {
+ EditItem(item: item)
+ }
+ */
+

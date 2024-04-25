@@ -8,7 +8,7 @@
 
 import SwiftUI
 import Firebase
-
+/**
 struct NewItemView: View {
     @State private var name = ""
     @State private var quantity = 1
@@ -114,3 +114,4 @@ struct NewItemView: View {
 #Preview {
     NewItemView()
 }
+*/

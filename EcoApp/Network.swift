@@ -8,7 +8,13 @@
 
 import Foundation
 
+
+struct constants {
+    static var APIKey = "0bb74debbf10414cadeea785324753f9"
+}
+
 class networkModel {
+
     func sendRequest(searchTerm :String,completion : @escaping (RecipeData) -> Void ) {
         /* Configure session, choose between:
            * defaultSessionConfiguration

@@ -25,6 +25,28 @@ struct Recipe: Decodable {
     let url: String
 }
 
+// Foodpedia
+struct ReceipeModel : Codable , Hashable{
+    
+    let id : Int
+    let title : String
+    let image : String
+    let likes : Int
+    let usedIngredients : [ReceipeIngredient]
+    let missedIngredients : [ReceipeIngredient]
+    
+}
+
+//Foodpedia
+struct ReceipeIngredient : Codable , Hashable {
+    let id : Int
+    let amount : Double
+    let unit : String
+    let name : String
+    let image : String
+    let aisle : String
+}
+
 
 //struct Recipe : Codable {
 //    let title: String
