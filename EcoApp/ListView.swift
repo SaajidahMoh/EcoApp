@@ -19,7 +19,8 @@ struct ListView: View {
     @State private var barcode_string: String?
     @State private var foundProduct: Product?
     @State private var showScanItem = false
-    @State private var sortedTab: Tab = .defaultSetting
+    @State private var showDeleteIng = false
+    @State private var sortedTab: Tab = .expiryDate
    // @State private var sortedTab1: Tab = .defaultSetting
     
     //@State private var activeTab: seperateTab = .active
@@ -32,19 +33,19 @@ struct ListView: View {
     }
     
     enum Tab: String, CaseIterable{
-        case defaultSetting
         case expiryDate
         case category
     }
     
     var sortedItems:[Items]{
         switch sortedTab {
-        case .defaultSetting:
-            return itemsViewModel.items
         case .expiryDate:
+            // convert timestamp to date.
             return itemsViewModel.items.sorted(by: {$0.expiryDate.dateValue() < $1.expiryDate.dateValue() })
         case .category:
-            return itemsViewModel.items
+                //return itemsViewModel.items
+            return itemsViewModel.items.sorted(by:{$0.expiryDate.dateValue() < $1.expiryDate.dateValue() })
+                                                //{$0.selection < $1.selection })
         }
     }
     
@@ -125,7 +126,7 @@ struct ListView: View {
                         }
 */
                 
-                List {
+             /**   List {
                     
                     
                     ForEach(sortedItems, id: \.id) { item in
@@ -151,7 +152,43 @@ struct ListView: View {
                     //.onDelete { indexSet in ItemsViewModel.remove(attOffsets: indexSet)}
                     
                     
+                }*/
+                
+                List {
+                    if sortedTab == .category {
+                        // New list of categories
+                        let categList = Set(sortedItems.map { $0.selection })
+                        
+                        // sort items for each list
+                        ForEach(categList.sorted(), id: \.self) { category in
+                            let eachItem = sortedItems.filter { $0.selection == category }
+                            
+                          // display output
+                            Section(header: Text(category)) {
+                                ForEach(eachItem, id: \.id) { item in
+                                    ItemRow(item: item)
+                                        .environmentObject(itemsViewModel)
+                                        .onAppear {
+                                            scheduleNotification(for: item)
+                                        }
+                                }
+                               // .onDelete(perform: deleteItems) // Move onDelete to the ForEach within the Section
+                            }
+                        }
+                    } else {
+                        // If not sorted by category, display items without sections
+                        ForEach(sortedItems, id: \.id) { item in
+                            ItemRow(item: item)
+                                .environmentObject(itemsViewModel)
+                                .onAppear {
+                                    scheduleNotification(for: item)
+                                }
+                        }
+                        .onDelete(perform: deleteItems) // Apply onDelete to the ForEach
+                    }
                 }
+
+
                 
                 /**
                  List(itemsViewModel.items, id: \.id ) {items in
@@ -196,17 +233,48 @@ struct ListView: View {
 
                                             
                                             
-                                            Button(action:  {sortedTab = .defaultSetting}) {
+                                          /**  Button(action:  {sortedTab = .defaultSetting}) {
                                                 Label("Default", systemImage: sortedTab == .defaultSetting ? "checkmark" : "" )
                                                  //   .foregroundColor(sortedTab == .defaultSetting ? .red : .green)
-                                            }  //.foregroundColor(sortedTab == .defaultSetting ? .red : .green)
+                                            }  //.foregroundColor(sortedTab == .defaultSetting ? .red : .green) */
                                         }.foregroundColor(.red)
+                                        
+                                        
+                                        Section(header: Text("Clear Ingredients")){
+                        
+                                            // clear saved recipes
+                                            Button(action: {
+                                                showDeleteIng = true
+                                                SettingsView().clearIngredients()
+                                                
+                                            }) {
+                                                Label ("Delete All Ingredients", systemImage: "trash")
+                                            }.foregroundColor(.red)
+                                            
+                                        }
+                                      
+                                        .alert(isPresented: $showDeleteIng){
+                                            Alert(title: Text( "Deleting All stored recipes"),
+                                                  message: Text("Are you sure you want to do this?"),
+                                                  primaryButton: .destructive(Text("Yes")){
+                                                SettingsView().clearIngredients()
+                                                showDeleteIng = false
+                                            }, secondaryButton: .cancel(Text("Cancel"))
+                                            )
+                                            
+                                        }
+                                        
+                                        
                                     }
                                     label: {
                                         Label("Add", systemImage: "plus")
                                     }
                                 }
-                            } .fullScreenCover(isPresented: $showAddItem, onDismiss: nil) {
+                            }
+               
+
+                
+                .fullScreenCover(isPresented: $showAddItem, onDismiss: nil) {
                                 AddItem()
                             }
                             .fullScreenCover(isPresented: $showScanItem) {
@@ -714,11 +782,18 @@ struct EachItemView: View {
                  */
                 if !item.imageURL.isEmpty{
                     Section(header: Text("IMAGE")){
-                        KFImage(URL(string: "\(item.imageURL)")!)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 128, height: 128)
+                        HStack{
+                            Spacer()
+                            KFImage(URL(string: "\(item.imageURL)")!)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 240, height: 240)
+                                .background()
+                            Spacer()
+                        }
+                        .background(Color(UIColor.systemGroupedBackground))
                     }
+                    .background(Color(UIColor.systemGroupedBackground)) 
                 }
 
                 
@@ -853,5 +928,6 @@ struct EachItemView: View {
     ListView()
         //.environmentObject(itemsViewModel)
 }
+
 
 

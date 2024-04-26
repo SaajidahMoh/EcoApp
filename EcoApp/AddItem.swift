@@ -388,6 +388,17 @@ struct AddItem: View {
             }
         }
         else {
+            
+            guard !name.isEmpty else {
+                showAlert(message: "Please enter an item name.")
+                return
+            }
+            
+            guard !selection.isEmpty else {
+                showAlert(message: "Please select a category.")
+                return
+            }
+            
             let itemData : [String:Any] = [
                 "id" : UUID().uuidString,
                 "name": name,
