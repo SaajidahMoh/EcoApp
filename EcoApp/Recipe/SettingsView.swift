@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Firebase
+import UserNotifications
 
 struct SettingsView: View {
     @AppStorage("log_status") private var logStatus: Bool = false
@@ -15,7 +16,11 @@ struct SettingsView: View {
     @State private var showAlert = false
     @State private var showDeleteAlert = false
     @State private var showDeleteFav = false
+    @State private var showDeleteIng = false
  
+    @State private var showLogout = false
+    @State private var showDeleteAcc = false
+    
     @State private var alertMessage = ""
     
     var userID: String? {
@@ -44,77 +49,126 @@ struct SettingsView: View {
                         
                     }
                     
-                    Section(header: Text("Clear Data"))
+                    Section(header: Text("Clear Ingredients"))
                     {
                         // clear all ingredients
                         Button(action: {
-                            showDeleteAlert = true
+                            // showDeleteAlert = true
+                            //clearIngredients()
+                            showDeleteIng = true
+                            print("printed")
                             
                         }) {
                             Text("Delete All Ingredients")
+                        }
+                        .foregroundColor(.red)
+                    }
+                            .alert(isPresented: $showDeleteIng){
+                                Alert(title: Text( "Deleting All Ingredients"),
+                                      message: Text("Are you sure you want to do this?"),
+                                      primaryButton: .destructive(Text("Yes")){
+                                    clearIngredients()
+                                    showDeleteIng = false
+                                        //      UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                                    
+                                }, secondaryButton: .cancel(Text("Cancel"))
+                                )
+                                
+                            }
+                    
+                    Section(header: Text("Clear Recipes")){
+    
+                        // clear saved recipes
+                        Button(action: {
+                            showDeleteFav = true
+                            
+                        }) {
+                            Text("Delete All Saved Recipes")
                         }.foregroundColor(.red)
                         
-                        // clear saved recipes
-                         Button(action: {
-                         showDeleteFav = true
-                         
-                         }) {
-                         Text("Delete All Saved Recipes")
-                         }.foregroundColor(.red)
+                    }
+                  
+                    .alert(isPresented: $showDeleteFav){
+                        Alert(title: Text( "Deleting All stored recipes"),
+                              message: Text("Are you sure you want to do this?"),
+                              primaryButton: .destructive(Text("Yes")){
+                            clearSaved()
+                            showDeleteFav = false
+                        }, secondaryButton: .cancel(Text("Cancel"))
+                        )
                         
                     }
-                }
                     .onAppear {
                         getUserEmail()
                     }
-                
-                
-                .alert(isPresented: $showDeleteAlert){
-                    Alert(title: Text( "Deleting All ingredients"),
-                          message: Text("Are you sure you want to do this?"),
-                          primaryButton: .destructive(Text("Yes")){
-                        clearIngredients()
-                        showDeleteAlert = false
-                    }, secondaryButton: .cancel(Text("Cancel"))
-                    )
-
-                }
-                .alert(isPresented: $showDeleteFav){
-                    Alert(title: Text( "Deleting All stored recipes"),
-                          message: Text("Are you sure you want to do this?"),
-                          primaryButton: .destructive(Text("Yes")){
-                        clearSaved()
-                        showDeleteAlert = false
-                    }, secondaryButton: .cancel(Text("Cancel"))
-                    )
-
-                }
-                Button("Logout"){
-                    try? Auth.auth().signOut()
-                    logStatus = false
-                }
-                
-                Button("Delete Account"){
-                    Auth.auth().currentUser?.delete()
-                    try? Auth.auth().signOut()
-                    logStatus = false
-                }
-                //.onAppear {
-                  //  getUserEmail()
-                //}
-                
-                /**Button("Logout"){
-                    try? Auth.auth().signOut()
-                    logStatus = false
-                    
                     
                 }
-                .padding(.bottom, 10)
-                //.padding()*/
+                
                 
             
+                    //https://sarunw.com/posts/swiftui-button-size/
+                    Button {
+                        Logout()
+                    }    label : {
+                        HStack {
+                            Image(systemName: "arrow.down.right.and.arrow.up.left")
+                            Text("LOGOUT")
+                                .fontWeight(.bold)
+                        }
+                    }
+                    
+                       // .frame(width: .infinity, height: 70)
+                       // .frame(width: 138, height: 35)
+                        .buttonStyle(.bordered)
+                        .controlSize(.large)
+                        .multilineTextAlignment(.center)
+
+                    // https://sarunw.com/posts/swiftui-button-size/
+                    Button("Delete Account"){
+                        showDeleteAcc = true
+                       // UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                        
+                    }    .font(.headline)
+                        // .frame(width: 138, height: 35)
+                        //.frame(width: .infinity, height: 70)
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+
+                    //.onAppear {
+                    //  getUserEmail()
+                    //}
+                    
+                    /**Button("Logout"){
+                     try? Auth.auth().signOut()
+                     logStatus = false
+                     
+                     
+                     }
+                     .padding(.bottom, 10)
+                     //.padding()*/
+                    
+                
                 
                 .navigationTitle("Settings")
+            }
+            .background(Color(UIColor.systemGroupedBackground))
+            
+       
+            
+            .alert(isPresented: $showDeleteAcc){
+                Alert(title: Text( "Deleting your account"),
+                      message: Text("Are you sure you want to delete your account?"),
+                      primaryButton: .destructive(Text("Yes")){
+                    Auth.auth().currentUser?.delete()
+                    showDeleteAcc = false
+                    delUserEmail()
+                   // clearIngredients()
+                    //clearSaved()
+                  //  Logout()
+                  //  showDeleteAcc = false
+                }, secondaryButton: .cancel(Text("Cancel"))
+                )
+
             }
             
             
@@ -147,6 +201,29 @@ struct SettingsView: View {
         }
     }
     
+    func delUserEmail() {
+        if let userID = Auth.auth().currentUser?.uid {
+            let db = Firestore.firestore()
+            let userRef = db.collection("users").document(userID)
+            
+            userRef.delete { error in
+                if let error = error {
+                    print("Error deleting user email: \(error.localizedDescription)")
+                    
+                } else {
+                    print("user deleted")
+                    
+                }
+            }}
+        clearIngredients()
+        clearSaved()
+        Logout()
+    }
+                
+                
+                
+     
+    
     func clearIngredients(){
         if let userID = userID {
             let db = Firestore.firestore()
@@ -170,8 +247,11 @@ struct SettingsView: View {
                         for document in querySnapshot!.documents {
                             document.reference.delete()
                         }
+                           // UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
                         
                         print("All items are cleared.")
+                        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                        print("notifs removed")
                     }
                 
             
@@ -216,11 +296,17 @@ struct SettingsView: View {
     }
     
     
+    /**
+     func showAlert(message:String){
+         alertMessage = message
+         showAlert = true
+     
+ }*/
     
-        func showAlert(message:String){
-            alertMessage = message
-            showAlert = true
-        
+    func Logout() {
+        logStatus = false
+        try? Auth.auth().signOut()
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
 }
 /**
