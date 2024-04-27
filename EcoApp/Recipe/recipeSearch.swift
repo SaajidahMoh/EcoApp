@@ -14,7 +14,7 @@ import SwiftUI
  https://xavier7t.com/swiftui-list-with-sort-options
  */
 enum SortOption {
-    case quickest, longest
+    case defaultTime, quickest, longest
 }
 
 
@@ -23,8 +23,11 @@ struct recipeSearch: View {
     @State private var recipes: [Hit] = []
     @State private var isSaved : Bool = false
     @State private var isAscending = false
-    @State private var selectedTheme = "Select Option"
-    var UniqueCuisineTypes: [String] = ["Select Option","american", "asian", "british", "caribbean", "central europe", "chinese",  "eastern europe", "french", "greek",  "indian", "italian", "japanese", "korean", "kosher", "mediterranean", "mexican", "middle eastern", "nordic", "south american", "south east asian", "world" ]
+    @State private var selectedTheme = "Select Cuisine"
+    var UniqueCuisineTypes: [String] = ["Select Cuisine","american", "asian", "british", "caribbean", "central europe", "chinese",  "eastern europe", "french", "greek",  "indian", "italian", "japanese", "korean", "kosher", "mediterranean", "mexican", "middle eastern", "nordic", "south american", "south east asian", "world" ]
+    
+    @State private var selectedDiet = "Select Diet"
+    var dietTypes : [String] = ["Select Diet", "balanced", "high-protein", "high-fiber", "low-fat", "low-carb", "low-sodium"]
     
     
     /*
@@ -36,10 +39,17 @@ struct recipeSearch: View {
          var filteredData = [Hit]()
             if !selectedTheme.isEmpty {
                 filteredData = recipes.filter { $0.recipe.cuisineType.contains(selectedTheme) }
-            }; if selectedTheme == "Select Option"{
+            }; if selectedTheme == "Select Cuisine"{
                  filteredData = recipes
-            }
+            }/**;  if !selectedDiet.isEmpty {
+                filteredData = recipes.filter{ $0.recipe.dietLabels.contains(selectedDiet)}
+                }; if selectedDiet == "Select Diet"{
+                    filteredData = recipes
+                }*/
+                
          switch sortOption {
+         case .defaultTime:
+             return filteredData
          case .quickest:
              return filteredData.sorted { $0.recipe.totalTime < $1.recipe.totalTime }
          case .longest:
@@ -50,17 +60,25 @@ struct recipeSearch: View {
     var body: some View {
         VStack {
             HStack {
-                Picker("Appearance", selection: $selectedTheme) {
+                Picker("Options", selection: $selectedTheme) {
                     ForEach(UniqueCuisineTypes, id: \.self) { cuisineType in
                         Text(cuisineType).tag(cuisineType)
                     }
                 }.pickerStyle(.menu)
                 
+              /**  Picker("Select Diet", selection: $selectedDiet) {
+                    ForEach(dietTypes, id: \.self) { dietLabels in
+                        Text(dietLabels).tag(dietLabels)
+                    }
+                }.pickerStyle(.menu) */
+                
                 Picker("Sort By", selection: $sortOption) {
+                    Text("Default").tag(SortOption.defaultTime)
                     Text("Shortest Time").tag(SortOption.quickest)
                     Text("Longest Time").tag(SortOption.longest)
                 }.pickerStyle(.menu)
             }
+           
             
             /** Button() {
                 
@@ -70,7 +88,7 @@ struct recipeSearch: View {
             
             NavigationView {
                 List(sortedTasks, id: \.recipe.url) { hit in
-                    NavigationLink(destination: RecipeSearchView(title: hit.recipe.label, ingredients: hit.recipe.ingredientLines, cuisineTypes: hit.recipe.cuisineType, image: hit.recipe.image, totalTime: hit.recipe.totalTime, url: hit.recipe.url)) {
+                    NavigationLink(destination: RecipeSearchView(title: hit.recipe.label, ingredients: hit.recipe.ingredientLines, cuisineTypes: hit.recipe.cuisineType, /**dietLabels: hit.recipe.dietLabels, */ image: hit.recipe.image, totalTime: hit.recipe.totalTime, url: hit.recipe.url)) {
                         RecipeCardView(hit: hit)
                             .padding(.vertical, 2)
                     }

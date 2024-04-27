@@ -274,7 +274,7 @@ struct SettingsView: View {
                 //    print("User document deleted successfully.")
                     
                     // delete the entire "Item" collection associated with the user
-                    let itemCollectionRef = db.collection("favoruites").document(userID).collection("Saved")
+                    let itemCollectionRef = db.collection("favourites").document(userID).collection("Saved")
                     itemCollectionRef.getDocuments { (querySnapshot, error) in
                         if let error = error {
                             print("Error getting documents from 'Item' collection: \(error.localizedDescription)")
@@ -285,7 +285,7 @@ struct SettingsView: View {
                             document.reference.delete()
                         }
                         
-                        print("All favoruites are cleared.")
+                        print("All favourites are cleared.")
                     }
                 
             

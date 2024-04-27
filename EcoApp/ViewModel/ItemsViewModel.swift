@@ -111,6 +111,7 @@ class ItemsViewModel : ObservableObject{
      
      */
     //chat gpt
+    
     func updateItem(itemID: String, isChecked: Bool) {
         guard let index = items.firstIndex(where: { $0.id == itemID }) else { return }
         items[index].isChecked = isChecked

@@ -11,6 +11,8 @@ import Firebase
 
 struct RecipeCardView : View {
     @State private var isSaved : Bool = false
+    @ObservedObject var viewModel = FavViewModel()
+    
     let hit: Hit
     let userID: String? = Auth.auth().currentUser?.uid
     
@@ -54,6 +56,7 @@ struct RecipeCardView : View {
                 }
                 .onAppear {
                     loadSavedState()
+                     
                 }
                 .padding(.trailing)
                 .padding(.vertical)
@@ -77,6 +80,8 @@ struct RecipeCardView : View {
             
             favouritesRef.whereField("label", isEqualTo: hit.recipe.label)
                 .whereField("url", isEqualTo: hit.recipe.url)
+                .whereField("imageURL", isEqualTo: hit.recipe.image)
+                .whereField("ingredients", isEqualTo: hit.recipe.ingredientLines)
                 .getDocuments { (querySnapshot, error) in
                     if let error = error {
                         print("Error getting documents: \(error.localizedDescription)")
@@ -87,11 +92,12 @@ struct RecipeCardView : View {
                         print("No documents found")
                         return
                     }
-                    
+                    /**
                     if let document = documents.first {
                         // Recipe found in Firestore, set isSaved to true
                         self.isSaved = true
-                    }
+                    }*/
+                    isSaved = !documents.isEmpty
                 }
         }
     

@@ -27,7 +27,7 @@ struct AddItem: View {
     
 //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
     @State private var selection = "Fridge"
-    let place = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer"]
+    let place = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer", "Countertop", "Cellar", "Fruit Basket", "Kitchen Cart"]
     
 //https://www.youtube.com/watch?v=YgjYVbg1oiA&t=1327s&ab_channel=CodeWithChris
     @State var isPickerShowing = false

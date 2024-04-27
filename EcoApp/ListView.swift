@@ -27,6 +27,12 @@ struct ListView: View {
     @State private var activeTab: seperateTab = .active
     //private var ingredientsQuery: String = ""
     
+    @State private var navigateToNextPage = false
+    @State private var recipesBasedOnIngredients : [RecipesBasedIngredients] = []
+    @State private var recipesSteps: [RecipeStep] = []
+    
+    
+    
     enum seperateTab: String, CaseIterable {
     case active = "Active"
     case expired = "Expired"
@@ -94,7 +100,7 @@ struct ListView: View {
                       logStatus = false
                       } */
                 
-               /** Picker("", selection: $activeTab) {
+                /** Picker("", selection: $activeTab) {
                  ForEach(seperateTab.allCases, id:  \.self) { option in
                  Text(option.rawValue)
                  }
@@ -105,54 +111,54 @@ struct ListView: View {
                  */
                 
                 /**if activeTab == .active {
-                            Picker("", selection: $activeTab) {
-                                ForEach(seperateTab.allCases, id:  \.self) { option in
-                                    Text(option.rawValue)
-                                }
-                            }
-                            .pickerStyle(.segmented)
-                            .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
-                            .listRowSeparator(.hidden)
-                        }
-                if activeTab == .expired {
-                            Picker("", selection: $activeTab) {
-                                ForEach(seperateTab.allCases, id:  \.self) { option in
-                                    Text(option.rawValue)
-                                }
-                            }
-                            .pickerStyle(.segmented)
-                            .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
-                            .listRowSeparator(.hidden)
-                        }
-*/
+                 Picker("", selection: $activeTab) {
+                 ForEach(seperateTab.allCases, id:  \.self) { option in
+                 Text(option.rawValue)
+                 }
+                 }
+                 .pickerStyle(.segmented)
+                 .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
+                 .listRowSeparator(.hidden)
+                 }
+                 if activeTab == .expired {
+                 Picker("", selection: $activeTab) {
+                 ForEach(seperateTab.allCases, id:  \.self) { option in
+                 Text(option.rawValue)
+                 }
+                 }
+                 .pickerStyle(.segmented)
+                 .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
+                 .listRowSeparator(.hidden)
+                 }
+                 */
                 
-             /**   List {
-                    
-                    
-                    ForEach(sortedItems, id: \.id) { item in
-                   // ForEach(itemsViewModel.items, id: \.id) { item in
-                        //ForEach(ingredientsSection, id: \.id) { item in
-                        // ItemRow(item: item)
-                        ItemRow(item: item)
-                            .environmentObject(itemsViewModel)
-                        //notifications
-                            .onAppear {
-                                scheduleNotification(for: item)
-                            }
-                        // https://peterfriese.dev/blog/2021/swiftui-listview-part4/#:~:text=of%20styling%20options)-,Swipe%2Dto%2Ddelete,loop%20inside%20a%20List%20view.
-                        /** .onDelete { indexSet in
-                         //item.remove(atOffsets: indexSet)
-                         itemsViewModel.deleteItem(atOffsets: indexSet)
-                         } */
-                    }
-                    // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
-                    .onDelete(perform: deleteItems)
-                    
-                    // https://www.youtube.com/watch?v=KMtdBgHwvGY&ab_channel=JohnGallaugher
-                    //.onDelete { indexSet in ItemsViewModel.remove(attOffsets: indexSet)}
-                    
-                    
-                }*/
+                /**   List {
+                 
+                 
+                 ForEach(sortedItems, id: \.id) { item in
+                 // ForEach(itemsViewModel.items, id: \.id) { item in
+                 //ForEach(ingredientsSection, id: \.id) { item in
+                 // ItemRow(item: item)
+                 ItemRow(item: item)
+                 .environmentObject(itemsViewModel)
+                 //notifications
+                 .onAppear {
+                 scheduleNotification(for: item)
+                 }
+                 // https://peterfriese.dev/blog/2021/swiftui-listview-part4/#:~:text=of%20styling%20options)-,Swipe%2Dto%2Ddelete,loop%20inside%20a%20List%20view.
+                 /** .onDelete { indexSet in
+                  //item.remove(atOffsets: indexSet)
+                  itemsViewModel.deleteItem(atOffsets: indexSet)
+                  } */
+                 }
+                 // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
+                 .onDelete(perform: deleteItems)
+                 
+                 // https://www.youtube.com/watch?v=KMtdBgHwvGY&ab_channel=JohnGallaugher
+                 //.onDelete { indexSet in ItemsViewModel.remove(attOffsets: indexSet)}
+                 
+                 
+                 }*/
                 
                 List {
                     if sortedTab == .category {
@@ -163,7 +169,7 @@ struct ListView: View {
                         ForEach(categList.sorted(), id: \.self) { category in
                             let eachItem = sortedItems.filter { $0.selection == category }
                             
-                          // display output
+                            // display output
                             Section(header: Text(category)) {
                                 ForEach(eachItem, id: \.id) { item in
                                     ItemRow(item: item)
@@ -172,7 +178,7 @@ struct ListView: View {
                                             scheduleNotification(for: item)
                                         }
                                 }
-                               // .onDelete(perform: deleteItems) // Move onDelete to the ForEach within the Section
+                                // .onDelete(perform: deleteItems) // Move onDelete to the ForEach within the Section
                             }
                         }
                     } else {
@@ -187,8 +193,8 @@ struct ListView: View {
                         .onDelete(perform: deleteItems) // Apply onDelete to the ForEach
                     }
                 }
-
-
+                
+                
                 
                 /**
                  List(itemsViewModel.items, id: \.id ) {items in
@@ -197,116 +203,116 @@ struct ListView: View {
                 .navigationTitle("Ingredients")
                 // https://swiftwithmajid.com/2020/08/05/menus-in-swiftui/
                 .toolbar {
-                                ToolbarItem(placement: .primaryAction) {
-                                    Menu {
-                                        Section {
-                                            Button(action: {
-                                                showAddItem.toggle()
-                                            }) {
-                                                Label("Add Item", systemImage: "text.badge.plus")
-                                            }
-
-                                            Button(action: {
-                                                //showScanItem.toggle()
-                                                showScanItem = true
-                                            }) {
-                                                Label("Scan Item", systemImage: "barcode.viewfinder")
-                                            }
-                                        }
-
-                                        Section(header: Text("Sorting")) {
-                                            Button(action: {
-                                                sortedTab = .expiryDate
-                                            }) {
-                                                Label("Sort By Date", systemImage: sortedTab == .expiryDate ? "checkmark" : "arrow.up.arrow.down")
-                                                   // .foregroundColor(.red)
-                                            }
-                                            Button(action: {sortedTab = .category}) {
-                                                Label("Sort By Category", systemImage: sortedTab == .category ? "checkmark" : "list.star")
-                                               //     .foregroundColor(.red)
-                                            }
-                                            
-                                           /** Button(action: {activeTab = .active}) {
-                                                Label("Active vs Expired", systemImage: activeTab == .active ? "checkmark" : "list.star")
-                                               //     .foregroundColor(.red)
-                                            } */
-
-                                            
-                                            
-                                          /**  Button(action:  {sortedTab = .defaultSetting}) {
-                                                Label("Default", systemImage: sortedTab == .defaultSetting ? "checkmark" : "" )
-                                                 //   .foregroundColor(sortedTab == .defaultSetting ? .red : .green)
-                                            }  //.foregroundColor(sortedTab == .defaultSetting ? .red : .green) */
-                                        }.foregroundColor(.red)
-                                        
-                                        
-                                        Section(header: Text("Clear Ingredients")){
-                        
-                                            // clear saved recipes
-                                            Button(action: {
-                                                showDeleteIng = true
-                                                SettingsView().clearIngredients()
-                                                
-                                            }) {
-                                                Label ("Delete All Ingredients", systemImage: "trash")
-                                            }.foregroundColor(.red)
-                                            
-                                        }
-                                      
-                                        .alert(isPresented: $showDeleteIng){
-                                            Alert(title: Text( "Deleting All stored recipes"),
-                                                  message: Text("Are you sure you want to do this?"),
-                                                  primaryButton: .destructive(Text("Yes")){
-                                                SettingsView().clearIngredients()
-                                                showDeleteIng = false
-                                            }, secondaryButton: .cancel(Text("Cancel"))
-                                            )
-                                            
-                                        }
-                                        
-                                        
-                                    }
-                                    label: {
-                                        Label("Add", systemImage: "plus")
-                                    }
+                    ToolbarItem(placement: .primaryAction) {
+                        Menu {
+                            Section {
+                                Button(action: {
+                                    showAddItem.toggle()
+                                }) {
+                                    Label("Add Item", systemImage: "text.badge.plus")
+                                }
+                                
+                                Button(action: {
+                                    //showScanItem.toggle()
+                                    showScanItem = true
+                                }) {
+                                    Label("Scan Item", systemImage: "barcode.viewfinder")
                                 }
                             }
-               
-
+                            
+                            Section(header: Text("Sorting")) {
+                                Button(action: {
+                                    sortedTab = .expiryDate
+                                }) {
+                                    Label("Sort By Date", systemImage: sortedTab == .expiryDate ? "checkmark" : "arrow.up.arrow.down")
+                                    // .foregroundColor(.red)
+                                }
+                                Button(action: {sortedTab = .category}) {
+                                    Label("Sort By Category", systemImage: sortedTab == .category ? "checkmark" : "list.star")
+                                    //     .foregroundColor(.red)
+                                }
+                                
+                                /** Button(action: {activeTab = .active}) {
+                                 Label("Active vs Expired", systemImage: activeTab == .active ? "checkmark" : "list.star")
+                                 //     .foregroundColor(.red)
+                                 } */
+                                
+                                
+                                
+                                /**  Button(action:  {sortedTab = .defaultSetting}) {
+                                 Label("Default", systemImage: sortedTab == .defaultSetting ? "checkmark" : "" )
+                                 //   .foregroundColor(sortedTab == .defaultSetting ? .red : .green)
+                                 }  //.foregroundColor(sortedTab == .defaultSetting ? .red : .green) */
+                            }.foregroundColor(.red)
+                            
+                            
+                            Section(header: Text("Clear Ingredients")){
+                                
+                                // clear saved recipes
+                                Button(action: {
+                                    showDeleteIng = true
+                                    SettingsView().clearIngredients()
+                                    
+                                }) {
+                                    Label ("Delete All Ingredients", systemImage: "trash")
+                                }.foregroundColor(.red)
+                                
+                            }
+                            
+                            .alert(isPresented: $showDeleteIng){
+                                Alert(title: Text( "Deleting All stored recipes"),
+                                      message: Text("Are you sure you want to do this?"),
+                                      primaryButton: .destructive(Text("Yes")){
+                                    SettingsView().clearIngredients()
+                                    showDeleteIng = false
+                                }, secondaryButton: .cancel(Text("Cancel"))
+                                )
+                                
+                            }
+                            
+                            
+                        }
+                    label: {
+                        Label("Add", systemImage: "plus")
+                    }
+                    }
+                }
+                
+                
                 
                 .fullScreenCover(isPresented: $showAddItem, onDismiss: nil) {
-                                AddItem()
-                            }
-                            .fullScreenCover(isPresented: $showScanItem) {
-                                ScannerView()
-                               // BarcodeScanning(barcode_string: $barcode_string, foundProduct:$foundProduct)
-                            }
-               /** Button(action: {
-                    showAddItem = true
-                                                                       // self.isPresented.toggle()
-                                                                    }) {
-                                                                        Image(systemName: "barcode")
-                                                                    }.sheet(isPresented: $showScanItem) {
-                                                                        ScannerViewUI()
-                                                                        //BarcodeScanning(barcode_string: $barcode_string, foundProduct:$foundProduct)
-                                                                    } */
+                    AddItem()
+                }
+                .fullScreenCover(isPresented: $showScanItem) {
+                    ScannerView()
+                    // BarcodeScanning(barcode_string: $barcode_string, foundProduct:$foundProduct)
+                }
+                /** Button(action: {
+                 showAddItem = true
+                 // self.isPresented.toggle()
+                 }) {
+                 Image(systemName: "barcode")
+                 }.sheet(isPresented: $showScanItem) {
+                 ScannerViewUI()
+                 //BarcodeScanning(barcode_string: $barcode_string, foundProduct:$foundProduct)
+                 } */
                 
                 //            .fullScreenCover(isPresented: $showScanItem, onDismiss: nil) {
-                 //               BarcodeScanning(barcode_string: $barcode_string, foundProduct:$foundProduct)
-                   //         }
+                //               BarcodeScanning(barcode_string: $barcode_string, foundProduct:$foundProduct)
+                //         }
                 
                 /**
-                .navigationBarItems(trailing: Button(action: {
-                    showPopup.toggle()
-                    // add
-                    //dataManager.addItem(itemName: newItem)
-                }, label: {
-                    Image(systemName: "plus")
-                }))
-                // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-                .fullScreenCover(isPresented: $showPopup, onDismiss: nil) {
-                    AddItem()
-                } */
+                 .navigationBarItems(trailing: Button(action: {
+                 showPopup.toggle()
+                 // add
+                 //dataManager.addItem(itemName: newItem)
+                 }, label: {
+                 Image(systemName: "plus")
+                 }))
+                 // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                 .fullScreenCover(isPresented: $showPopup, onDismiss: nil) {
+                 AddItem()
+                 } */
                 /**
                  .sheet(isPresented:  $showPopup){
                  AddItem()
@@ -316,13 +322,27 @@ struct ListView: View {
                 // Spacer()
                 
                 
-               /** Button(action: generateItems) {
-                       { networkModel().getCurrentRecipesIfNeeded { recipes in
-                        if let recipes = recipes {
-                            print ("Recipes fetched: \(recipes)")
-                        } else { print("No recipes")
-                        }}
-                }){
+                /** Button(action: generateItems) {
+                 { networkModel().getCurrentRecipesIfNeeded { recipes in
+                 if let recipes = recipes {
+                 print ("Recipes fetched: \(recipes)")
+                 } else { print("No recipes")
+                 }}
+                 }){
+                 Text("Generate")
+                 .padding()
+                 .foregroundColor(.white)
+                 .background(buttonStatus ? Color.green : Color.gray)
+                 .cornerRadius(15)
+                 }
+                 .padding()
+                 .disabled(!buttonStatus)
+                 */
+          
+                Button(action: {
+                    generateItems()
+                    navigateToNextPage = true
+                }) {
                     Text("Generate")
                         .padding()
                         .foregroundColor(.white)
@@ -331,20 +351,15 @@ struct ListView: View {
                 }
                 .padding()
                 .disabled(!buttonStatus)
-            */
                 
-                Button(action: generateItems) {
-                    Text("Generate")
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(buttonStatus ? Color.green : Color.gray)
-                        .cornerRadius(15)
+                //.background(NavigationLink(destination: NextPage(recipesBasedOnIngredients: recipesBasedOnIngredients), isActive: $navigateToNextPage){})
+                .fullScreenCover(isPresented:$navigateToNextPage, onDismiss: nil) {
+                    NextPage(recipesBasedOnIngredients: recipesBasedOnIngredients)
                 }
-                .padding()
-                .disabled(!buttonStatus)
-                
-            }
-            .background(Color(UIColor.systemGroupedBackground)) // fixes generate button background!
+            
+        }
+            .background(Color(UIColor.systemGroupedBackground))
+           // .background(Color(UIColor.systemGroupedBackground)) // fixes generate button background!
             // .disabled(!buttonStatus)
             
             /** Button("Logout"){
@@ -370,12 +385,12 @@ struct ListView: View {
         }
         
     }
-    
+    /*
      func updateIngredientsList() {
         let checkedItems = itemsViewModel.items.filter({ $0.isChecked })
        let ingredientsQuery = checkedItems.map {$0.name}.joined(separator: ",")
          
-    }
+    } */
     
     //https://vikramios.medium.com/mastering-swift-local-notifications-a-developers-guide-f56b77ab64cc
     private func scheduleNotification(for item: Items) {
@@ -406,10 +421,10 @@ struct ListView: View {
             triggerDateAfternoon.hour = 11
             triggerDateAfternoon.minute = 41
             */
-            
+            //can change date
             var triggerDateEvening = DateComponents()
-            triggerDateEvening.hour = 11
-            triggerDateEvening.minute = 56
+            triggerDateEvening.hour = 6
+            triggerDateEvening.minute = 00
             
                 /** let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
             let trigger2 = UNCalendarNotificationTrigger(dateMatching: triggerDateAfternoon, repeats: true) */
@@ -456,6 +471,19 @@ struct ListView: View {
     
     
     private func generateItems() {
+        
+        let selectedItems = itemsViewModel.items.filter { $0.isChecked }.map { $0.name }
+        let items = selectedItems.joined(separator: ",")
+        
+        RecipesIngredients().sendRequest(list_of_ingredients: items) { fetchedData in
+            DispatchQueue.main.async {
+                self.recipesBasedOnIngredients = fetchedData
+                let recipeIds = fetchedData.map { $0.id }
+                
+                getRecipeStep(recipeIds: recipeIds)
+                print(recipesBasedOnIngredients)
+            }
+        }
        /** let selectedItems = itemsViewModel.items.filter { $0.isChecked }.map { $0.name }
         Networking.shared.fetchItemsRecipes(with: selectedItems) { recipes, error in
             if let error = error {
@@ -552,6 +580,114 @@ struct ListView: View {
      }
      }
      } */
+    
+    
+    private func getRecipeStep(recipeIds : [Int]) {
+        
+        for recipeid in recipeIds {
+            RecipesSteps().sendRequest(id_number: recipeid){ fetchedData in
+                DispatchQueue.main.async {
+                    recipesSteps.append(contentsOf: fetchedData)
+                    self.recipesSteps = fetchedData
+                    print(recipesSteps)
+                }
+            }
+        }
+    }
+    
+    struct NextPage: View {
+        let recipesBasedOnIngredients: [RecipesBasedIngredients]
+        
+        var body: some View {
+            NavigationView {
+                List(recipesBasedOnIngredients, id: \.id) { recipeBased in
+                    NavigationLink(destination: NextPage1(recipeBased: recipeBased)) {
+                        if let photoURL = URL(string: recipeBased.image) {
+                            AsyncImage(url: photoURL) { image in
+                                image
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                    .cornerRadius(8)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            Text("\(recipeBased.title)")
+                            Text("\(recipeBased.id)")
+                        }
+                    }
+                }
+            }
+        }
+        
+        struct NextPage1: View {
+            let recipeBased: RecipesBasedIngredients
+            
+            @State private var recipeSteps: [RecipeStep] = []
+            
+            var body: some View {
+                List {
+                    Text(recipeBased.title)
+                    if let photoURL = URL(string: recipeBased.image) {
+                        AsyncImage(url: photoURL) { image in
+                            image
+                                .resizable()
+                                .frame(width: 300, height: 200)
+                                .cornerRadius(8)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    }
+                    ForEach(recipeSteps, id: \.self) { recipeStep in
+                        VStack(alignment: .leading) {
+                            Text(recipeStep.name)
+                                .font(.headline)
+                            ForEach(recipeStep.steps, id: \.self) { step in
+                               // let eaching = removeDuplicates(step.ingredients)
+                                //ForEach(step.ingredients.filter {ingredient in !step.ingredients.contains(where: { $0.name == ingredient.name })}, id: \.id) { ingredient in
+                                //Set
+                               // let each = Set(step.ingredients)
+                                //let eachArray = Array(each)
+                                ForEach(step.ingredients) { ingredient in
+                                    Text("\(ingredient.name)")
+                                      //  .removeDuplicates()
+                                }
+                                }
+                            ForEach(recipeStep.steps, id: \.self) { step in
+                                //                        Text("\(step.ingredients)")
+                                Text("\(step.number). \(step.step)")
+                                    .padding(.leading)
+                            }
+                            
+                        
+                        }
+                    }
+                    ForEach(recipeBased.missedIngredients, id: \.id){ missedIngredients in
+                        Text("Missed Ingredients:   \(missedIngredients.originalName)")
+                    }
+                    ForEach(recipeBased.usedIngredients, id: \.id){ usedIngredients in
+                        Text("Used Ingredients:  \(usedIngredients.originalName)")
+                    }
+                    
+                }
+                .navigationTitle(recipeBased.title)
+                .onAppear {
+                    getRecipeStep(recipeId: recipeBased.id)
+                }
+            }
+            
+            private func getRecipeStep(recipeId: Int) {
+                RecipesSteps().sendRequest(id_number: recipeId) { fetchedData in
+                    DispatchQueue.main.async {
+                        recipeSteps = fetchedData
+                    }
+                }
+            }
+        }
+    }
+
+    
+    
+    
     
     // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
     // https://docs.airnativeextensions.com/docs/firebase/firestore/transactions-and-batched-writes/

@@ -4,12 +4,13 @@
 //
 //  Created by Saajidah Mohamed on 25/03/2024.
 //https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
-/**
+
 import SwiftUI
 import Firebase
 
 class FavViewModel : ObservableObject{
     @Published var recipes: [Recipe] = []
+    @State private var isSaved : Bool = false
     
     var userID: String? {
         return Auth.auth().currentUser?.uid }
@@ -29,19 +30,29 @@ class FavViewModel : ObservableObject{
                 }
     }
     
+   /** func updateSavedState(for recipe: Recipe, isSaved: Bool){
+        if let index = recipes.firstIndex(where: { $0.label == recipe.label && $0.url == recipe.url}){
+            self.recipes[index].isSaved = isSaved
+        }
+    } */
     // Add a method to toggle the saved state for a recipe
-    func toggleSavedState(for recipe: Recipe) {
+    /** func toggleSavedState(for recipe: Recipe) {
         if let index = recipes.firstIndex(where: { $0.label == recipe.label && $0.url == recipe.url }) {
-            recipes[index].isSaved.toggle()
+           isSaved.toggle()
+        }
+    
+        /**
+        if let index = recipes.firstIndex(where: { $0.label == recipe.label && $0.url == recipe.url }) {
+           // recipes[index].isSaved.toggle()
             
             if !recipes[index].isSaved {
-                removeRecipe(recipe: recipes[index])
+             //   removeRecipe(recipe: recipes[index])
             } else {
                 print("Stored")
             }
-        }
-    }
-
+        }*/
+    } */
+    
     func fetchFavs(){
         guard let userID = userID
         else {
@@ -96,14 +107,14 @@ class FavViewModel : ObservableObject{
                 let ingredientLines = data["ingredients"] as? [String] ?? []
                 let url = data["url"] as? String ?? ""
                 
-                let item = Recipe(label: label, image: imageURL, totalTime: totalTime, cuisineType: cuisineTypes, ingredientLines: ingredientLines, url: url, isSaved: true)
+                let item = Recipe(label: label, image: imageURL, totalTime: totalTime, cuisineType: cuisineTypes, ingredientLines: ingredientLines, url: url) //isSaved : true)
                 
                 self.recipes.append(item)
             }
         }
     }
     
-    private func removeRecipe(recipe: Recipe){
+    internal func removeRecipe(recipe: Recipe){
         guard let userID = userID else {
             print("user not logged in")
             return
@@ -115,9 +126,9 @@ class FavViewModel : ObservableObject{
         // favouritesRef.whereField("label", isEqualTo: recipe.label)
         //     .whereField("url", isEqualTo: recipe.url).getDocuments {(querySnapshot, error) in
         
-        favouritesRef.whereField("label", isEqualTo: recipe.label)
-            .whereField("url", isEqualTo: recipe.url).getDocuments { (querySnapshot, error) in
-                
+        favouritesRef.whereField("url", isEqualTo: recipe.url)
+            .whereField("ingredients", isEqualTo: recipe.ingredientLines).getDocuments { (querySnapshot, error) in
+                //.whereField("imageURL", isEqualTo: recipe.image)
                 if let error = error {
                     print("Error getting documents for item : \(error.localizedDescription)")
                     return
@@ -146,4 +157,3 @@ class FavViewModel : ObservableObject{
             }
     }
 }
-*/

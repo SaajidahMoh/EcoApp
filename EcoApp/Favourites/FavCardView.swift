@@ -1,18 +1,12 @@
-//
-// RecipeSearchView.swift
-//  EcoApp
-//
-//  Created by Saajidah Mohamed on 20/04/2024.
-//
-//
-// https://www.youtube.com/watch?v=8CbUTZPPNT4&ab_channel=CredoAcademy GUI
+
+
+
+
+
 import SwiftUI
 
-enum sortCookingTime {
-    case asc;
-    case desc;
-}
-struct RecipeSearchView: View {
+
+struct FavCardView: View {
     @State private var isSaved : Bool = false
     let title: String
     let ingredients: [String]
@@ -89,14 +83,7 @@ struct RecipeSearchView: View {
                                 
                                 Spacer()
                                 
-                                Button(action: shareRecipe
-                                ){
-                                    Image(systemName: "square.and.arrow.up")
-                                        .resizable()
-                                        .frame(width: 21, height: 30)
-                                        .padding(10)
-                                    //    .bold()
-                                }
+                               
                             }
                         }
                         Text("Ingredients")
@@ -152,28 +139,4 @@ struct RecipeSearchView: View {
         }
       
     
-    
-    func shareRecipe() {
-        // https://chat.openai.com/share/3b6d71c7-ab4b-4458-9a07-c11a5bf6a363
-        /** guard let shareURL = URL(string: url) else { return }
-         let activityViewController = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
-         UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil) */
-        guard let window = UIApplication.shared.windows.first else { return }
-        
-        // Capture screenshot
-        UIGraphicsBeginImageContextWithOptions(window.frame.size, false, 0.0)
-        window.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
-        guard let image = UIGraphicsGetImageFromCurrentImageContext() else { return }
-        UIGraphicsEndImageContext()
-        
-        // Share screenshot
-        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-        UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
-    }
 }
-    
-     /**
-#Preview {
-    RecipeSearchView(title: "Egg Sandwich", ingredients: ["1 large Egg", "1 English Muffin", "1 ounce fontina fontal cheese"], cuisineTypes: ["American","British], image: "image_url", totalTime: 20.0, url: "https//www.marthastewart.com/1553018/baked-eggs")
- }
-*/

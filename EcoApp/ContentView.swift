@@ -47,7 +47,7 @@ struct ContentView: View {
               
                    // Text("Favourites")
                 //RecipeCardsView()
-               // RecipeListView()
+                RecipeListView()
                     .tabItem { Label("Favourites", systemImage: "star")}
                     
                     //Text("Settings")

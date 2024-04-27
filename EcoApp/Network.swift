@@ -10,7 +10,8 @@ import Foundation
 
 
 struct constants {
-    static var APIKey = "0bb74debbf10414cadeea785324753f9"
+    static var APIKey = "b97d9bebb0334d73b74b8d996b751338"
+    //"0bb74debbf10414cadeea785324753f9"
 }
 
 class networkModel {
@@ -54,7 +55,7 @@ class networkModel {
                 do {
                     let productData = try JSONDecoder().decode(RecipeData.self, from: jsonData)
                     completion(productData)
-                    print(productData)
+                    //print(productData)
                 } catch {
                     print(error)
                 }
@@ -120,6 +121,112 @@ class barcodeToWord {
         session.finishTasksAndInvalidate()
     }
 }
+
+class RecipesIngredients {
+    func sendRequest(list_of_ingredients: String,completion : @escaping ([RecipesBasedIngredients]) -> Void ) {
+        /* Configure session, choose between:
+           * defaultSessionConfiguration
+           * ephemeralSessionConfiguration
+           * backgroundSessionConfigurationWithIdentifier:
+         And set session-wide properties, such as: HTTPAdditionalHeaders,
+         HTTPCookieAcceptPolicy, requestCachePolicy or timeoutIntervalForRequest.
+         */
+        let sessionConfig = URLSessionConfiguration.default
+
+        /* Create session, and optionally set a URLSessionDelegate. */
+        let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+
+        /* Create the Request:
+           searchingredient (GET https://api.spoonacular.com/recipes/findByIngredients)
+         */
+
+        guard var URL = URL(string: "https://api.spoonacular.com/recipes/findByIngredients") else {return}
+        let URLParams = [
+            "apiKey": "b97d9bebb0334d73b74b8d996b751338",
+            "ingredients": "\(list_of_ingredients)",
+        ]
+        URL = URL.appendingQueryParameters(URLParams)
+        var request = URLRequest(url: URL)
+        request.httpMethod = "GET"
+
+        /* Start a new Task */
+        let task = session.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
+            if (error == nil) {
+                // Success
+                let statusCode = (response as! HTTPURLResponse).statusCode
+                print("URL Session Task Succeeded: HTTP \(statusCode)")
+                guard let jsonData = data else {return}
+                do {
+                    let productData = try JSONDecoder().decode([RecipesBasedIngredients].self, from: jsonData)
+                    completion(productData)
+//                    print(productData)
+                } catch {
+                    print(error)
+                }
+            }
+            else {
+                // Failure
+                print("URL Session Task Failed: %@", error!.localizedDescription);
+            }
+        })
+        task.resume()
+        session.finishTasksAndInvalidate()
+    }
+}
+
+
+class RecipesSteps {
+    func sendRequest(id_number :Int, completion : @escaping ([RecipeStep]) -> Void) {
+        /* Configure session, choose between:
+           * defaultSessionConfiguration
+           * ephemeralSessionConfiguration
+           * backgroundSessionConfigurationWithIdentifier:
+         And set session-wide properties, such as: HTTPAdditionalHeaders,
+         HTTPCookieAcceptPolicy, requestCachePolicy or timeoutIntervalForRequest.
+         */
+        let sessionConfig = URLSessionConfiguration.default
+
+        /* Create session, and optionally set a URLSessionDelegate. */
+        let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+
+        /* Create the Request:
+           searchingredient (GET https://api.spoonacular.com/recipes/715447/analyzedInstructions)
+         */
+        let id = String(id_number)
+
+        guard var URL = URL(string: "https://api.spoonacular.com/recipes/\(id)/analyzedInstructions") else {return}
+        let URLParams = [
+            "apiKey": "b97d9bebb0334d73b74b8d996b751338"
+        ]
+        URL = URL.appendingQueryParameters(URLParams)
+        var request = URLRequest(url: URL)
+        request.httpMethod = "GET"
+
+        /* Start a new Task */
+        let task = session.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
+            if (error == nil) {
+                // Success
+                let statusCode = (response as! HTTPURLResponse).statusCode
+                print("URL Session Task Succeeded: HTTP \(statusCode)")
+                guard let jsonData = data else {return}
+                do {
+                    let productData = try JSONDecoder().decode([RecipeStep].self, from: jsonData)
+                    completion(productData)
+//                    print(productData)
+                } catch {
+                    print(error)
+                }
+            }
+            else {
+                // Failure
+                print("URL Session Task Failed: %@", error!.localizedDescription);
+            }
+        })
+        task.resume()
+        session.finishTasksAndInvalidate()
+    }
+}
+
 
 
 protocol URLQueryParameterStringConvertible {
