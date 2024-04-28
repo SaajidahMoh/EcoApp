@@ -688,9 +688,78 @@ struct ListView: View {
     }
     
     struct NextPage: View {
+        @Environment(\.presentationMode) var presentationMode
         let recipesBasedOnIngredients: [RecipesBasedIngredients]
-        
+      
         var body: some View {
+                    NavigationView {
+                        
+                        ScrollView{
+                            VStack{
+                                ForEach(recipesBasedOnIngredients, id: \.id) { recipeBased in
+                                    NavigationLink(destination: NextPage1(recipeBased: recipeBased)) {
+                                        VStack(alignment: .leading, spacing: 10) {
+                                            if let photoURL = URL(string: recipeBased.image) {
+                                                AsyncImage(url: photoURL) { image in
+                                                    image
+                                                        .resizable()
+                                                        .scaledToFill()
+                                                        .frame(width: 350, height: 120)
+                                                        .clipped()
+                                                    
+                                                } placeholder: {
+                                                    ProgressView()
+                                                }
+                                            }
+                                            
+                                            Text(recipeBased.title)
+                                                .font(.headline)
+                                                .padding(.horizontal)
+                                            // .background(Color(.systemGray5))
+                                            /**
+                                             HStack {
+                                             Spacer()
+                                             
+                                             Button(action: {
+                                             // Button action
+                                             }) {
+                                             Image(systemName: "star")
+                                             .resizable()
+                                             .frame(width: 26, height: 26)
+                                             }
+                                             .padding(.trailing)
+                                             }
+                                             .padding(.bottom)
+                                             .padding(.horizontal) */
+                                        }
+                                        //.background(Color(.systemGray5))
+                                        .padding(.horizontal, 0)
+                                        .padding(.vertical, 10)
+                                        .background(Color(.systemGray5))
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .listRowSeparator(.hidden)
+                                    
+                                    
+                                    
+                                }
+                                .padding(.horizontal)
+                                .padding(.top, 20)
+                                .listStyle(PlainListStyle())
+                                //.background(Color(.systemGray5))
+                                
+                            }
+                            
+                            .navigationBarItems(leading: Button(action: {
+                                            presentationMode.wrappedValue.dismiss()
+                                        }) {
+                                            Image(systemName: "arrow.left")
+                                                .foregroundColor(.green)
+                                        })
+                                        .navigationBarTitle("Generated Recipes", displayMode: .inline)
+                            
+                        }  } }
+        /**var body: some View {
             NavigationView {
                 List(recipesBasedOnIngredients, id: \.id) { recipeBased in
                     NavigationLink(destination: NextPage1(recipeBased: recipeBased)) {
@@ -709,61 +778,153 @@ struct ListView: View {
                     }
                 }
             }
-        }
+        } */
+        
         
         struct NextPage1: View {
-            let recipeBased: RecipesBasedIngredients
-            
-            @State private var recipeSteps: [RecipeStep] = []
+                let recipeBased: RecipesBasedIngredients
+                
+                @State private var recipeSteps: [RecipeStep] = []
+                @State private var uniqueIngredients: Set<String> = Set()
             
             var body: some View {
-                List {
-                    Text(recipeBased.title)
-                    if let photoURL = URL(string: recipeBased.image) {
-                        AsyncImage(url: photoURL) { image in
-                            image
-                                .resizable()
-                                .frame(width: 300, height: 200)
-                                .cornerRadius(8)
-                        } placeholder: {
-                            ProgressView()
-                        }
-                    }
-                    ForEach(recipeSteps, id: \.self) { recipeStep in
-                        VStack(alignment: .leading) {
-                            Text(recipeStep.name)
-                                .font(.headline)
-                            ForEach(recipeStep.steps, id: \.self) { step in
-                               // let eaching = removeDuplicates(step.ingredients)
-                                //ForEach(step.ingredients.filter {ingredient in !step.ingredients.contains(where: { $0.name == ingredient.name })}, id: \.id) { ingredient in
-                                //Set
-                               // let each = Set(step.ingredients)
-                                //let eachArray = Array(each)
-                                ForEach(step.ingredients) { ingredient in
-                                    Text("\(ingredient.name)")
-                                      //  .removeDuplicates()
-                                }
-                                }
-                            ForEach(recipeStep.steps, id: \.self) { step in
-                                //                        Text("\(step.ingredients)")
-                                Text("\(step.number). \(step.step)")
+                // NavigationView{
+                //  List {
+                ScrollView(.vertical, showsIndicators: false){
+                    
+                    VStack {
+                       // Text(recipeBased.title)
+                        if let photoURL = URL(string: recipeBased.image) {
+                            AsyncImage(url: photoURL) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .clipped()
                                     .padding(.leading)
+                                    .padding(.trailing)
+                                   // .frame(width: 300, height: 200)
+                                  //  .cornerRadius(8)
+                            } placeholder: {
+                                ProgressView()
                             }
+                        }
                             
                         
+                        Group {
+                            Text(recipeBased.title)
+                                .font(.system(.title))
+                                .fontWeight(.bold)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(Color (.systemGreen))
+                                .padding(.top, 10)
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 12)
+                        
+                        VStack(alignment: .leading, spacing: 6){
+                
+                            Text("Used Ingredients")
+                                .fontWeight(.bold)
+                                .font(.system(.title2))
+                                .padding(.leading)
+                                .padding(.trailing)
+                            
+                                ForEach(recipeBased.usedIngredients, id: \.id){ usedIngredients in
+                                    Text("\(usedIngredients.original.replacingOccurrences(of: ",", with: ""))")
+                                        .font(.system(size: 18))
+                                    Divider()
+                                    // Text("Used Ingredients:  \(usedIngredients.originalName)")
+                                 } .padding(.leading)
+                                .padding(.trailing)
+                            
+                        
+                                Text("Missed Ingredients")
+                                    .fontWeight(.bold)
+                                    .font(.system(.title2))
+                                    .padding(.leading)
+                                    .padding(.trailing)
+                                
+                                ForEach(recipeBased.missedIngredients, id: \.id){ missedIngredients in
+                                    let noComma = missedIngredients.original.hasSuffix(",") ? String(missedIngredients.original.dropLast()) : missedIngredients.original
+                                    Text("\(noComma)")
+                                    //Text("\(missedIngredients.original.replacingOccurrences(of: ",", with: ""))")
+                                        .font(.system(size: 18))
+                                    Divider()
+                                    // Text("Missed Ingredients:   \(missedIngredients.originalName)")
+                            }
+                                .padding(.leading)
+                                .padding(.trailing)
+                            
+                            HStack {
+                                Text("Ingredients")
+                                    .fontWeight(.bold)
+                                    .font(.system(.title2))
+                                
+                                Spacer()
+                                
+                                Button(action: shareRecipe
+                                ){
+                                    Image(systemName: "square.and.arrow.up")
+                                        .resizable()
+                                        .frame(width: 21, height: 30)
+                                        .padding(10)
+                                        .foregroundColor(.green)
+                                    //    .bold()
+                                }
+                            }
+                            .padding(.leading)
+                                .padding(.trailing)
+                            
+    
+                            
+                            ForEach(recipeSteps, id: \.self) { recipeStep in
+                                VStack(alignment: .leading, spacing:6) {
+                                    Spacer()
+                                    //Text(recipeStep.name)
+                                   //     .font(.system(size: 16))
+                                   // Divider()
+                                    // .font(.headline)
+                                    // Set(recipeStep.steps.flatMap { $0.ingredients.map { $0.name } })
+                                    
+                                    ForEach(Array(Set(recipeStep.steps.flatMap { $0.ingredients.map { $0.name } })), id: \.self) { uniqueIngredient in
+                                        Text(uniqueIngredient)
+                                            .font(.system(size: 18))
+                                    Divider()
+                                    }
+                                }
+                                Spacer()
+                                
+                                Text("Instructions")
+                                    .fontWeight(.bold)
+                                    .font(.system(.title2))
+                                    ForEach(recipeStep.steps, id: \.self) { step in
+                                        //                        Text("\(step.ingredients)")
+                                        Text("\(step.number). \(step.step)")
+                                            .font(.system(size: 16))
+                                    Divider()
+                                          //  .padding(.leading)
+                                    }
+                                    
+                                    
+                                
+                            }
+                            
+                            .padding(.leading)
+                                .padding(.trailing)
+                            
+                            
+                       
+                            
+                            
                         }
                     }
-                    ForEach(recipeBased.missedIngredients, id: \.id){ missedIngredients in
-                        Text("Missed Ingredients:   \(missedIngredients.originalName)")
-                    }
-                    ForEach(recipeBased.usedIngredients, id: \.id){ usedIngredients in
-                        Text("Used Ingredients:  \(usedIngredients.originalName)")
-                    }
-                    
-                }
-                .navigationTitle(recipeBased.title)
-                .onAppear {
-                    getRecipeStep(recipeId: recipeBased.id)
+                    //.navigationTitle(recipeBased.title)
+                    .onAppear {
+                        getRecipeStep(recipeId: recipeBased.id)
+                    } .padding(.leading, 8)
+                        .padding(.trailing, 8)
+                    // .accentColor(.green)
+                    //}
                 }
             }
             
@@ -773,6 +934,24 @@ struct ListView: View {
                         recipeSteps = fetchedData
                     }
                 }
+            }
+            //chatgpt
+            private func shareRecipe() {
+                // https://chat.openai.com/share/3b6d71c7-ab4b-4458-9a07-c11a5bf6a363
+                /** guard let shareURL = URL(string: url) else { return }
+                 let activityViewController = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
+                 UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil) */
+                guard let window = UIApplication.shared.windows.first else { return }
+                
+                // Capture screenshot
+                UIGraphicsBeginImageContextWithOptions(window.frame.size, false, 0.0)
+                window.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+                guard let image = UIGraphicsGetImageFromCurrentImageContext() else { return }
+                UIGraphicsEndImageContext()
+                
+                // Share screenshot
+                let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+                UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
             }
         }
     }
