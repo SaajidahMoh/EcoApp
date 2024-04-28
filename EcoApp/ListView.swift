@@ -689,14 +689,15 @@ struct ListView: View {
     
     struct NextPage: View {
         @Environment(\.presentationMode) var presentationMode
+        @State private var sortedRecipes: [RecipesBasedIngredients] = []
         let recipesBasedOnIngredients: [RecipesBasedIngredients]
       
         var body: some View {
                     NavigationView {
                         
                         ScrollView{
-                            VStack{
-                                ForEach(recipesBasedOnIngredients, id: \.id) { recipeBased in
+                            VStack{   ForEach(sortedRecipes, id: \.id) { recipeBased in
+                                //ForEach(recipesBasedOnIngredients, id: \.id) { recipeBased in
                                     NavigationLink(destination: NextPage1(recipeBased: recipeBased)) {
                                         VStack(alignment: .leading, spacing: 10) {
                                             if let photoURL = URL(string: recipeBased.image) {
@@ -757,6 +758,9 @@ struct ListView: View {
                                                 .foregroundColor(.green)
                                         })
                                         .navigationBarTitle("Generated Recipes", displayMode: .inline)
+                                        .onAppear {
+                                                        sortedRecipes = recipesBasedOnIngredients.sorted(by: { $0.missedIngredientCount < $1.missedIngredientCount })
+                                                    }
                             
                         }  } }
         /**var body: some View {
