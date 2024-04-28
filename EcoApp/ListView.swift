@@ -188,9 +188,16 @@ struct ListView: View {
                                 .environmentObject(itemsViewModel)
                                 .onAppear {
                                     scheduleNotification(for: item)
+                                } .swipeActions {
+                                    Button("Delete"){
+                                        deleteItem(for: item)
+                                    }
+                                   // .background(Color.red)
+                                    .tint(.red)
                                 }
+            
                         }
-                        .onDelete(perform: deleteItems) // Apply onDelete to the ForEach
+                        //.//onDelete(perform: deleteItems) // Apply onDelete to the ForEach
                     }
                 }
                 
@@ -580,7 +587,92 @@ struct ListView: View {
      }
      }
      } */
+        /**
+    private func deleteItems(at offsets: IndexSet) {
+            var indicesToDelete: [Int] = []
+            
+            for index in offsets {
+                let item = itemsViewModel.items[index]
+                if let userID = userID {
+                    let db = Firestore.firestore()
+                    let collectionRef = db.collection("items").document(userID).collection("Item")
+                    
+                    collectionRef.whereField("id", isEqualTo: item.id).getDocuments { (querySnapshot, error) in
+                        if let error = error {
+                            print("Error getting documents for item \(item.name): \(error.localizedDescription)")
+                            return
+                        }
+                        
+                        guard let documents = querySnapshot?.documents else {
+                            print("No documents found for item \(item.name)")
+                            return
+                        }
+                        
+                        if let document = documents.first {
+                            let documentID = document.documentID
+                            collectionRef.document(documentID).delete { error in
+                                if let error = error {
+                                    print("Error deleting item \(item.name): \(error.localizedDescription)")
+                                } else {
+                                    print("Item \(item.name) deleted successfully.")
+                                    
+                                    // Add the index to the list of indices to delete
+                                    indicesToDelete.append(index)
+                                }
+                            }
+                        } else {
+                            print("No document found for item \(item.name)")
+                        }
+                    }
+                }
+            }
+            
+            // Remove items from ViewModel after deletion loop
+            indicesToDelete.forEach { index in
+                itemsViewModel.items.remove(at: index)
+            }
+        } */
     
+    
+    private func deleteItem(for item: Items) {
+        guard let userID = userID else {
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let collectionRef = db.collection("items").document(userID).collection("Item")
+        
+        collectionRef.whereField("id", isEqualTo: item.id).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error getting documents for item \(item.name): \(error.localizedDescription)")
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents else {
+                print("No documents found for item \(item.name)")
+                return
+            }
+            
+            if let document = documents.first {
+                let documentID = document.documentID
+                collectionRef.document(documentID).delete { error in
+                    if let error = error {
+                        print("Error deleting item \(item.name): \(error.localizedDescription)")
+                    } else {
+                        print("Item \(item.name) deleted successfully.")
+                        
+                        // Remove item from ViewModel after deletion
+                        if let index = itemsViewModel.items.firstIndex(where: { $0.id == item.id }) {
+                            itemsViewModel.items.remove(at: index)
+                        }
+                    }
+                }
+            } else {
+                print("No document found for item \(item.name)")
+            }
+        }
+    }
+
     
     private func getRecipeStep(recipeIds : [Int]) {
         
@@ -694,7 +786,7 @@ struct ListView: View {
     
     // https://www.youtube.com/watch?v=KcOvWU3xp1I&t=273s&ab_channel=JohnGallaugher
     // https://www.youtube.com/watch?v=KMtdBgHwvGY&list=PL9VJ9OpT-IPSM6dFSwQCIl409gNBsqKTe&index=64&ab_channel=JohnGallaugher
-    private func deleteItems(at offsets: IndexSet) {
+   /** private func deleteItems(at offsets: IndexSet) {
         // var itemsToDelete: [Items] = []
         
         //
@@ -747,7 +839,7 @@ struct ListView: View {
                 }
             }
         }
-    }
+    } */
 }
     
     
@@ -889,8 +981,10 @@ struct ItemRow: View {
 }
 
 struct EachItemView: View {
+    
     let item: Items
     @State private var editShown = false
+    @EnvironmentObject var itemsViewModel: ItemsViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     // https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b
@@ -929,7 +1023,7 @@ struct EachItemView: View {
                         }
                         .background(Color(UIColor.systemGroupedBackground))
                     }
-                    .background(Color(UIColor.systemGroupedBackground)) 
+                    .background(Color(UIColor.systemGroupedBackground))
                 }
 
                 
@@ -959,8 +1053,17 @@ struct EachItemView: View {
                         Text("\(item.description)")
                     }
                 }
+                
+                Button(action: {
+                    deleteItem(for: item)
+                }) {
+                    Text("Delete Ingredient")
+                        .foregroundColor(.red)
+                }
             }
             
+           
+
     
             .navigationTitle("Ingredient Details")
             /**
@@ -1056,6 +1159,50 @@ struct EachItemView: View {
         
         //.navigationTitle("\(item.name)")
     }
+    
+    private func deleteItem(for item: Items) {
+        var userID: String? {
+            return Auth.auth().currentUser?.uid }
+        
+        guard let userID = userID else {
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let collectionRef = db.collection("items").document(userID).collection("Item")
+        
+        collectionRef.whereField("id", isEqualTo: item.id).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error getting documents for item \(item.name): \(error.localizedDescription)")
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents else {
+                print("No documents found for item \(item.name)")
+                return
+            }
+            
+            if let document = documents.first {
+                let documentID = document.documentID
+                collectionRef.document(documentID).delete { error in
+                    if let error = error {
+                        print("Error deleting item \(item.name): \(error.localizedDescription)")
+                    } else {
+                        print("Item \(item.name) deleted successfully.")
+                        
+                        // Remove item from ViewModel after deletion
+                        if let index = itemsViewModel.items.firstIndex(where: { $0.id == item.id }) {
+                            itemsViewModel.items.remove(at: index)
+                        }
+                    }
+                }
+            } else {
+                print("No document found for item \(item.name)")
+            }
+        }
+        
+        presentationMode.wrappedValue.dismiss()
+    }
 }
 
 
@@ -1064,6 +1211,7 @@ struct EachItemView: View {
     ListView()
         //.environmentObject(itemsViewModel)
 }
+
 
 
 
