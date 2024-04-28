@@ -60,6 +60,7 @@ struct RecipeCardView : View {
                 }
                 .padding(.trailing)
                 .padding(.vertical)
+                
             }
         }
         // let lightest = Color(red: 0.4627, green: 0.8392, blue: 1.0)

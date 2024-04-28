@@ -47,7 +47,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
        
 }
 @main
-struct EcoAppApp: App {
+struct EcoMakeApp: App {
     //init() {FirebaseApp.configure()}
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     

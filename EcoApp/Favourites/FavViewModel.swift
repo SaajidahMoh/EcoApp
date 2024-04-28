@@ -11,6 +11,7 @@ import Firebase
 class FavViewModel : ObservableObject{
     @Published var recipes: [Recipe] = []
     @State private var isSaved : Bool = false
+    @EnvironmentObject var vieModel: FavViewModel
     
     var userID: String? {
         return Auth.auth().currentUser?.uid }
@@ -114,7 +115,7 @@ class FavViewModel : ObservableObject{
         }
     }
     
-    internal func removeRecipe(recipe: Recipe){
+    func removeRecipe(recipe: Recipe){
         guard let userID = userID else {
             print("user not logged in")
             return

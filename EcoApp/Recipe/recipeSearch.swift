@@ -59,26 +59,27 @@ struct recipeSearch: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Picker("Options", selection: $selectedTheme) {
-                    ForEach(UniqueCuisineTypes, id: \.self) { cuisineType in
-                        Text(cuisineType).tag(cuisineType)
-                    }
-                }.pickerStyle(.menu)
-                
-              /**  Picker("Select Diet", selection: $selectedDiet) {
-                    ForEach(dietTypes, id: \.self) { dietLabels in
-                        Text(dietLabels).tag(dietLabels)
-                    }
-                }.pickerStyle(.menu) */
-                
-                Picker("Sort By", selection: $sortOption) {
-                    Text("Default").tag(SortOption.defaultTime)
-                    Text("Shortest Time").tag(SortOption.quickest)
-                    Text("Longest Time").tag(SortOption.longest)
-                }.pickerStyle(.menu)
+            if !isSearching() {
+                HStack {
+                    Picker("Options", selection: $selectedTheme) {
+                        ForEach(UniqueCuisineTypes, id: \.self) { cuisineType in
+                            Text(cuisineType).tag(cuisineType)
+                        }
+                    }.pickerStyle(.menu)
+                    
+                    /**  Picker("Select Diet", selection: $selectedDiet) {
+                     ForEach(dietTypes, id: \.self) { dietLabels in
+                     Text(dietLabels).tag(dietLabels)
+                     }
+                     }.pickerStyle(.menu) */
+                    
+                    Picker("Sort By", selection: $sortOption) {
+                        Text("Default").tag(SortOption.defaultTime)
+                        Text("Shortest Time").tag(SortOption.quickest)
+                        Text("Longest Time").tag(SortOption.longest)
+                    }.pickerStyle(.menu)
+                }
             }
-           
             
             /** Button() {
                 
@@ -114,7 +115,10 @@ struct recipeSearch: View {
     }
     
               
-    
+    func isSearching() -> Bool {
+           // Check if the searchText is not empty, indicating the user is searching
+           return !searchText.isEmpty
+       }
     
     func getIngredients() {
         networkModel().sendRequest(searchTerm: searchText) { fetchedData in

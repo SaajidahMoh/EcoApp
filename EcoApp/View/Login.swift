@@ -77,9 +77,13 @@ struct Login: View {
                             Image(systemName: "arrow.right")
                                 .font(.callout)
                             
-                        }
-                        .padding(.horizontal, 10)
+                        } .foregroundColor(.white)
+                        // padding of width 16 on both sides. screen minus 16.
+                        .frame(width: UIScreen.main.bounds.width - 32, height:48 )
+                       // .padding(.horizontal, 10)
                     })
+                      .background(Color(.systemGreen)
+                        .cornerRadius(10))
                     .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.capsule)
                     .showLoadingIndiciator(isLoading)

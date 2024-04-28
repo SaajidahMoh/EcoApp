@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "28D5EA4B2BA8427900BF46DD"
-               BuildableName = "EcoApp.app"
-               BlueprintName = "EcoApp"
+               BuildableName = "EcoMake.app"
+               BlueprintName = "EcoMake"
                ReferencedContainer = "container:EcoApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "28D5EA4B2BA8427900BF46DD"
-            BuildableName = "EcoApp.app"
-            BlueprintName = "EcoApp"
+            BuildableName = "EcoMake.app"
+            BlueprintName = "EcoMake"
             ReferencedContainer = "container:EcoApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -79,8 +79,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "28D5EA4B2BA8427900BF46DD"
-            BuildableName = "EcoApp.app"
-            BlueprintName = "EcoApp"
+            BuildableName = "EcoMake.app"
+            BlueprintName = "EcoMake"
             ReferencedContainer = "container:EcoApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
