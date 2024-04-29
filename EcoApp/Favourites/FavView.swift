@@ -27,7 +27,8 @@ struct RecipeListView: View {
                   .onAppear {
                       viewModel.fetchFavs() // Fetch recipes when view appears
                   }
-                  .padding(.horizontal)
+                  .background(Color(.systemGray5))
+                  //  .padding(.horizontal)
               }
           }
     
@@ -80,9 +81,10 @@ struct RecipeRowView: View {
         }
         .frame(maxWidth: .infinity)
         .background(Color(.systemGray5))
-        .padding(.horizontal, 2)
+       // .padding(.horizontal, 2)
        
     }
+        
         
 }
 

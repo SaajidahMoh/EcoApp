@@ -92,7 +92,9 @@ struct recipeSearch: View {
                     NavigationLink(destination: RecipeSearchView(title: hit.recipe.label, ingredients: hit.recipe.ingredientLines, cuisineTypes: hit.recipe.cuisineType, /**dietLabels: hit.recipe.dietLabels, */ image: hit.recipe.image, totalTime: hit.recipe.totalTime, url: hit.recipe.url)) {
                         RecipeCardView(hit: hit)
                             .padding(.vertical, 2)
+                         
                     }
+                    
                     .buttonStyle(PlainButtonStyle())
                     .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
@@ -107,6 +109,7 @@ struct recipeSearch: View {
                     getIngredients()
                 }
                 .onAppear {
+                   
                     // Call getIngredients on initial appear
                     getIngredients()
                 }
@@ -114,7 +117,6 @@ struct recipeSearch: View {
         }
     }
     
-              
     func isSearching() -> Bool {
            // Check if the searchText is not empty, indicating the user is searching
            return !searchText.isEmpty
