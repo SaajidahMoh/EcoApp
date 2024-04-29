@@ -177,6 +177,13 @@ struct ListView: View {
                                         .onAppear {
                                             scheduleNotification(for: item)
                                         }
+                                        .swipeActions {
+                                            Button("Delete"){
+                                                deleteItem(for: item)
+                                            }
+                                           // .background(Color.red)
+                                            .tint(.red)
+                                        }
                                 }
                                 // .onDelete(perform: deleteItems) // Move onDelete to the ForEach within the Section
                             }
@@ -660,6 +667,7 @@ struct ListView: View {
                         print("Error deleting item \(item.name): \(error.localizedDescription)")
                     } else {
                         print("Item \(item.name) deleted successfully.")
+                        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [item.id])
                         
                         // Remove item from ViewModel after deletion
                         if let index = itemsViewModel.items.firstIndex(where: { $0.id == item.id }) {
@@ -1104,10 +1112,12 @@ struct ItemRow: View {
         
        // let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
         HStack {
-            Image(systemName: isChecked ? "checkmark.square" : "square")
+            Image(systemName: isChecked ? "circle.inset.filled" : "circle")
+                  //"checkmark.square" : "square")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width:18, height: 18)
+                .frame(width:22, height: 22)
+                .foregroundColor(isChecked ? .green : .gray)
                 .onTapGesture {
                     isChecked.toggle()
                     itemsViewModel.updateItem(itemID: item.id, isChecked: isChecked) // Access itemsViewModel here
@@ -1131,12 +1141,12 @@ struct ItemRow: View {
         // .multilineTextAlignment(.trailing)
         //.bold()
             
-            Image(systemName: "ellipsis")
+            Image(systemName: "info.circle")
                     //"pencil")
-            //"rectangle.and.pencil.and.ellipsis")
+            //"ellipsis")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width:12, height: 12)
+                .frame(width:20, height: 20)
                // .padding(.trailing)
         
     //}
@@ -1145,6 +1155,7 @@ struct ItemRow: View {
                 .onTapGesture {
                     isShown.toggle()
                 }
+                .foregroundColor(Color.green)
             /**
                 .sheet(isPresented: $isShown){
                     EachItemView(item: item)
@@ -1384,6 +1395,7 @@ struct EachItemView: View {
             }
         }
         
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [item.id])
         presentationMode.wrappedValue.dismiss()
     }
 }

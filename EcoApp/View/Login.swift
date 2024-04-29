@@ -33,6 +33,7 @@ struct Login: View {
         NavigationStack {
             List {
                 Section {
+                    
                     TextField("Email Address", text: $emailAddress )
                         .keyboardType(.emailAddress)
                         .customTextField("person")
@@ -58,6 +59,7 @@ struct Login: View {
                 .pickerStyle(.segmented)
                 .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
                 .listRowSeparator(.hidden)
+                .padding(.bottom, 25) // mine
                 
             }
        
@@ -69,6 +71,7 @@ struct Login: View {
                         }
                         .font(.caption)
                         .tint(Color.accentColor)
+                        
                     }
                     Button(action: loginAndSignUp , label: {
                         HStack(spacing:12) {
@@ -78,12 +81,19 @@ struct Login: View {
                                 .font(.callout)
                             
                         } .foregroundColor(.white)
+                            .bold()
+                            
                         // padding of width 16 on both sides. screen minus 16.
-                        .frame(width: UIScreen.main.bounds.width - 32, height:48 )
+                       // .frame(width: UIScreen.main.bounds.width - 32, height:48 )
+                        
+                        
+                        .frame(width: UIScreen.main.bounds.width - 60, height:48 )
+                        .cornerRadius(10)
                        // .padding(.horizontal, 10)
                     })
-                      .background(Color(.systemGreen)
-                        .cornerRadius(10))
+                   // .padding(.top, 52)
+                     // .background(Color(.systemGreen)
+                      //  .cornerRadius(10))
                     .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.capsule)
                     .showLoadingIndiciator(isLoading)
