@@ -134,11 +134,12 @@ struct Login: View {
         }
     }
     
+    //https://lottiefiles.com/animations/email-ghbRKruisg
     @ViewBuilder
     func EmailVerificationView() -> some View {
         VStack(spacing: 6){
             GeometryReader { _ in
-                if let Bundle = Bundle.main.path(forResource:"EmailAnim", ofType: "json") {
+                if let Bundle = Bundle.main.path(forResource:"LottieAnimationGreen", ofType: "json") {
                     LottieView {
                         await LottieAnimation.loadedFrom(url: URL(filePath: Bundle))
                     }

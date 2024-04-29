@@ -21,6 +21,7 @@
 		284DBC532BB9BFDA0027EA3C /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284DBC522BB9BFDA0027EA3C /* Networking.swift */; };
 		284DBC5E2BBA26C50027EA3C /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284DBC5D2BBA26C40027EA3C /* SplashScreenView.swift */; };
 		285740CB2BAF1DD600DA80B2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */; };
+		28623A122BE022F90092E33E /* LottieAnimationGreen.json in Resources */ = {isa = PBXBuildFile; fileRef = 28623A112BE022F80092E33E /* LottieAnimationGreen.json */; };
 		2899C12B2BB70066007006E2 /* AddItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2899C12A2BB70066007006E2 /* AddItem.swift */; };
 		28A8DFFB2BB839DD001981C1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 28A8DFFA2BB839DD001981C1 /* FirebaseStorage */; };
 		28AAF0332BD85ACA00720304 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 28AAF0322BD85ACA00720304 /* Kingfisher */; };
@@ -67,6 +68,7 @@
 		284DBC522BB9BFDA0027EA3C /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		284DBC5D2BBA26C40027EA3C /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		28623A112BE022F80092E33E /* LottieAnimationGreen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LottieAnimationGreen.json; sourceTree = "<group>"; };
 		2899C12A2BB70066007006E2 /* AddItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItem.swift; sourceTree = "<group>"; };
 		28AAF0352BD9222600720304 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		28AAF0372BD9222D00720304 /* Recipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				28D5EAA92BA8621800BF46DD /* EmailAnim.json */,
+				28623A112BE022F80092E33E /* LottieAnimationGreen.json */,
 				28D5EAA52BA85EAA00BF46DD /* EmailAnimation.json */,
 				28D5EA9E2BA847AD00BF46DD /* GoogleService-Info.plist */,
 				28D5EA4E2BA8427900BF46DD /* EcoApp */,
@@ -308,6 +311,7 @@
 				28D5EA572BA8427D00BF46DD /* Preview Assets.xcassets in Resources */,
 				28D5EA542BA8427D00BF46DD /* Assets.xcassets in Resources */,
 				28D5EA9F2BA847AF00BF46DD /* GoogleService-Info.plist in Resources */,
+				28623A122BE022F90092E33E /* LottieAnimationGreen.json in Resources */,
 				28D5EAA62BA85EAA00BF46DD /* EmailAnimation.json in Resources */,
 				28D5EAAA2BA8621800BF46DD /* EmailAnim.json in Resources */,
 			);
