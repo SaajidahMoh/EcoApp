@@ -770,7 +770,13 @@ struct ListView: View {
                                                         sortedRecipes = recipesBasedOnIngredients.sorted(by: { $0.missedIngredientCount < $1.missedIngredientCount })
                                                     }
                             
-                        }  } }
+                        }.background(Color(UIColor.systemGroupedBackground))
+                            .padding(.trailing, -5)
+                            .padding(.leading, -5)
+                        // .background(Color(.systemGray5))
+                    }//.background(Color(UIColor.systemGroupedBackground))
+                    
+        }
         /**var body: some View {
             NavigationView {
                 List(recipesBasedOnIngredients, id: \.id) { recipeBased in
@@ -857,7 +863,7 @@ struct ListView: View {
                             if !recipeBased.usedIngredients.isEmpty {
                                 Text("Used Ingredients")
                                     .fontWeight(.bold)
-                                    .font(.system(.title2))
+                                    .font(.system(size: 24))
                                     .padding(.leading)
                                     .padding(.trailing)
                                    
@@ -914,6 +920,12 @@ struct ListView: View {
                                 .padding(.trailing)
                             */
     
+                            Text("Instructions")
+                                .fontWeight(.bold)
+                                .font(.system(.title2))
+                                .padding(.top, 10)
+                                .padding(.leading)
+                                .padding(.trailing)
                             
                             ForEach(recipeSteps, id: \.self) { recipeStep in
                                 /**VStack(alignment: .leading, spacing:6) {
@@ -931,11 +943,8 @@ struct ListView: View {
                                     }
                                 }
                                 Spacer() */
+
                                 
-                                Text("Instructions")
-                                    .fontWeight(.bold)
-                                    .font(.system(.title2))
-                                    .padding(.top, 10)
                                     ForEach(recipeStep.steps, id: \.self) { step in
                                         //                        Text("\(step.ingredients)")
                                         Text("\(step.number). \(step.step)")

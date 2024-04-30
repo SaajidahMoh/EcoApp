@@ -8,12 +8,6 @@
 
 import Foundation
 
-
-struct constants {
-    static var APIKey = "b97d9bebb0334d73b74b8d996b751338"
-    //"0bb74debbf10414cadeea785324753f9"
-}
-
 class networkModel {
 
     func sendRequest(searchTerm :String,completion : @escaping (RecipeData) -> Void ) {
@@ -142,7 +136,8 @@ class RecipesIngredients {
 
         guard var URL = URL(string: "https://api.spoonacular.com/recipes/findByIngredients") else {return}
         let URLParams = [
-            "apiKey": "46e5215a20bb4ee2b7fba5d012aa51bf",
+            "apiKey": "a36ca5c2f95547b88e4240bba6d5d5e1",
+                // "46e5215a20bb4ee2b7fba5d012aa51bf",
                 //"a36ca5c2f95547b88e4240bba6d5d5e1",
                 //"b97d9bebb0334d73b74b8d996b751338",
             "ingredients": "\(list_of_ingredients)",
@@ -198,7 +193,8 @@ class RecipesSteps {
 
         guard var URL = URL(string: "https://api.spoonacular.com/recipes/\(id)/analyzedInstructions") else {return}
         let URLParams = [
-            "apiKey": "46e5215a20bb4ee2b7fba5d012aa51bf"
+            "apiKey": "a36ca5c2f95547b88e4240bba6d5d5e1",
+            //"46e5215a20bb4ee2b7fba5d012aa51bf"
                 //"a36ca5c2f95547b88e4240bba6d5d5e1"
                 //"b97d9bebb0334d73b74b8d996b751338"
         ]
