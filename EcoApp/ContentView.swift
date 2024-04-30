@@ -13,6 +13,7 @@ struct ContentView: View {
     @StateObject private var vm = LocationsViewModel()
    // @StateObject var viewModel = FavViewModel()
     @AppStorage("log_status") private var logStatus: Bool = false
+    @AppStorage("isOnboarding") var isOnBoarding: Bool = true
     
     var body: some View {
         if logStatus {
@@ -63,7 +64,18 @@ struct ContentView: View {
              }
              .accentColor(.green)
         } else {
-            Login()
+        SplashScreenView()
+         //   OnboardingView()
+           // TabView { ForEach()}
+           // OnboardingContentView()
+            //Login()
+            
+          /**  TabView{
+                ForEach(OnboardingData){
+                    ote, o
+            
+                }
+            } */
         }
        /** VStack {
             Image(systemName: "globe")

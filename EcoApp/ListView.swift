@@ -820,41 +820,66 @@ struct ListView: View {
                                 ProgressView()
                             }
                         }
-                            
                         
-                        Group {
-                            Text(recipeBased.title)
-                                .font(.system(.title))
-                                .fontWeight(.bold)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(Color (.systemGreen))
-                                .padding(.top, 10)
-                        }
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 12)
+                        HStack {
+                            
+                            Group {
+                                Text(recipeBased.title)
+                                    .font(.system(.title))
+                                    .fontWeight(.bold)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(Color (.systemGreen))
+                                    .padding(.top, 10)
+                            }
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 12)
+                             Spacer()
+                             
+                             Button(action: shareRecipe
+                             ){
+                                 Image(systemName: "square.and.arrow.up")
+                                     .resizable()
+                                     .frame(width: 21, height: 30)
+                                     .padding(10)
+                                     .foregroundColor(.green)
+                                 //    .bold()
+                             }
+                         }
+                         
+                         
+                       
+                        
+                        
+                        
                         
                         VStack(alignment: .leading, spacing: 6){
                 
-                            Text("Used Ingredients")
-                                .fontWeight(.bold)
-                                .font(.system(.title2))
-                                .padding(.leading)
-                                .padding(.trailing)
-                            
+                            if !recipeBased.usedIngredients.isEmpty {
+                                Text("Used Ingredients")
+                                    .fontWeight(.bold)
+                                    .font(.system(.title2))
+                                    .padding(.leading)
+                                    .padding(.trailing)
+                                   
+                                
                                 ForEach(recipeBased.usedIngredients, id: \.id){ usedIngredients in
                                     Text("\(usedIngredients.original.replacingOccurrences(of: ",", with: ""))")
                                         .font(.system(size: 18))
                                     Divider()
                                     // Text("Used Ingredients:  \(usedIngredients.originalName)")
-                                 } .padding(.leading)
-                                .padding(.trailing)
+                                } .padding(.leading)
+                                    .padding(.trailing)
+                                    
+                                
+                            }
                             
-                        
+                            if !recipeBased.missedIngredients.isEmpty {
                                 Text("Missed Ingredients")
                                     .fontWeight(.bold)
                                     .font(.system(.title2))
                                     .padding(.leading)
                                     .padding(.trailing)
+                                    .padding(.top, 10)
                                 
                                 ForEach(recipeBased.missedIngredients, id: \.id){ missedIngredients in
                                     let noComma = missedIngredients.original.hasSuffix(",") ? String(missedIngredients.original.dropLast()) : missedIngredients.original
@@ -863,11 +888,12 @@ struct ListView: View {
                                         .font(.system(size: 18))
                                     Divider()
                                     // Text("Missed Ingredients:   \(missedIngredients.originalName)")
-                            }
+                                }
                                 .padding(.leading)
                                 .padding(.trailing)
+                            }
                             
-                            HStack {
+                           /** HStack {
                                 Text("Ingredients")
                                     .fontWeight(.bold)
                                     .font(.system(.title2))
@@ -886,11 +912,11 @@ struct ListView: View {
                             }
                             .padding(.leading)
                                 .padding(.trailing)
-                            
+                            */
     
                             
                             ForEach(recipeSteps, id: \.self) { recipeStep in
-                                VStack(alignment: .leading, spacing:6) {
+                                /**VStack(alignment: .leading, spacing:6) {
                                     Spacer()
                                     //Text(recipeStep.name)
                                    //     .font(.system(size: 16))
@@ -904,11 +930,12 @@ struct ListView: View {
                                     Divider()
                                     }
                                 }
-                                Spacer()
+                                Spacer() */
                                 
                                 Text("Instructions")
                                     .fontWeight(.bold)
                                     .font(.system(.title2))
+                                    .padding(.top, 10)
                                     ForEach(recipeStep.steps, id: \.self) { step in
                                         //                        Text("\(step.ingredients)")
                                         Text("\(step.number). \(step.step)")

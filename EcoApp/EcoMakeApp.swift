@@ -54,8 +54,9 @@ struct EcoMakeApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                //ContentView()
-                SplashScreenView()
+                ContentView()
+                //SplashScreenView()
+                //OnboardingView()
             }
         }
     }
