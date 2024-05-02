@@ -983,13 +983,17 @@ struct ListView: View {
                     }
                 }
             }
+            
             //chatgpt
             private func shareRecipe() {
                 // https://chat.openai.com/share/3b6d71c7-ab4b-4458-9a07-c11a5bf6a363
                 /** guard let shareURL = URL(string: url) else { return }
                  let activityViewController = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
                  UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil) */
-                guard let window = UIApplication.shared.windows.first else { return }
+                guard let window = UIApplication.shared.windows.first else { 
+                    print("Error!")
+                    return
+                }
                 
                 // Capture screenshot
                 UIGraphicsBeginImageContextWithOptions(window.frame.size, false, 0.0)

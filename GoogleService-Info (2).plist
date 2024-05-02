@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>disso.EcoApp22</string>
+	<string>EcoMake.App</string>
 	<key>PROJECT_ID</key>
 	<string>ecoapp-dafd1</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:201218771019:ios:087d26266b38e1a23b65ce</string>
+	<string>1:201218771019:ios:d4338aa006c026183b65ce</string>
 </dict>
 </plist>

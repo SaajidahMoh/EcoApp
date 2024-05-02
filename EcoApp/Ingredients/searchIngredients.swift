@@ -23,9 +23,9 @@ struct Ingredients: Decodable {
     let original: String
     let originalName: String
 
-   // static func == (lhs: Ingredients, rhs: Ingredients) -> Bool {
-   //         return lhs.originalName == rhs.originalName
-    //    }
+    static func == (lhs: Ingredients, rhs: Ingredients) -> Bool {
+            return lhs.originalName == rhs.originalName
+         }
 }
 
 struct RecipeStep: Decodable, Hashable {
