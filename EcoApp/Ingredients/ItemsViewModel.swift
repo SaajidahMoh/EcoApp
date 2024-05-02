@@ -3,7 +3,7 @@
 //  EcoApp
 //
 //  Created by Saajidah Mohamed on 25/03/2024.
-//https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
+// https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
 
 import SwiftUI
 import Firebase
@@ -12,16 +12,16 @@ class ItemsViewModel : ObservableObject{
     @AppStorage("log_status") private var logStatus: Bool = false
     @Published var items: [Items] = []
     
-    //own code
-   // let userID: String? = Auth.auth().currentUser?.uid
+    
     var userID: String? {
         return Auth.auth().currentUser?.uid }
     
     init() {
-        //fetchItems()
+        
+        // I implemented state change listener to check if the user is logged in or not.
         Auth.auth().addStateDidChangeListener { [weak self] (_, user) in
                     guard let self = self else { return }
-                    
+        
                     if let user = user {
                         print("User : \(user.uid)")
                         self.fetchItems()
@@ -33,7 +33,11 @@ class ItemsViewModel : ObservableObject{
     }
     
          
-    
+    /**
+     * The function fetch items was  reused and adapted from the youtube video below to get the users items.
+     * Koshenka, L. (2022) Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data.
+     * YouTube Video Available At: https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka
+     */
     func fetchItems(){
         guard let userID = userID
         else {
@@ -42,6 +46,7 @@ class ItemsViewModel : ObservableObject{
         }
         print("Fetching items for user \(userID)")
         
+        // clear
         items.removeAll() //empty
         
         let db = Firestore.firestore()
@@ -62,8 +67,12 @@ class ItemsViewModel : ObservableObject{
             }
             self.items.removeAll()
             
+            /**
+             * The code below for reading the data was reused and adapted from the youtube video below.
+             * Koshenka, L. (2022) Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data.
+             * YouTube Video Available At: https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka
+             */
             for document in snapshot.documents {
-                // print(document)
                 let data = document.data()
                 
                 let id = data["id"] as? String ?? ""
@@ -71,52 +80,23 @@ class ItemsViewModel : ObservableObject{
                 let description = data["description"] as? String ?? ""
                 let quantity = data["quantity"] as? Int ?? 1
                 let selection = data["selection"] as? String ?? ""
-                let expiryDate = data["expiryDate"] as? Timestamp ?? Timestamp() //Date ?? Date()
+                let expiryDate = data["expiryDate"] as? Timestamp ?? Timestamp() 
                 let imageURL = data["imageURL"] as? String ?? ""
                 
                 let item = Items(id: id, name: name, isChecked: false, quantity:quantity, expiryDate: expiryDate, selection: selection, description: description,  imageURL: imageURL)
                 self.items.append(item)
             }
             
-            
-            
         }
     }
-    /**
-        //whereField("userID", isEqualTo: userID)
-        // db.collection("users").document(result.user.uid).
-        ref.getDocuments { snapshot, error in
-            guard error == nil else {
-                print(error!.localizedDescription)
-                return
-            }
-             
-            if let snapshot = snapshot { //if empty
-                for document in snapshot.documents {
-                   // print(document)
-                    let data = document.data()
-                    
-                    let id = data["id"] as? String ?? ""
-                    let name = data["name"] as? String ?? ""
-                    
-                    let item = Items(id: id, name: name)
-                    self.items.append(item)
-                }
-            }
-            
-        }
-       
-    } 
-//chatgpt
-     
-     */
-    //chat gpt
     
+    // finds the item and updates the status 
     func updateItem(itemID: String, isChecked: Bool) {
         guard let index = items.firstIndex(where: { $0.id == itemID }) else { return }
         items[index].isChecked = isChecked
     }
 
+    // acts as refresh
 func fetchItemsAfterButton(){
         items.removeAll()
     print("items removed")
@@ -124,17 +104,4 @@ func fetchItemsAfterButton(){
     print("done")
     }
 }
-
-
-/**
-struct DataManager: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-#Preview {
-    DataManager()
-}*/
-
 

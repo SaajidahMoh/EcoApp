@@ -1,5 +1,5 @@
 //
-// LocationsView.swift
+//  LocationsView.swift
 //  EcoApp
 //
 //  Created by Saajidah Mohamed

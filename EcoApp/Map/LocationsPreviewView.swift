@@ -1,9 +1,8 @@
 //
-// LocationsPreviewView.swift
+//  LocationsPreviewView.swift
 //  EcoApp
 //
 //  Created by Saajidah Mohamed
-//
 //
 
 import SwiftUI

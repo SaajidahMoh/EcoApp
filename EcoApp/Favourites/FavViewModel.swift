@@ -124,8 +124,10 @@ class FavViewModel : ObservableObject{
         let db = Firestore.firestore()
         let favouritesRef = db.collection("favourites").document(userID).collection("Saved")
         
-        // favouritesRef.whereField("label", isEqualTo: recipe.label)
-        //     .whereField("url", isEqualTo: recipe.url).getDocuments {(querySnapshot, error) in
+       /**
+        * 
+        *
+        */
         
         favouritesRef.whereField("url", isEqualTo: recipe.url)
             .whereField("ingredients", isEqualTo: recipe.ingredientLines).getDocuments { (querySnapshot, error) in
@@ -147,9 +149,7 @@ class FavViewModel : ObservableObject{
                             print("Error deleting: \(error.localizedDescription)")
                         } else {
                             print("deleted successfully.")
-                            // let favouritesRef = db.collection("favourites").document(userID).collection("Saved")
                         }
-                        
                         
                     }
                 }

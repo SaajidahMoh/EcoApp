@@ -2,7 +2,7 @@
 //  ListView.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 24/03/2024.
+//  Created by Saajidah Mohamed 
 //
 
 import SwiftUI
@@ -15,27 +15,22 @@ struct ListView: View {
     @EnvironmentObject var itemsViewModel: ItemsViewModel
     @State private var showPopup = false
     @State private var showAddItem = false
+    @State private var showScanItem = false
+    @State private var showDeleteIng = false
+    @State private var navigateToNextPage = false
+    
+    @State private var sortedTab: Tab = .expiryDate
+    @State private var activeTab: seperateTab = .active
     
     @State private var barcode_string: String?
     @State private var foundProduct: Product?
-    @State private var showScanItem = false
-    @State private var showDeleteIng = false
-    @State private var sortedTab: Tab = .expiryDate
-   // @State private var sortedTab1: Tab = .defaultSetting
     
-    //@State private var activeTab: seperateTab = .active
-    @State private var activeTab: seperateTab = .active
-    //private var ingredientsQuery: String = ""
-    
-    @State private var navigateToNextPage = false
     @State private var recipesBasedOnIngredients : [RecipesBasedIngredients] = []
     @State private var recipesSteps: [RecipeStep] = []
     
-    
-    
     enum seperateTab: String, CaseIterable {
-    case active = "Active"
-    case expired = "Expired"
+        case active = "Active"
+        case expired = "Expired"
     }
     
     enum Tab: String, CaseIterable{
@@ -46,146 +41,52 @@ struct ListView: View {
     var sortedItems:[Items]{
         switch sortedTab {
         case .expiryDate:
-            // convert timestamp to date.
+            // convert expiry date in format timestamp to date and sort.
             return itemsViewModel.items.sorted(by: {$0.expiryDate.dateValue() < $1.expiryDate.dateValue() })
         case .category:
-                //return itemsViewModel.items
+            // let sort by expiry date be the default sorting
             return itemsViewModel.items.sorted(by:{$0.expiryDate.dateValue() < $1.expiryDate.dateValue() })
-                                                //{$0.selection < $1.selection })
         }
     }
-    
-   /** var ingredientsSection:[Items]{
-    switch activeTab{
-    case .active:
-    return itemsViewModel.items.filter { $0.expiryDate.dateValue() > Date() || $0.expiryDate.dateValue() == Date()
-    }
-    case .expired:
-    return itemsViewModel.items.filter { $0.expiryDate.dateValue() < Date()
-    }
-    
-    }
-    
-    } */
-    /**@State private var activeTab: Tab = .active
-     
-
-     
-     enum Tab: String, CaseIterable {
-     case active = "Active"
-     case expired = "Expired"
-     }
-     
-     var ingredientsSection:[Items]{
-     switch activeTab{
-     case .active:
-     return itemsViewModel.items.filter { $0.expiryDate.dateValue() > Date() || $0.expiryDate.dateValue() == Date()
-     }
-     case .expired:
-     return itemsViewModel.items.filter { $0.expiryDate.dateValue() < Date()
-     }
-     
-     }
-     
-     } */
     
     var userID: String? {
         return Auth.auth().currentUser?.uid }
     
     var body: some View {
         NavigationView {
-            VStack { /**
-                      Button("Logout"){
-                      try? Auth.auth().signOut()
-                      logStatus = false
-                      } */
-                
-                /** Picker("", selection: $activeTab) {
-                 ForEach(seperateTab.allCases, id:  \.self) { option in
-                 Text(option.rawValue)
-                 }
-                 }
-                 .pickerStyle(.segmented)
-                 .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
-                 .listRowSeparator(.hidden)
-                 */
-                
-                /**if activeTab == .active {
-                 Picker("", selection: $activeTab) {
-                 ForEach(seperateTab.allCases, id:  \.self) { option in
-                 Text(option.rawValue)
-                 }
-                 }
-                 .pickerStyle(.segmented)
-                 .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
-                 .listRowSeparator(.hidden)
-                 }
-                 if activeTab == .expired {
-                 Picker("", selection: $activeTab) {
-                 ForEach(seperateTab.allCases, id:  \.self) { option in
-                 Text(option.rawValue)
-                 }
-                 }
-                 .pickerStyle(.segmented)
-                 .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 15))
-                 .listRowSeparator(.hidden)
-                 }
-                 */
-                
-                /**   List {
-                 
-                 
-                 ForEach(sortedItems, id: \.id) { item in
-                 // ForEach(itemsViewModel.items, id: \.id) { item in
-                 //ForEach(ingredientsSection, id: \.id) { item in
-                 // ItemRow(item: item)
-                 ItemRow(item: item)
-                 .environmentObject(itemsViewModel)
-                 //notifications
-                 .onAppear {
-                 scheduleNotification(for: item)
-                 }
-                 // https://peterfriese.dev/blog/2021/swiftui-listview-part4/#:~:text=of%20styling%20options)-,Swipe%2Dto%2Ddelete,loop%20inside%20a%20List%20view.
-                 /** .onDelete { indexSet in
-                  //item.remove(atOffsets: indexSet)
-                  itemsViewModel.deleteItem(atOffsets: indexSet)
-                  } */
-                 }
-                 // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
-                 .onDelete(perform: deleteItems)
-                 
-                 // https://www.youtube.com/watch?v=KMtdBgHwvGY&ab_channel=JohnGallaugher
-                 //.onDelete { indexSet in ItemsViewModel.remove(attOffsets: indexSet)}
-                 
-                 
-                 }*/
+            VStack {
                 
                 List {
                     if sortedTab == .category {
-                        // New list of categories
+                        
+                        // New list of categories without duplicates
                         let categList = Set(sortedItems.map { $0.selection })
                         
-                        // sort items for each list
+                        // Sort items for each list
                         ForEach(categList.sorted(), id: \.self) { category in
                             let eachItem = sortedItems.filter { $0.selection == category }
                             
-                            // display output
                             Section(header: Text(category)) {
                                 ForEach(eachItem, id: \.id) { item in
                                     ItemRow(item: item)
                                         .environmentObject(itemsViewModel)
                                         .onAppear {
+                                            // schedule notifications for the items
                                             scheduleNotification(for: item)
                                         }
+                                    
+                                    /**
+                                     * The swipe action was implemented to allow users to delete by swiping, replicating a real ios application.
+                                     * Friese, P (2021) ,Swipe Actions in SwiftUI 3. The Ultimate Guide to SwiftUI List Views - Part 4
+                                     * Link available at: https://peterfriese.dev/blog/2021/swiftui-listview-part4/
+                                     */
                                         .swipeActions {
                                             Button("Delete"){
                                                 deleteItem(for: item)
                                             }
-                                           // .background(Color.red)
                                             .tint(.red)
                                         }
                                 }
-                                // .onDelete(perform: deleteItems) // Move onDelete to the ForEach within the Section
                             }
                         }
                     } else {
@@ -194,28 +95,34 @@ struct ListView: View {
                             ItemRow(item: item)
                                 .environmentObject(itemsViewModel)
                                 .onAppear {
+                                    // schedule notifications for the items
                                     scheduleNotification(for: item)
-                                } .swipeActions {
+                                } 
+                    
+                            /**
+                             * The swipe action was reused and implemented to allow users to delete by swiping, replicating a real ios application.
+                             * Friese, P (2021) ,Swipe Actions in SwiftUI 3. The Ultimate Guide to SwiftUI List Views - Part 4
+                             * Link available at: https://peterfriese.dev/blog/2021/swiftui-listview-part4/
+                             */
+                                .swipeActions {
                                     Button("Delete"){
                                         deleteItem(for: item)
                                     }
-                                   // .background(Color.red)
+                                    // .background(Color.red)
                                     .tint(.red)
                                 }
-            
                         }
-                        //.//onDelete(perform: deleteItems) // Apply onDelete to the ForEach
                     }
                 }
                 
-                
+                .navigationTitle("Ingredients")
                 
                 /**
-                 List(itemsViewModel.items, id: \.id ) {items in
-                 Text(items.name)
-                 } */
-                .navigationTitle("Ingredients")
-                // https://swiftwithmajid.com/2020/08/05/menus-in-swiftui/
+                 * The toolbar was reused and adapted to implement a wide range of menus.
+                 * Jabrayilov, M. (2020), Menus in SwiftUI. Published: Swift with Majid.
+                 * Link available at: https://swiftwithmajid.com/2020/08/05/menus-in-swiftui/
+                 */
+                
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
                         Menu {
@@ -227,7 +134,6 @@ struct ListView: View {
                                 }
                                 
                                 Button(action: {
-                                    //showScanItem.toggle()
                                     showScanItem = true
                                 }) {
                                     Label("Scan Item", systemImage: "barcode.viewfinder")
@@ -239,25 +145,12 @@ struct ListView: View {
                                     sortedTab = .expiryDate
                                 }) {
                                     Label("Sort By Date", systemImage: sortedTab == .expiryDate ? "checkmark" : "arrow.up.arrow.down")
-                                    // .foregroundColor(.red)
                                 }
                                 Button(action: {sortedTab = .category}) {
                                     Label("Sort By Category", systemImage: sortedTab == .category ? "checkmark" : "list.star")
-                                    //     .foregroundColor(.red)
                                 }
-                                
-                                /** Button(action: {activeTab = .active}) {
-                                 Label("Active vs Expired", systemImage: activeTab == .active ? "checkmark" : "list.star")
-                                 //     .foregroundColor(.red)
-                                 } */
-                                
-                                
-                                
-                                /**  Button(action:  {sortedTab = .defaultSetting}) {
-                                 Label("Default", systemImage: sortedTab == .defaultSetting ? "checkmark" : "" )
-                                 //   .foregroundColor(sortedTab == .defaultSetting ? .red : .green)
-                                 }  //.foregroundColor(sortedTab == .defaultSetting ? .red : .green) */
-                            }.foregroundColor(.red)
+                            }
+                            .foregroundColor(.red)
                             
                             
                             Section(header: Text("Clear Ingredients")){
@@ -274,17 +167,14 @@ struct ListView: View {
                             }
                             
                             .alert(isPresented: $showDeleteIng){
-                                Alert(title: Text( "Deleting All stored recipes"),
+                                Alert(title: Text( "Deleting All Stored Ingredients"),
                                       message: Text("Are you sure you want to do this?"),
                                       primaryButton: .destructive(Text("Yes")){
                                     Settings().clearIngredients()
                                     showDeleteIng = false
                                 }, secondaryButton: .cancel(Text("Cancel"))
                                 )
-                                
                             }
-                            
-                            
                         }
                     label: {
                         Label("Add", systemImage: "plus")
@@ -292,67 +182,13 @@ struct ListView: View {
                     }
                 }
                 
-                
-                
                 .fullScreenCover(isPresented: $showAddItem, onDismiss: nil) {
                     AddItem()
                 }
                 .fullScreenCover(isPresented: $showScanItem) {
                     ScannerView()
-                    // BarcodeScanning(barcode_string: $barcode_string, foundProduct:$foundProduct)
                 }
-                /** Button(action: {
-                 showAddItem = true
-                 // self.isPresented.toggle()
-                 }) {
-                 Image(systemName: "barcode")
-                 }.sheet(isPresented: $showScanItem) {
-                 ScannerViewUI()
-                 //BarcodeScanning(barcode_string: $barcode_string, foundProduct:$foundProduct)
-                 } */
                 
-                //            .fullScreenCover(isPresented: $showScanItem, onDismiss: nil) {
-                //               BarcodeScanning(barcode_string: $barcode_string, foundProduct:$foundProduct)
-                //         }
-                
-                /**
-                 .navigationBarItems(trailing: Button(action: {
-                 showPopup.toggle()
-                 // add
-                 //dataManager.addItem(itemName: newItem)
-                 }, label: {
-                 Image(systemName: "plus")
-                 }))
-                 // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-                 .fullScreenCover(isPresented: $showPopup, onDismiss: nil) {
-                 AddItem()
-                 } */
-                /**
-                 .sheet(isPresented:  $showPopup){
-                 AddItem()
-                 // NewItemView()
-                 } //.padding(.bottom, 10)
-                 */
-                // Spacer()
-                
-                
-                /** Button(action: generateItems) {
-                 { networkModel().getCurrentRecipesIfNeeded { recipes in
-                 if let recipes = recipes {
-                 print ("Recipes fetched: \(recipes)")
-                 } else { print("No recipes")
-                 }}
-                 }){
-                 Text("Generate")
-                 .padding()
-                 .foregroundColor(.white)
-                 .background(buttonStatus ? Color.green : Color.gray)
-                 .cornerRadius(15)
-                 }
-                 .padding()
-                 .disabled(!buttonStatus)
-                 */
-          
                 Button(action: {
                     generateItems()
                     navigateToNextPage = true
@@ -366,47 +202,19 @@ struct ListView: View {
                 .padding()
                 .disabled(!buttonStatus)
                 
-                //.background(NavigationLink(destination: NextPage(recipesBasedOnIngredients: recipesBasedOnIngredients), isActive: $navigateToNextPage){})
                 .fullScreenCover(isPresented:$navigateToNextPage, onDismiss: nil) {
                     NextPage(recipesBasedOnIngredients: recipesBasedOnIngredients)
                 }
-            
+                
+            }
+            .background(Color(UIColor.systemGroupedBackground)) // fixes generate button background!
         }
-            .background(Color(UIColor.systemGroupedBackground))
-           // .background(Color(UIColor.systemGroupedBackground)) // fixes generate button background!
-            // .disabled(!buttonStatus)
-            
-            /** Button("Logout"){
-             try? Auth.auth().signOut()
-             logStatus = false
-             } */
-            
-            // .sheet(isPresented: $showPopup)
-            //     { NewItemView()
-            /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Sheet Content")/*@END_MENU_TOKEN@*/
-            //    }
-            /**
-             Button("Logout"){
-             try? Auth.auth().signOut()
-             logStatus = false
-             
-             
-             } */
-            // .padding(.bottom, 10)
-            
-            
-            // .padding()
-        }
-        
     }
-    /*
-     func updateIngredientsList() {
-        let checkedItems = itemsViewModel.items.filter({ $0.isChecked })
-       let ingredientsQuery = checkedItems.map {$0.name}.joined(separator: ",")
-         
-    } */
-    
-    //https://vikramios.medium.com/mastering-swift-local-notifications-a-developers-guide-f56b77ab64cc
+    /**
+     * The schedule notification funciton was reused and adapted to set local notiifcation on the mobile phone.
+     * Kumar, V. (2023) Mastering Swift Local Notifications: A Developer’s Guide - Unlocking the Power of User Engagement with Swift’s Local Notification System. Published: Medium.
+     * Link Available at : https://vikramios.medium.com/mastering-swift-local-notifications-a-developers-guide-f56b77ab64cc
+     */
     private func scheduleNotification(for item: Items) {
         let today = Date()
         let expiryDate = item.expiryDate.dateValue()
@@ -414,54 +222,27 @@ struct ListView: View {
         guard expiryDate >= today else {
             return
         }
+        /**
+         * The days difference constant was reused and adapted from the article to calculate the difference between the days.
+         * Hudson, P. (2023), Working with dates. Article available at : https://www.hackingwithswift.com/books/ios-swiftui/working-with-dates
+         */
+        // Calculate the difference in days between today and the expiry date, if there is no different then output 0
         let daysDifference = Calendar.current.dateComponents([.day], from: today, to: expiryDate).day ?? 0
         
-     //   let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
-        
-        //if daysDifference 0= 0 || daysDifference <= 3
+        // set notifications for ingredients expiring from tommorow to 3 days.
         if daysDifference >= 0 && daysDifference <= 3 {
             let content = UNMutableNotificationContent()
             content.title = "Your Ingredient is Expiring"
+            // personalise notification based on expiry date
             content.body = "\(item.name) is expiring \(daysDifference == 0 ? "today" : "very soon, use or donate")!"
             content.sound = UNNotificationSound.default
             
-            //https://stackoverflow.com/questions/58561877/error-in-trigger-for-notifications-swift
-            //var hours = [9, 12, 18]
-            /**var triggerDate = DateComponents()
-            triggerDate.hour = 11
-            triggerDate.minute = 40
-            
-            var triggerDateAfternoon = DateComponents()
-            triggerDateAfternoon.hour = 11
-            triggerDateAfternoon.minute = 41
-            */
-            //can change date
+            // notification time
             var triggerDateEvening = DateComponents()
             triggerDateEvening.hour = 6
             triggerDateEvening.minute = 00
             
-                /** let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
-            let trigger2 = UNCalendarNotificationTrigger(dateMatching: triggerDateAfternoon, repeats: true) */
             let trigger3 = UNCalendarNotificationTrigger(dateMatching: triggerDateEvening, repeats: true)
-            
-            
-           /** let request = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger)
-            UNUserNotificationCenter.current().add(request) { error in
-                if let error = error {
-                    print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
-                } else {
-                    print("Notification scheduled successfully for \(item.name)")
-                }
-            }
-            
-            let request2 = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger2)
-            UNUserNotificationCenter.current().add(request2) { error in
-                if let error = error {
-                    print("Error scheduling notification for \(item.name): \(error.localizedDescription)")
-                } else {
-                    print("Notification scheduled successfully for \(item.name)")
-                }
-            } */
             
             let request3 = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger3)
             UNUserNotificationCenter.current().add(request3) { error in
@@ -471,13 +252,11 @@ struct ListView: View {
                     print("Notification scheduled successfully for \(item.name)")
                 }
             }
-            
         }
     }
     
-    
+    // checks if any items is selected
     private var buttonStatus: Bool {
-        //return itemsViewModel.items.contains { $0.isChecked }
         let status = itemsViewModel.items.contains { $0.isChecked }
         print("Button status: \(status)")
         return status
@@ -485,7 +264,6 @@ struct ListView: View {
     
     
     private func generateItems() {
-        
         let selectedItems = itemsViewModel.items.filter { $0.isChecked }.map { $0.name }
         let items = selectedItems.joined(separator: ",")
         
@@ -494,153 +272,12 @@ struct ListView: View {
                 self.recipesBasedOnIngredients = fetchedData
                 let recipeIds = fetchedData.map { $0.id }
                 
-                getRecipeStep(recipeIds: recipeIds)
+               // getRecipeStep(recipeIds: recipeIds)
                 print(recipesBasedOnIngredients)
             }
         }
-       /** let selectedItems = itemsViewModel.items.filter { $0.isChecked }.map { $0.name }
-        Networking.shared.fetchItemsRecipes(with: selectedItems) { recipes, error in
-            if let error = error {
-                print("Error fetching items' recipes: \(error.localizedDescription)")
-                return
-            }
-            
-            if let recipes = recipes {
-                // Handle the fetched recipes here
-                print("Fetched recipes: \(recipes)")
-            }
-        } */
     }
-    /**
-     private func deleteItems(at offsets:IndexSet){
-     itemsViewModel.items.remove(atOffsets: offsets)
-     
-     } */
-    
-    /**
-     private func deleteItems(at offsets: IndexSet) {
-     for index in offsets {
-     let item = itemsViewModel.items[index]
-     if let userID = userID {
-     let db = Firestore.firestore()
-     db.collection("items").document(userID).collection("Item").document(item.id).delete { error in
-     if let error = error {
-     print("Error deleting item \(item.name): \(error.localizedDescription)")
-     } else {
-     print("Item \(item.name) deleted successfully.")
-     }
-     }
-     }
-     }
-     // Remove items from the ViewModel after deleting from the database
-     itemsViewModel.items.remove(atOffsets: offsets)
-     } */
-    /**
-     private func deleteItems(at offsets: IndexSet) {
-     for index in offsets {
-     let item = itemsViewModel.items[index]
-     if let userID = userID {
-     let db = Firestore.firestore()
-     let collectionRef = db.collection("items").document(userID).collection("Item")
-     //let documentRef = db.collection("items").document(userID).collection("Item").document(item.id)
-     
-     
-     collectionRef.whereField("id", isEqualTo: item.id).getDocuments {
-     (QuerySnapshot, error) in
-     if let error = error {
-     print("Error getting item's document for \(item.name): \(error.localizedDescription)")
-     return
-     }
-     
-     /**guard let documents = QuerySnapshot?.documents, let document = documents.first else {
-      print ("Document not found for item  \(item.name)")
-      return
-      } */
-     
-     guard let documents = QuerySnapshot?.documents else {
-     print ("Document not found for item  \(item.name)")
-     return
-     }
-     
-     /**guard let document = documents.first else {
-      print ("Document not found for item  \(item.name)")
-      return
-      } */
-     
-     if let document = documents.first {
-     let documentID = document.documentID
-     collectionRef.document(documentID).delete { error in
-     if let error = error {
-     print("Error deleting item \(item.name): \(error.localizedDescription)")
-     } else {
-     print("Item \(item.name) deleted successfully.")
-     itemsViewModel.items.remove(at: index)
-     }
-     }
-     /** documentRef.delete { error in
-      if let error = error {
-      print("Error deleting item \(item.name): \(error.localizedDescription) for \(userID) for item \(item.id)")
-      } else {
-      print("Item \(item.name) deleted successfully for \(userID) for item \(item.id).")
-      // Remove item from ViewModel after successful deletion
-      itemsViewModel.items.remove(at: index)
-      }
-      }
-      } */
-     } else {
-     print("No document found for item \(item.name) with id \(item.id)")
-     }
-     }
-     }
-     }
-     } */
-        /**
-    private func deleteItems(at offsets: IndexSet) {
-            var indicesToDelete: [Int] = []
-            
-            for index in offsets {
-                let item = itemsViewModel.items[index]
-                if let userID = userID {
-                    let db = Firestore.firestore()
-                    let collectionRef = db.collection("items").document(userID).collection("Item")
-                    
-                    collectionRef.whereField("id", isEqualTo: item.id).getDocuments { (querySnapshot, error) in
-                        if let error = error {
-                            print("Error getting documents for item \(item.name): \(error.localizedDescription)")
-                            return
-                        }
-                        
-                        guard let documents = querySnapshot?.documents else {
-                            print("No documents found for item \(item.name)")
-                            return
-                        }
-                        
-                        if let document = documents.first {
-                            let documentID = document.documentID
-                            collectionRef.document(documentID).delete { error in
-                                if let error = error {
-                                    print("Error deleting item \(item.name): \(error.localizedDescription)")
-                                } else {
-                                    print("Item \(item.name) deleted successfully.")
-                                    
-                                    // Add the index to the list of indices to delete
-                                    indicesToDelete.append(index)
-                                }
-                            }
-                        } else {
-                            print("No document found for item \(item.name)")
-                        }
-                    }
-                }
-            }
-            
-            // Remove items from ViewModel after deletion loop
-            indicesToDelete.forEach { index in
-                itemsViewModel.items.remove(at: index)
-            }
-        } */
-    
-    
+
     private func deleteItem(for item: Items) {
         guard let userID = userID else {
             return
@@ -680,10 +317,9 @@ struct ListView: View {
             }
         }
     }
-
     
-    private func getRecipeStep(recipeIds : [Int]) {
-        
+    
+   /** private func getRecipeStep(recipeIds : [Int]) {
         for recipeid in recipeIds {
             RecipesSteps().sendRequest(id_number: recipeid){ fetchedData in
                 DispatchQueue.main.async {
@@ -693,125 +329,74 @@ struct ListView: View {
                 }
             }
         }
-    }
+    }*/
     
     struct NextPage: View {
         @Environment(\.presentationMode) var presentationMode
-        @State private var sortedRecipes: [RecipesBasedIngredients] = []
         let recipesBasedOnIngredients: [RecipesBasedIngredients]
-      
-        var body: some View {
-                    NavigationView {
-                        
-                        ScrollView{
-                            VStack{   ForEach(sortedRecipes, id: \.id) { recipeBased in
-                                //ForEach(recipesBasedOnIngredients, id: \.id) { recipeBased in
-                                    NavigationLink(destination: NextPage1(recipeBased: recipeBased)) {
-                                        VStack(alignment: .leading, spacing: 10) {
-                                            if let photoURL = URL(string: recipeBased.image) {
-                                                AsyncImage(url: photoURL) { image in
-                                                    image
-                                                        .resizable()
-                                                        .scaledToFill()
-                                                        .frame(width: 350, height: 120)
-                                                        .clipped()
-                                                    
-                                                } placeholder: {
-                                                    ProgressView()
-                                                }
-                                            }
-                                            
-                                            Text(recipeBased.title)
-                                                .font(.headline)
-                                                .padding(.horizontal)
-                                            // .background(Color(.systemGray5))
-                                            /**
-                                             HStack {
-                                             Spacer()
-                                             
-                                             Button(action: {
-                                             // Button action
-                                             }) {
-                                             Image(systemName: "star")
-                                             .resizable()
-                                             .frame(width: 26, height: 26)
-                                             }
-                                             .padding(.trailing)
-                                             }
-                                             .padding(.bottom)
-                                             .padding(.horizontal) */
-                                        }
-                                        //.background(Color(.systemGray5))
-                                        .padding(.horizontal, 0)
-                                        .padding(.vertical, 10)
-                                        .background(Color(.systemGray5))
-                                    }
-                                    .buttonStyle(PlainButtonStyle())
-                                    .listRowSeparator(.hidden)
-                                    
-                                    
-                                    
-                                }
-                                .padding(.horizontal)
-                                .padding(.top, 20)
-                                .listStyle(PlainListStyle())
-                                //.background(Color(.systemGray5))
-                                
-                            }
-                            
-                            .navigationBarItems(leading: Button(action: {
-                                            presentationMode.wrappedValue.dismiss()
-                                        }) {
-                                            Image(systemName: "arrow.left")
-                                                .foregroundColor(.green)
-                                        })
-                                        .navigationBarTitle("Generated Recipes", displayMode: .inline)
-                                        .onAppear {
-                                                        sortedRecipes = recipesBasedOnIngredients.sorted(by: { $0.missedIngredientCount < $1.missedIngredientCount })
-                                                    }
-                            
-                        }.background(Color(UIColor.systemGroupedBackground))
-                            .padding(.trailing, -5)
-                            .padding(.leading, -5)
-                        // .background(Color(.systemGray5))
-                    }//.background(Color(UIColor.systemGroupedBackground))
-                    
-        }
-        /**var body: some View {
-            NavigationView {
-                List(recipesBasedOnIngredients, id: \.id) { recipeBased in
-                    NavigationLink(destination: NextPage1(recipeBased: recipeBased)) {
-                        if let photoURL = URL(string: recipeBased.image) {
-                            AsyncImage(url: photoURL) { image in
-                                image
-                                    .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .cornerRadius(8)
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            Text("\(recipeBased.title)")
-                            Text("\(recipeBased.id)")
-                        }
-                    }
-                }
-            }
-        } */
         
+        var body: some View {
+            NavigationView {
+                
+                ScrollView{
+                    VStack{
+                        ForEach(recipesBasedOnIngredients, id: \.id) { recipeBased in
+                        NavigationLink(destination: NextPage1(recipeBased: recipeBased)) {
+                            VStack(alignment: .leading, spacing: 10) {
+                                if let photoURL = URL(string: recipeBased.image) {
+                                    AsyncImage(url: photoURL) { image in
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 350, height: 120)
+                                            .clipped()
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                }
+                                
+                                Text(recipeBased.title)
+                                    .font(.headline)
+                                    .padding(.horizontal)
+                            }
+                            
+                            .padding(.horizontal, 0)
+                            .padding(.vertical, 10)
+                            .background(Color(.systemGray5))
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .listRowSeparator(.hidden)
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 20)
+                    .listStyle(PlainListStyle())
+                    }
+                    
+                    .navigationBarItems(leading: Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image(systemName: "arrow.left")
+                            .foregroundColor(.green)
+                    })
+                    .navigationBarTitle("Generated Recipes", displayMode: .inline)
+                    
+                }.background(Color(UIColor.systemGroupedBackground)) // background
+                    .padding(.trailing, -5)
+                    .padding(.leading, -5)
+                
+            }
+            
+        }
         
         struct NextPage1: View {
-                let recipeBased: RecipesBasedIngredients
-                
-                @State private var recipeSteps: [RecipeStep] = []
-                @State private var uniqueIngredients: Set<String> = Set()
+            let recipeBased: RecipesBasedIngredients
+            
+            @State private var recipeSteps: [RecipeStep] = []
+            @State private var uniqueIngredients: Set<String> = Set()
             
             var body: some View {
-                // NavigationView{
-                //  List {
                 ScrollView(.vertical, showsIndicators: false){
-                    
                     VStack {
-                       // Text(recipeBased.title)
                         if let photoURL = URL(string: recipeBased.image) {
                             AsyncImage(url: photoURL) { image in
                                 image
@@ -820,8 +405,6 @@ struct ListView: View {
                                     .clipped()
                                     .padding(.leading)
                                     .padding(.trailing)
-                                   // .frame(width: 300, height: 200)
-                                  //  .cornerRadius(8)
                             } placeholder: {
                                 ProgressView()
                             }
@@ -839,43 +422,34 @@ struct ListView: View {
                             }
                             .padding(.horizontal, 24)
                             .padding(.vertical, 12)
-                             Spacer()
-                             
-                             Button(action: shareRecipe
-                             ){
-                                 Image(systemName: "square.and.arrow.up")
-                                     .resizable()
-                                     .frame(width: 21, height: 30)
-                                     .padding(10)
-                                     .foregroundColor(.green)
-                                 //    .bold()
-                             }
-                         }
-                         
-                         
-                       
-                        
-                        
-                        
-                        
+                            Spacer()
+                            
+                            Button(action: shareRecipe
+                            ){
+                                Image(systemName: "square.and.arrow.up")
+                                    .resizable()
+                                    .frame(width: 21, height: 30)
+                                    .padding(10)
+                                    .foregroundColor(.green)
+                            }
+                        }
+                 
                         VStack(alignment: .leading, spacing: 6){
-                
+                            
                             if !recipeBased.usedIngredients.isEmpty {
                                 Text("Used Ingredients")
                                     .fontWeight(.bold)
                                     .font(.system(size: 24))
                                     .padding(.leading)
                                     .padding(.trailing)
-                                   
+                                
                                 
                                 ForEach(recipeBased.usedIngredients, id: \.id){ usedIngredients in
                                     Text("\(usedIngredients.original.replacingOccurrences(of: ",", with: ""))")
                                         .font(.system(size: 18))
                                     Divider()
-                                    // Text("Used Ingredients:  \(usedIngredients.originalName)")
                                 } .padding(.leading)
                                     .padding(.trailing)
-                                    
                                 
                             }
                             
@@ -887,39 +461,18 @@ struct ListView: View {
                                     .padding(.trailing)
                                     .padding(.top, 10)
                                 
+                                // remove everything after comma, e.g 2 eggs, slow cooked = 2 eggs.
                                 ForEach(recipeBased.missedIngredients, id: \.id){ missedIngredients in
                                     let noComma = missedIngredients.original.hasSuffix(",") ? String(missedIngredients.original.dropLast()) : missedIngredients.original
                                     Text("\(noComma)")
-                                    //Text("\(missedIngredients.original.replacingOccurrences(of: ",", with: ""))")
                                         .font(.system(size: 18))
                                     Divider()
-                                    // Text("Missed Ingredients:   \(missedIngredients.originalName)")
+                                    
                                 }
                                 .padding(.leading)
                                 .padding(.trailing)
                             }
                             
-                           /** HStack {
-                                Text("Ingredients")
-                                    .fontWeight(.bold)
-                                    .font(.system(.title2))
-                                
-                                Spacer()
-                                
-                                Button(action: shareRecipe
-                                ){
-                                    Image(systemName: "square.and.arrow.up")
-                                        .resizable()
-                                        .frame(width: 21, height: 30)
-                                        .padding(10)
-                                        .foregroundColor(.green)
-                                    //    .bold()
-                                }
-                            }
-                            .padding(.leading)
-                                .padding(.trailing)
-                            */
-    
                             Text("Instructions")
                                 .fontWeight(.bold)
                                 .font(.system(.title2))
@@ -928,51 +481,22 @@ struct ListView: View {
                                 .padding(.trailing)
                             
                             ForEach(recipeSteps, id: \.self) { recipeStep in
-                                /**VStack(alignment: .leading, spacing:6) {
-                                    Spacer()
-                                    //Text(recipeStep.name)
-                                   //     .font(.system(size: 16))
-                                   // Divider()
-                                    // .font(.headline)
-                                    // Set(recipeStep.steps.flatMap { $0.ingredients.map { $0.name } })
-                                    
-                                    ForEach(Array(Set(recipeStep.steps.flatMap { $0.ingredients.map { $0.name } })), id: \.self) { uniqueIngredient in
-                                        Text(uniqueIngredient)
-                                            .font(.system(size: 18))
+                                ForEach(recipeStep.steps, id: \.self) { step in
+                                    Text("\(step.number). \(step.step)")
+                                        .font(.system(size: 16))
                                     Divider()
-                                    }
                                 }
-                                Spacer() */
-
-                                
-                                    ForEach(recipeStep.steps, id: \.self) { step in
-                                        //                        Text("\(step.ingredients)")
-                                        Text("\(step.number). \(step.step)")
-                                            .font(.system(size: 16))
-                                    Divider()
-                                          //  .padding(.leading)
-                                    }
-                                    
-                                    
-                                
                             }
-                            
                             .padding(.leading)
-                                .padding(.trailing)
-                            
-                            
-                       
-                            
-                            
+                            .padding(.trailing)
                         }
                     }
-                    //.navigationTitle(recipeBased.title)
+                    
                     .onAppear {
                         getRecipeStep(recipeId: recipeBased.id)
-                    } .padding(.leading, 8)
-                        .padding(.trailing, 8)
-                    // .accentColor(.green)
-                    //}
+                    } 
+                    .padding(.leading, 8)
+                    .padding(.trailing, 8)
                 }
             }
             
@@ -990,7 +514,7 @@ struct ListView: View {
                 /** guard let shareURL = URL(string: url) else { return }
                  let activityViewController = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
                  UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil) */
-                guard let window = UIApplication.shared.windows.first else { 
+                guard let window = UIApplication.shared.windows.first else {
                     print("Error!")
                     return
                 }
@@ -1007,7 +531,7 @@ struct ListView: View {
             }
         }
     }
-
+    
     
     
     
@@ -1017,64 +541,64 @@ struct ListView: View {
     
     // https://www.youtube.com/watch?v=KcOvWU3xp1I&t=273s&ab_channel=JohnGallaugher
     // https://www.youtube.com/watch?v=KMtdBgHwvGY&list=PL9VJ9OpT-IPSM6dFSwQCIl409gNBsqKTe&index=64&ab_channel=JohnGallaugher
-   /** private func deleteItems(at offsets: IndexSet) {
-        // var itemsToDelete: [Items] = []
-        
-        //
-        for index in offsets {
-            let item = itemsViewModel.items[index]
-            
-            if let userID = userID {
-                let db = Firestore.firestore()
-                // https://firebase.google.com/docs/firestore/query-data/queries
-                // https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
-                //https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
-           // https://www.youtube.com/watch?v=KcOvWU3xp1I&list=PL9VJ9OpT-IPSM6dFSwQCIl409gNBsqKTe&index=102&ab_channel=JohnGallaugher??
-                let collectionRef = db.collection("items").document(userID).collection("Item")
-                
-                collectionRef.whereField("id", isEqualTo: item.id).addSnapshotListener { (querySnapshot, error) in
-                    if let error = error {
-                        print("Error getting documents for item \(item.name): \(error.localizedDescription)")
-                        return
-                    }
-                    
-                    guard let documents = querySnapshot?.documents else {
-                        print("No documents found for item \(item.name)")
-                        return
-                    }
-                    
-                    if let document = documents.first {
-                        let documentID = document.documentID
-                        collectionRef.document(documentID).delete { error in
-                            if let error = error {
-                                print("Error deleting item \(item.name): \(error.localizedDescription)")
-                            } else {
-                                print("Item \(item.name) with id \(item.id) deleted successfully.")
-                                
-                                // https://stackoverflow.com/questions/71391214/how-to-remove-pending-notification-request-when-using-uuidstring-as-identifier-s
-                                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [item.id])
-                                
-                                
-                                // chat GPT: https://chat.openai.com/share/b7135e73-7ca1-4b11-aae4-717e57f26e82
-                                DispatchQueue.main.async {
-                                    if let index = itemsViewModel.items.firstIndex(where: { $0.id == item.id}) {
-                                        itemsViewModel.items.remove(at: index)
-                                    }
-                                    
-                                }
-                            }
-                        }
-                    } else {
-                        print("No document found for item \(item.name)")
-                    }
-                }
-            }
-        }
-    } */
+    /** private func deleteItems(at offsets: IndexSet) {
+     // var itemsToDelete: [Items] = []
+     
+     //
+     for index in offsets {
+     let item = itemsViewModel.items[index]
+     
+     if let userID = userID {
+     let db = Firestore.firestore()
+     // https://firebase.google.com/docs/firestore/query-data/queries
+     // https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+     //https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
+     // https://www.youtube.com/watch?v=KcOvWU3xp1I&list=PL9VJ9OpT-IPSM6dFSwQCIl409gNBsqKTe&index=102&ab_channel=JohnGallaugher??
+     let collectionRef = db.collection("items").document(userID).collection("Item")
+     
+     collectionRef.whereField("id", isEqualTo: item.id).addSnapshotListener { (querySnapshot, error) in
+     if let error = error {
+     print("Error getting documents for item \(item.name): \(error.localizedDescription)")
+     return
+     }
+     
+     guard let documents = querySnapshot?.documents else {
+     print("No documents found for item \(item.name)")
+     return
+     }
+     
+     if let document = documents.first {
+     let documentID = document.documentID
+     collectionRef.document(documentID).delete { error in
+     if let error = error {
+     print("Error deleting item \(item.name): \(error.localizedDescription)")
+     } else {
+     print("Item \(item.name) with id \(item.id) deleted successfully.")
+     
+     // https://stackoverflow.com/questions/71391214/how-to-remove-pending-notification-request-when-using-uuidstring-as-identifier-s
+     UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [item.id])
+     
+     
+     // chat GPT: https://chat.openai.com/share/b7135e73-7ca1-4b11-aae4-717e57f26e82
+     DispatchQueue.main.async {
+     if let index = itemsViewModel.items.firstIndex(where: { $0.id == item.id}) {
+     itemsViewModel.items.remove(at: index)
+     }
+     
+     }
+     }
+     }
+     } else {
+     print("No document found for item \(item.name)")
+     }
+     }
+     }
+     }
+     } */
 }
-    
-    
-    
+
+
+
 
 
 struct ItemRow: View {
@@ -1082,37 +606,30 @@ struct ItemRow: View {
     @EnvironmentObject var itemsViewModel: ItemsViewModel
     @State private var isChecked: Bool = false
     @State private var isShown = false
-    
-    // https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b
-   /** private var expiryDateFormatter: String {
-        let dateFormatter = DateFormatter()
-        //dateFormatter.dateFormat = "EEEE, dd MMM yyyy"
-        
-        // let dateStr = dateFormatter.string(from: date)
-        //  print(dateStr)
-        dateFormatter.dateStyle = .medium
-        let expiryDate = Date(timeIntervalSinceReferenceDate: item.expiryDate)
-        return dateFormatter.string(from: expiryDate)
-        
-    } */
-    
+   
+    /**
+     * The expiry date formatter variable was reused and adapted from the article to display the date as I wanted.
+     * Ng, P (2020), [Swift] Work With Dates #1 Basic Types: Date, DateFormatter, DateComponent. Published: Medium. Article available at: https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b
+     */
     private var expiryDateFormatter: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .none
-        
         return dateFormatter.string(from: item.expiryDate.dateValue())
     }
     
+    /**
+     * The constants with the 'let' infront in the expiry date status variable were reused and adapted from the article below to calculate the days accurately so that if the days difference is 1 it should only mean tomorrow and not also yesterday.
+     * Wongpatcharapakorn, S. (2020), Getting the number of days between two dates in Swift. Article available at : https://sarunw.com/posts/getting-number-of-days-between-two-dates/
+     */
     private var expiryDateStatus: String {
-        
-        //setting the day so it accurately displays the date todat
+        //setting the day so it accurately displays the date
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         let expiryDate = calendar.startOfDay(for: item.expiryDate.dateValue())
         let daysDifference = Calendar.current.dateComponents([.day], from: today, to: expiryDate).day ?? 0
-        //let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
         
+        // accurately displays the status of expiry
         if daysDifference == -1 {
             return "Expired yesterday"
         } else if daysDifference == 0 {
@@ -1126,92 +643,69 @@ struct ItemRow: View {
         }
     }
     
-    // expiry date Red
-    //https://developer.apple.com/documentation/foundation/calendar/2293176-datecomponents
+    /**
+     * The days difference constant was reused and adapted from the article to calculate the difference between the days.
+     * Hudson, P. (2023), Working with dates. Article available at : https://www.hackingwithswift.com/books/ios-swiftui/working-with-dates
+     */
     private func expiryDateRed() -> Color {
-        // Calculate the difference in days between today and the expiry date
-        // no date returns 0
+        // Calculate the difference in days between today and the expiry date, if there is no different then output 0
         let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
         
-        // If the expiry date is within 3 days from today, return red, otherwise return the default color
-        /**if daysDifference <= 3 && daysDifference >= 0 {
-         return .red
-         } else {
-         return .primary // Default color
-         } */
+        // If the expiry date is within 3 days from today, return red, if between 2-4 days return yellow else the default colour
         if daysDifference <= 0 {
             return .red
         } else if daysDifference <= 3 {
             return .yellow
         } else {
-            return .primary // Default color
+            return .primary // set to primary so it's visible in dark code.
         }
     }
     
     var body: some View {
         
-       // let daysDifference = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate.dateValue()).day ?? 0
         HStack {
             Image(systemName: isChecked ? "circle.inset.filled" : "circle")
-                  //"checkmark.square" : "square")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width:22, height: 22)
+            
+            // fill circle to green if item is selected
                 .foregroundColor(isChecked ? .green : .gray)
                 .onTapGesture {
                     isChecked.toggle()
-                    itemsViewModel.updateItem(itemID: item.id, isChecked: isChecked) // Access itemsViewModel here
+                    itemsViewModel.updateItem(itemID: item.id, isChecked: isChecked) // update status of the item selected.
                     print("\(item.name) checked : \(isChecked)")
                 }
                 .padding(.trailing, 8)
             
-            // VStack(alignment: .leading){
             Text(item.name)
                 .font(.headline)
             
             Text("Qty: \(item.quantity)")
                 .font(.subheadline)
-      
+            
             Spacer()
             
             Text(expiryDateStatus)
-        // Text("\(expiryDateFormatter)")
-            .font(.subheadline)
-            .foregroundColor(expiryDateRed())
-        // .multilineTextAlignment(.trailing)
-        //.bold()
+                .font(.subheadline)
+                .foregroundColor(expiryDateRed())
             
             Image(systemName: "info.circle")
-                    //"pencil")
-            //"ellipsis")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width:20, height: 20)
-               // .padding(.trailing)
-        
-    //}
                 .padding(.leading, 8)
-            //own code
+            
                 .onTapGesture {
                     isShown.toggle()
                 }
                 .foregroundColor(Color.green)
-            /**
-                .sheet(isPresented: $isShown){
+            // shows the view of the item
+                .fullScreenCover(isPresented: $isShown, onDismiss: nil) {
                     EachItemView(item: item)
                 }
-             */
-            
-            // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-            .fullScreenCover(isPresented: $isShown, onDismiss: nil) {
-                EachItemView(item: item)
-                   }
-             
-           // Spacer()
         }
-        
     }
-       
 }
 
 struct EachItemView: View {
@@ -1221,9 +715,10 @@ struct EachItemView: View {
     @EnvironmentObject var itemsViewModel: ItemsViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    // https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b
-    // https://developer.apple.com/documentation/foundation/dateformatter
-    // https://www.swiftyplace.com/blog/swift-date-formatting-10-steps-guide
+    /**
+     * The expiry date formatter variable was reused and adapted from the article to display the date as I wanted.
+     * Ng, P (2020), [Swift] Work With Dates #1 Basic Types: Date, DateFormatter, DateComponent. Published: Medium. Article available at: https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b
+     */
     private var expiryDateFormatter: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
@@ -1233,17 +728,14 @@ struct EachItemView: View {
     }
     
     var body: some View{
-        //VStack{
-        //HStack {
         NavigationView {
-            
-            // ZStack(alignment: .topLeading){
+            /**
+             * The form was reused and adapted from a swiftui form video.
+             * Allen, S. (2021), SwiftUI Form w/ TextField, DatePicker, Toggle, Stepper, Link and Sections w/ Header.
+             * Youtube video available at: https://www.youtube.com/watch?v=m0QQ-hWs8fc&t=31s&ab_channel=SeanAllen
+             */
             Form {
-                
-                /** Section(header: Text("Ingredient name")) {
-                 Text("Name: \(item.name)")
-                 }
-                 */
+                // if image is not empty, show image
                 if !item.imageURL.isEmpty{
                     Section(header: Text("IMAGE")){
                         HStack{
@@ -1255,11 +747,12 @@ struct EachItemView: View {
                                 .background()
                             Spacer()
                         }
+                        // background colour
                         .background(Color(UIColor.systemGroupedBackground))
                     }
+                    // background colour
                     .background(Color(UIColor.systemGroupedBackground))
                 }
-
                 
                 Section(header: Text("Ingredient name")) {
                     Text(" \(item.name)")
@@ -1277,17 +770,13 @@ struct EachItemView: View {
                     Text("\(item.selection)")
                 }
                 
-                /**
-                 Section(header: Text("Description")) {
-                 Text("\(item.description)")
-                 }*/
-                
                 if !item.description.isEmpty {
                     Section(header: Text("Description")) {
                         Text("\(item.description)")
                     }
                 }
                 
+                // delete ingredient button
                 Button(action: {
                     deleteItem(for: item)
                 }) {
@@ -1296,102 +785,28 @@ struct EachItemView: View {
                 }
             }
             
-           
-
-    
             .navigationTitle("Ingredient Details")
-            /**
-            .navigationBarItems(trailing: Button(action: {
-                editShown.toggle()
-                // add
-                //dataManager.addItem(itemName: newItem)
-            }, label: {
-                Image(systemName: "pencil.circle")
-            }))
-            // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-            .fullScreenCover(isPresented: $editShown, onDismiss: nil) {
-                EditItem()
-            }
-            */
             
-            /**
-            .navigationBarItems(leading:
-                                    Button("Cancel") {
-                self.presentationMode.wrappedValue.dismiss()
-                //isPresented = false
-                //showEmailVerificationView = false
-            }
-                .foregroundColor(.green), trailing:
-                                    Button("Edit") {
-                EditItem()
-                
-            } .foregroundColor(.green)
-                .bold()
-            
-                    
-            
-            ) */
-            
-            /**
-           .navigationBarItems(leading:
-                                    Button(action : {
-                self.presentationMode.wrappedValue.dismiss()
-                //isPresented = false
-                //showEmailVerificationView = false
-            }) { Image(systemName: "arrow.left")}
-                .padding()
-                                
-                .foregroundColor(.green), trailing:
-                                    Button("Edit") {
-                EditItem()
-            } .foregroundColor(.green)
-                .bold()
-            
-                    
-            
-            ) */
-            
-            
-        
-            
-                
-                
-                //  .navigationTitle("Ingredients")
-               /**  .navigationBarItems(trailing: Button(action: {
-                     editShown.toggle()
-                 }) { Image(systemName: "ellipses")}
-                                     ) */
-                 
-                 
+            // left arrow to go back to the view of all items
             .navigationBarItems(leading: Button(action : {
-               // editShown = false
                 self.presentationMode.wrappedValue.dismiss()
             }, label : {
                 Image(systemName: "arrow.left")
                     .foregroundColor(.green)
             }),
-                    
-                    trailing: Button(action: {
-                    editShown.toggle()
-                    // add
-                    //dataManager.addItem(itemName: newItem)
-                }, label: {
-                    Image(systemName: "rectangle.and.pencil.and.ellipsis")
-                        .foregroundColor(.green)
-                }))
-           // .foregroundColor(.green)
-             //   .bold()
-                // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-                .sheet(isPresented: $editShown, onDismiss: nil) {
-                    EditItem(item: item)
-                   // EditItem(item: item)
-                }
-                
+                                // edit button
+                                trailing: Button(action: {
+                editShown.toggle()
+            }, label: {
+                Image(systemName: "rectangle.and.pencil.and.ellipsis")
+                    .foregroundColor(.green)
+            }))
+            
+            // navigates to the view of edit item
+            .sheet(isPresented: $editShown, onDismiss: nil) {
+                EditItem(item: item)
             }
-        
-
-        
-        //.navigationTitle("\(item.name)")
+        }
     }
     
     private func deleteItem(for item: Items) {
@@ -1434,7 +849,10 @@ struct EachItemView: View {
                 print("No document found for item \(item.name)")
             }
         }
-        
+        /**
+         * The remove pending notifications were reused to remove notifications for the item deleted.
+         * https://stackoverflow.com/questions/71391214/how-to-remove-pending-notification-request-when-using-uuidstring-as-identifier-s
+         */
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [item.id])
         presentationMode.wrappedValue.dismiss()
     }
@@ -1444,7 +862,7 @@ struct EachItemView: View {
 
 #Preview {
     ListView()
-        //.environmentObject(itemsViewModel)
+    //.environmentObject(itemsViewModel)
 }
 
 

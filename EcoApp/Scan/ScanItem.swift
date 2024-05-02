@@ -26,7 +26,7 @@ struct ScanItem: View {
     
 //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
     @State private var selection = "Fridge"
-    let place = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer"]
+    let placeStored = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer"]
     
 //https://www.youtube.com/watch?v=YgjYVbg1oiA&t=1327s&ab_channel=CodeWithChris
     @State var isPickerShowing = false
@@ -167,7 +167,7 @@ struct ScanItem: View {
                     //VStack(alignment: .leading){
                    //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
                     Picker("Select A Category", selection: $selection) {
-                        ForEach(place, id: \.self) {
+                        ForEach(placeStored, id: \.self) {
                             Text($0)
                         }
                     }

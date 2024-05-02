@@ -2,13 +2,13 @@
 //  Items.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 24/03/2024.
+//  Created by Saajidah Mohamed
 //
 
 import SwiftUI
 import Firebase
 
-
+// model was developed by me to initialise my items. 
 struct Items: Identifiable {
     var id: String
     var name: String
@@ -17,10 +17,5 @@ struct Items: Identifiable {
     var expiryDate : Timestamp
     var selection : String
     var description : String
-    // https://stackoverflow.com/questions/52367721/how-to-declare-data-type-as-timestamp-in-ios-swift
     var imageURL : String
-    //TimeInterval
-    //var quantity: Number
-    ///var expiry: TimeStamp
-    
 }

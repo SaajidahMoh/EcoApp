@@ -39,8 +39,11 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
            let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
            print("Device Token: \(token)")
        }
-    
-       // https://vikramios.medium.com/mastering-swift-local-notifications-a-developers-guide-f56b77ab64cc
+    /**
+     * The user notiifcation center funciton was reused to set local notiifcation on the mobile phone.
+     * Kumar, V. (2023) Mastering Swift Local Notifications: A Developer’s Guide - Unlocking the Power of User Engagement with Swift’s Local Notification System. Published: Medium.
+     * Link Available at : https://vikramios.medium.com/mastering-swift-local-notifications-a-developers-guide-f56b77ab64cc
+     */
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
            completionHandler([.alert, .sound, .badge])
        }
@@ -48,15 +51,12 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 }
 @main
 struct EcoMakeApp: App {
-    //init() {FirebaseApp.configure()}
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     var body: some Scene {
         WindowGroup {
             NavigationView {
                 ContentView()
-                //SplashScreenView()
-                //OnboardingView()
             }
         }
     }

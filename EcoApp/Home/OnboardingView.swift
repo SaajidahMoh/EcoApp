@@ -6,7 +6,7 @@
 //
 
 /**
- * The onboarding view initialises the information I want to share on my view page. It also allows users to swipe through the pages. The 'pages' array was adapted by me.
+ * The onboarding view was reused and adapted to initialise the information I want to share on my view page. It also allows users to swipe through the pages. The 'pages' array was adapted by me.
  * This code was reused from Youtube, Ayhan: SwiftUI Final Part - launch screenon boarding screen [https://www.youtube.com/watch?v=olV5wVf-tsE&ab_channel=Ayhan]
  * Jibrael, A. (2024), Ayhan - SwiftUI Final Part - launch screenon boarding screen. Link available at:  https://www.youtube.com/watch?v=olV5wVf-tsE&ab_channel=Ayhan
  */
@@ -65,7 +65,7 @@ struct OnboardingView: View {
 
 /**
  * The design of the VStack with the image, title and description, AND the button were reused from the Medium open Platform, Meet Patel.
- * Patel, M. (2023), Create Beautiful Sliding OnBoarding Flow using App Storage and PageTabViewStyle in SwiftUI. Link available at:  https://medium.com/@meet237/create-beautiful-sliding-onboarding-flow-using-app-storage-and-pagetabviewstyle-in-swiftui-d733b84d6199
+ * Patel, M. (2023), Create Beautiful Sliding OnBoarding Flow using App Storage and PageTabViewStyle in SwiftUI. Published: Medium.  Link available at:  https://medium.com/@meet237/create-beautiful-sliding-onboarding-flow-using-app-storage-and-pagetabviewstyle-in-swiftui-d733b84d6199
  */
 
 // REUSED AND ADAPTED

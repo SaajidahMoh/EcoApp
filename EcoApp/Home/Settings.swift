@@ -23,7 +23,7 @@ struct Settings: View {
     @State private var showDeleteAcc = false
     @State private var alertMessage = ""
     
-    // public variable that sets the user ID to be the current users ID.
+    // public variable userID that sets the user ID to be the current users ID.
     var userID: String? {
         return Auth.auth().currentUser?.uid }
     

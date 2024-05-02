@@ -26,15 +26,15 @@ struct EditItem: View {
     //@State private var imageURL = ""
     @State private var imageURL : URL?
     
-    //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
+    /**
+     * The Picker was reused and adapted to allow users to keep track of where they are storing their ingredients.
+     * Hudson, P. (2022), How to let users pick options from a menu. Published: Hacking With Swift. Available at: https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
+     */
     @State private var selection = ""
-    let place = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer"]
+    let placeStored = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer", "Countertop", "Cellar", "Fruit Basket", "Kitchen Cart"]
     
-    //https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
-    // @State var isPickerShowing = false
-    // @State var selectedImage: UIImage?
-    
-    @State var shouldShowImagePicker = false // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+    // Should show Image picker code reuse from: https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+    @State var shouldShowImagePicker = false
     
     @State var image: UIImage?
     
@@ -47,33 +47,31 @@ struct EditItem: View {
     var body: some View {
         @StateObject var itemsViewModel = ItemsViewModel()
         
-        // Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         NavigationView{
+            /**
+             * The form was reused and adapted from a swiftui form video.
+             * Allen, S. (2021), SwiftUI Form w/ TextField, DatePicker, Toggle, Stepper, Link and Sections w/ Header.
+             * Youtube video available at: https://www.youtube.com/watch?v=m0QQ-hWs8fc&t=31s&ab_channel=SeanAllen
+             */
             Form {
+                /**
+                 * The code relating to image and photo below has been reused and adapted from the video below. Aswell as the should show image picker and the image picker.
+                 * Voong, B. (2021), SwiftUI Firebase Chat 03: Save Images to Firebase Storage.
+                 * Youtube Link Available at: https://www.youtube.com/watch?v=5inXE5d2MUM&t=1056s&ab_channel=LetsBuildThatApp
+                 * Source code Available at:  https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                 */
                 
-                //  Section(header: Text("Image")){
-                // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-                // if let image = self.image {
-                //if selectedImage != nil {
-                //if let selectedImage = self.selectedImage {
-                // https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
-                // Image(uiImage: selectedImage!)
-                // Image(uiImage: image)
-                
-                // if let imageURL = URL(string: imageURL) {
-                if let selectedImage = self.image{
-                    Image(uiImage: selectedImage)
+                if let image = self.image{
+                    Image(uiImage: image)
                         .resizable()
                         .scaledToFill()
                         .frame(width: 128, height: 128)
-                    
                 }
                 else if let imageURL = imageURL {
                     KFImage(imageURL)
                         .resizable()
                         .scaledToFill()
                         .frame(width: 128, height: 128)
-                    // .cornerRadius(64)
                     Button("Select Image"){
                         shouldShowImagePicker.toggle()
                     }
@@ -83,18 +81,13 @@ struct EditItem: View {
                         .resizable()
                         .font(.system(size: 64))
                         .padding()
-                    // .foregroundColor(Color(.label))
                         .foregroundColor(.gray)
                         .frame(height: 150)
                     Button("Select Image"){
                         shouldShowImagePicker.toggle()
                     }
                     .foregroundColor(.green)
-                    //  .sheet(isPresented: $isPickerShowing, onDismiss: nil) {
-                    //      ImagePicker(selectedImage: $selectedImage, isPickerShowing: $isPickerShowing)}
                     
-                    // ImagePicker(image: $self.image))
-                    // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
                     .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
                         ImagePicker(image: $image)
                     }
@@ -102,16 +95,8 @@ struct EditItem: View {
                     .onAppear {
                         imageURL = URL(string: item.imageURL)
                     }
-                    
-                    // .onAppear {
-                    //   image = item.name
-                    // }
-                    
-                    //Image(image)
-                    
                 }
                 
-                // }
                 Section(header: Text("Ingredient name")) {
                     TextField("Item Name", text: $name)
                         .onAppear {
@@ -127,7 +112,9 @@ struct EditItem: View {
                     }
                 }
                 
-                // https://www.hackingwithswift.com/forums/swiftui/help-with-onchange/24312 TimeStamp 00:00:00
+                /** The forum linked below helped me solve the issue i had with setting the timestamp to 00:00:00 for accurate days difference for notifications.
+                 Link available at: https://www.hackingwithswift.com/forums/swiftui/help-with-onchange/24312
+                 */
                 Section(header: Text("Expiry Date")) {
                     DatePicker("Expiry Date", selection: $expiryDate, displayedComponents: .date)
                         .onChange(of: expiryDate) { _, newValue in
@@ -139,12 +126,13 @@ struct EditItem: View {
                             expiryDate = item.expiryDate.dateValue()
                         }
                 }
-                
+                /**
+                 * The Picker was reused and adapted to allow users to keep track of where they are storing their ingredients.
+                 * Hudson, P. (2022), How to let users pick options from a menu. Published: Hacking With Swift. Available at: https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
+                 */
                 Section(header: Text("Category")) {
-                    //VStack(alignment: .leading){
-                    //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
                     Picker("Select A Cateogry", selection: $selection){
-                        ForEach(place, id: \.self) {
+                        ForEach(placeStored, id: \.self) {
                             Text($0)
                         }
                     }
@@ -152,33 +140,23 @@ struct EditItem: View {
                     .onAppear {
                         selection = item.selection
                     }
-                    //  Text("Selected category: \(selection)")
-                    //.frame(minHeight: 80)
-                    //.frame(height: 40)
                     .multilineTextAlignment(.leading)
                     
                 }
                 
-                
                 Section(header: Text("Description")) {
-                    //VStack(alignment: .leading){
                     TextField("Description - Optional", text: $description)
-                    //.frame(minHeight: 80)
-                    //.frame(height: 40)
                         .multilineTextAlignment(.leading)
                         .onAppear {
                             description = item.description
                         }
                 }
-                
             }
             .accentColor(.red)
             .navigationTitle("Ingredient")
             .navigationBarItems(leading:
                                     Button("Cancel") {
                 self.presentationMode.wrappedValue.dismiss()
-                //isPresented = false
-                //showEmailVerificationView = false
             }
                 .foregroundColor(.green), trailing:
                                     Button("Update") {
@@ -186,92 +164,17 @@ struct EditItem: View {
                 
             } .foregroundColor(.green)
                 .bold()
-                                
             )
-            
-            
-            
-            
-            /**  .toolbar {
-             Button("  Save  "){
-             }
-             .foregroundColor(.green)
-             .bold()
-             
-             .overlay(alignment: .topTrailing, content:{ Button("Cancel"){
-             showEmailVerificationView = false
-             // Delete account in Firebase
-             /** if let user = Auth.auth().currentUser{
-              user.delete { _ in
-              isLoading = false}
-              } */
-             
-             } .padding(15)
-             })
-             .padding(.bottom, 15)
-             } */
         }
         .alert(isPresented: $showAlert){
             Alert(title: Text("Alert"), message:Text(alertMessage), dismissButton: .default(Text("Ok")) {
-                //isPresented = false
                 self.presentationMode.wrappedValue.dismiss()
                 itemsViewModel.fetchItemsAfterButton()
-                //   self.persistImageToStorage() //copied LBTA
-                
-                // goBack = true
             })
-            
         }
-        
     }
     
-    /**private func persistImageToStorage(){
-     guard let userID = userID else {
-     print("User not logged in")
-     return
-     }
-     // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-     // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-     let ref = Storage.storage().reference(withPath: userID)
-     
-     //"images/\(userID)/\(UUID().uuidString).jpg")
-     
-     guard let imageData = self.image?.jpegData(compressionQuality: 0.5) else { return }
-     
-     ref.putData(imageData, metadata: nil) { metadata, err in
-     if let err = err {
-     showAlert(message: "Failed to push image to Storage: \(err)")
-     return
-     }
-     
-     ref.downloadURL { url, err in
-     if let err = err {
-     showAlert(message: "Failed to retrieve downloadURL: \(err)")
-     return
-     }
-     
-     showAlert(message: "Successfully stored image with url: \(url?.absoluteString ?? "")")
-     
-     // print(url?.absoluteString)
-     
-     // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Installing-Firestore-and-Saving-User-Data-Collection
-     //  self.storeItemImage(imageItemUrl: url)
-     }
-     }
-     
-     
-     }*/
-    /**private func storeItemImage(imageItemUrl: URL) {
-     guard let userID = userID else {
-     print("User not logged in")
-     return
-     }
-     
-     Storage.storage.firestore.collection("items").document(userID).collection("Item").addDoc
-     
-     
-     
-     } */
+   // the update new item function was reused and adapted to find the document of where the ID is stored and to replace it with the new data https://firebase.google.com/docs/firestore/query-data/queries
     func updateNewItem() {
         guard let userID = userID else {
             print("User not logged in")
@@ -283,14 +186,10 @@ struct EditItem: View {
             return
         }
         
-        
         let db = Firestore.firestore()
         let collectionRef = db.collection("items").document(userID).collection("Item")
         
-        // https://firebase.google.com/docs/firestore/query-data/queries
-        // https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
-        //https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
-        
+        // code below was reused and developed to find the document of where the item is stored. https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
         collectionRef.whereField("id", isEqualTo: item.id).addSnapshotListener { (querySnapshot, error) in
             if let error = error {
                 print("Error getting documents for item \(item.name): \(error.localizedDescription)")
@@ -312,10 +211,14 @@ struct EditItem: View {
                     "expiryDate": expiryDate,
                     "description": description,
                     "selection": selection,
-                    //   "imageURL": imageURL
                     "imageURL": imageURL?.absoluteString ?? ""
                 ]
-                
+                /**
+                 * The code relating to image has been reused and adapted from the video below. Changes were made to the reference and store image to ensure the images didn't overwrite eachother with unique ID's.
+                 * Voong, B. (2021), SwiftUI Firebase Chat 03: Save Images to Firebase Storage.
+                 * Youtube Link Available at: https://www.youtube.com/watch?v=5inXE5d2MUM&t=1056s&ab_channel=LetsBuildThatApp
+                 * Source code Available at:  https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                 */
                 if let newImage = image {
                     let storeImage = UUID().uuidString
                     let ref = Storage.storage().reference(withPath: "images/\(userID)/\(storeImage).jpg")
@@ -337,29 +240,25 @@ struct EditItem: View {
                                 showAlert(message: "Unable to store image with url: \(url?.absoluteString ?? "")")
                                 return
                             }
-                            
                             updateData["imageURL"] = imageURLstring
                             
-                            
-                            // https://firebase.google.com/docs/firestore/manage-data/add-data
+                            // the code below was reused from Firebase to update the data https://firebase.google.com/docs/firestore/manage-data/add-data
                             collectionRef.document(documentID).setData(updateData, merge: true){ error in
                                 if let error = error {
                                     print("Error updating item \(item.name): \(error.localizedDescription)")
                                 } else {
                                     print("Item \(item.name) with id \(item.id) updated successfully.")
-                                    
-                                    // Add the index to the delete from list
                                 }
                             }
-                        } }
-                }else {
+                        }
+                    }
+                } else {
+                    // the code below was reused from Firebase to update the data https://firebase.google.com/docs/firestore/manage-data/add-data
                     collectionRef.document(documentID).setData(updateData, merge: true){ error in
                         if let error = error {
                             print("Error updating item \(item.name): \(error.localizedDescription)")
                         } else {
                             print("Item \(item.name) with id \(item.id) updated successfully.")
-                            
-                            // Add the index to the delete from list
                         }
                     }
                 }
@@ -367,8 +266,6 @@ struct EditItem: View {
                 print("\(item.name) failed to save")
             }
         }
-        
-        
         
     }
     
@@ -379,11 +276,3 @@ struct EditItem: View {
         
     }
 }
-
-
-/**
- #Preview {
- EditItem(item: item)
- }
- */
-
