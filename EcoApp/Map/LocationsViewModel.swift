@@ -2,8 +2,7 @@
 //  LocationsViewModel.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 20/04/2024.
-//
+//  Created by Saajidah Mohamed
 //
 
 import Foundation
@@ -11,59 +10,65 @@ import MapKit
 import SwiftUI
 
 class LocationsViewModel : ObservableObject {
+    // own code
+    @Published var showLocationsPreview: Bool = false
+    @Published var isSwiped: Bool = false
     
-    //all loaded locations https://www.youtube.com/watch?v=EA4lQBrnvds&list=PLwvDm4Vfkdpha5eVTjLM0eRlJ7-yDDwBk&index=4&ab_channel=SwiftfulThinking
+    /** The variables below from locations to mapRegion were reused from the video. The map location was reused to update the map region - It shows only one location on the map at a time (the current selected one).
+     * Sarno, N. (2021), Swiftful Thinking - Add Map to SwiftUI project with MapKit | SwiftUI Map App #3. Link available at :
+     * https://www.youtube.com/watch?v=EA4lQBrnvds&ab_channel=SwiftfulThinking
+     */
+    
     @Published var locations : [Location]
     @Published var selectedLocation : Location?
-    
     @Published var showLocationsList: Bool = false
-    @Published var showLocationsPreview: Bool = false //own code 
-    //@StateObject private var isSwiped = false
-    @Published var isSwiped: Bool = false 
     
-    //only one location the current
-        //current location on map https://www.youtube.com/watch?v=EA4lQBrnvds&list=PLwvDm4Vfkdpha5eVTjLM0eRlJ7-yDDwBk&index=4&ab_channel=SwiftfulThinking
     @Published var mapLocation: Location {
-        // everytime we set the value for map location, we then call update map region
         didSet {
             updateMapRegion(location: mapLocation)
         }
     }
     
-    //empty, and update caurrent location^^
     @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion()
     let mapSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     
+    /** The init initalisation was reused from the video to set up the loctions.
+     * Sarno, N. (2021), Swiftful Thinking - Add Map to SwiftUI project with MapKit | SwiftUI Map App #3. Link available at :
+     * https://www.youtube.com/watch?v=EA4lQBrnvds&ab_channel=SwiftfulThinking
+     */
     init(){ //setting up locations
-        let locations = LocationsDataService.locations
+        let locations = LocationsData.locations
         self.locations = locations
-        self.mapLocation = locations.first! //[has atleast one, we wrap because its our data ]
+        self.mapLocation = locations.first! //[has atleast one, we wrap because its our data]
         self.updateMapRegion(location: locations.first!)
     }
     
-    // Method to toggle preview view
-       func toggleLocationPreview(location: Location) {
-           if mapLocation == location {
-               showLocationsPreview.toggle()
-           } else {
-               showLocationsPreview = true
-               mapLocation = location
-           }
-       }
+    // code was created by me to show the information of the location when tapped and to remove it when tapped again.
+    func toggleLocationPreview(location: Location) {
+        if mapLocation == location {
+            showLocationsPreview.toggle()
+        } else {
+            showLocationsPreview = true
+            mapLocation = location
+        }
+    }
     
+    /** The show next location function was reused to update the map region. It shows only one location on the map at a time (the current selected one).
+     * Sarno, N. (2021), Swiftful Thinking - Add Map to SwiftUI project with MapKit | SwiftUI Map App #3. Link available at :
+     * https://www.youtube.com/watch?v=EA4lQBrnvds&ab_channel=SwiftfulThinking
+     */
     func showNextLocation(location: Location){
         withAnimation(.easeInOut){
             mapLocation = location
             showLocationsList = false
             showLocationsPreview = true //own code
         }
-        
-    }
-    func selectLocation(_ location: Location){
-        self.selectedLocation = location
     }
     
-    // change from blank to the current one. 
+    /** The update map region function was reused Changes from blank to the current location
+     * Sarno, N. (2021), Swiftful Thinking - Add Map to SwiftUI project with MapKit | SwiftUI Map App #3. Link available at :
+     * https://www.youtube.com/watch?v=EA4lQBrnvds&ab_channel=SwiftfulThinking
+     */
     private func updateMapRegion(location: Location) {
         withAnimation(.easeInOut) {
             mapRegion = MKCoordinateRegion(center:location.coordinates, span: mapSpan)

@@ -65,7 +65,7 @@ struct OnboardingView: View {
 
 /**
  * The design of the VStack with the image, title and description, AND the button were reused from the Medium open Platform, Meet Patel.
- * Patel (2023), Create Beautiful Sliding OnBoarding Flow using App Storage and PageTabViewStyle in SwiftUI. Link available at:  https://medium.com/@meet237/create-beautiful-sliding-onboarding-flow-using-app-storage-and-pagetabviewstyle-in-swiftui-d733b84d6199
+ * Patel, M. (2023), Create Beautiful Sliding OnBoarding Flow using App Storage and PageTabViewStyle in SwiftUI. Link available at:  https://medium.com/@meet237/create-beautiful-sliding-onboarding-flow-using-app-storage-and-pagetabviewstyle-in-swiftui-d733b84d6199
  */
 
 // REUSED AND ADAPTED

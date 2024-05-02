@@ -2,21 +2,23 @@
 // LocationsPreviewView.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 20/04/2024.
+//  Created by Saajidah Mohamed
 //
 //
 
 import SwiftUI
 import MapKit
 
+/**
+ * The locations preview view below were reused and adapted to create my view, adjusting to fit my data. The gesture and isSwiped code were developed by me.
+ * Sarno, N. (2021), Swiftful Thinking - Location Preview cards with asymmetric Transitions | SwiftUI Map App #5. Link available at : https://www.youtube.com/watch?v=Ca0SisRHYuY&ab_channel=SwiftfulThinking
+ */
 
+// The view of the locations information sheet
 struct LocationsPreviewView: View {
     @State private var isSwiped: Bool = false
     
     let location: Location
-    
-    // https://www.youtube.com/watch?v=Ca0SisRHYuY&list=PLwvDm4Vfkdpha5eVTjLM0eRlJ7-yDDwBk&index=6&ab_channel=SwiftfulThinking
-    
     var body: some View {
         
         VStack(spacing: 16) {
@@ -29,6 +31,7 @@ struct LocationsPreviewView: View {
             }
             .multilineTextAlignment(.center)
             
+            // if and else if code was developed by me
             if isSwiped == true {
                 moreInfoSection
             } else if isSwiped == false {
@@ -37,24 +40,20 @@ struct LocationsPreviewView: View {
                     Image(systemName: "arrow.up")
                 } .bold()
             }
-            
         }
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(.ultraThinMaterial))
-        /**.onTapGesture {
-         withAnimation {
-         isSwiped.toggle()
-         }
-         } */
         
-        // https://developer.apple.com/tutorials/sample-apps/recognizinggestures
-        // https://medium.com/@mohitgupta_48195/chapter-17-understanding-gestures-46254b783a77
+        /**
+         * The gesture below was adapted and experimented to allow users to swipe up and down to view more information. The code was developed by me using the 2 documents:
+         * Gupta, M. (2023), Chapter 17: Understanding Gestures. Link available at: https://medium.com/@mohitgupta_48195/chapter-17-understanding-gestures-46254b783a77
+         * Apple (2024), Sample Apps Tutorial: Responding to User Input, Recognizing Gestures. Link available at: https://developer.apple.com/tutorials/sample-apps/recognizinggestures
+         */
         .gesture(DragGesture()
             .onEnded({ (value) in
                 if (value.translation.height < 0) {
-                    //animation
                     withAnimation {
                         isSwiped = true
                     }
@@ -64,8 +63,12 @@ struct LocationsPreviewView: View {
                     }
                 }
             }))
-        
     }
+    
+    /**
+     * The variables below were adapted for the purpose of simplifying the view without the code beign too compact.
+     * Sarno, N. (2021), Swiftful Thinking - Location Preview cards with asymmetric Transitions | SwiftUI Map App #5. Link available at : https://www.youtube.com/watch?v=Ca0SisRHYuY&ab_channel=SwiftfulThinking
+     */
     
     private var titleSection: some View {
         VStack(alignment: .leading, spacing: 4){
@@ -77,7 +80,7 @@ struct LocationsPreviewView: View {
         }
     }
     
-    
+    // Address, Postcode, Number, Email and Website
     private var moreInfoSection: some View {
         VStack(alignment: .leading, spacing: 10){
             
@@ -85,7 +88,6 @@ struct LocationsPreviewView: View {
                 .font(.title3)
                 .fontWeight(.bold)){
                     Text(location.address)}
-            //  Text("\(item.quantity)")
             
             Section(header: Text("Postcode")
                 .font(.title3)
@@ -98,23 +100,22 @@ struct LocationsPreviewView: View {
                 .font(.title3)
                 .fontWeight(.bold)) {
                     Text(location.phone)}
-            
+            /**
+             * The links below for Email and Website URL was reused from the article to allow redirection of the link when clicked.
+             * Hudson, P.. (2021), Hacking with Swift - How to open web links in Safari. Link available at :  https://www.hackingwithswift.com/quick-start/swiftui/how-to-open-web-links-in-safari
+             */
             Section(header: Text("Email")
                 .font(.title3)
                     
                 .fontWeight(.bold)) {
-                    // Text(location.email)}
-                    // https://forums.developer.apple.com/forums/thread/67733
                     Link(destination: URL(string: "\(location.email)")!){
                         Text(location.email)
                     }
                 }
             
-            
             Section(header: Text("Website URL")
                 .font(.title3)
                 .fontWeight(.bold)) {
-                    // https://forums.developer.apple.com/forums/thread/67733
                     Link(destination: URL(string: "\(location.link)")!){
                         Text(location.link)
                     }
@@ -122,10 +123,11 @@ struct LocationsPreviewView: View {
         }
     }
     
-    
+    /**
+     * Lines 132 and 133 were reused from the article to allow redirection of the link when clicked.
+     * Hudson, P.. (2021), Hacking with Swift - How to open a URL in Safari. Link available at :  https://www.hackingwithswift.com/example-code/system/how-to-open-a-url-in-safari
+     */
     private var websiteSection: some View {
-        // Link(destination: URL(string: "\(location.link)")!) {
-        // https://stackoverflow.com/questions/58643888/swiftui-how-do-i-make-a-button-open-a-url-in-safari
         Button(action: {
             if let url = URL(string: "\(location.link)") {
                 UIApplication.shared.open(url)
@@ -138,23 +140,27 @@ struct LocationsPreviewView: View {
         .foregroundColor(.green)
     }
     
-    
+    /**
+     * Line 150 was reused from the YouTube video below to allows users to be redirected to the 'Maps' application for the current location clicked. T
+     * Wells, C. (2023), A Swiftly Tilting Planet - How to Implement Map Integration in SwiftUI – Step by Step for Beginners (2023). Link available at :  https://www.youtube.com/watch?v=YVKuMJPGCj8&t=464s&ab_channel=ASwiftlyTiltingPlanet
+     */
     private var directionsection: some View {
         //Button 3
         Button(action: {
-            self.openMaps(coordinate: self.location.coordinates) //  // https://www.youtube.com/watch?v=YVKuMJPGCj8&t=464s&ab_channel=ASwiftlyTiltingPlanet 20 minutes
+            self.openMaps(coordinate: self.location.coordinates)
         }) {
             Label("Directions", systemImage: "car")
                 .font(.headline)
                 .frame(width: 138, height: 35)
         }
         .buttonStyle(.borderedProminent)
-        
-        
-        
-        
     }
-    // https://www.youtube.com/watch?v=YVKuMJPGCj8&t=464s&ab_channel=ASwiftlyTiltingPlanet 20 minutes
+    
+    /**
+     * The open maps function was reused from the YouTube video below to allows users to be redirected to the 'Maps' application for directions.
+     * Wells, C. (2023), A Swiftly Tilting Planet - How to Implement Map Integration in SwiftUI – Step by Step for Beginners (2023). Link available at :  https://www.youtube.com/watch?v=YVKuMJPGCj8&t=464s&ab_channel=ASwiftlyTiltingPlanet
+     */
+    
     func openMaps(coordinate: CLLocationCoordinate2D){
         let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate))
         mapItem.openInMaps()
@@ -163,6 +169,6 @@ struct LocationsPreviewView: View {
 
 
 #Preview {
-    LocationsPreviewView(location: LocationsDataService.locations.first!)
+    LocationsPreviewView(location: LocationsData.locations.first!)
 }
 
