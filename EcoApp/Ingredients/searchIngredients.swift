@@ -2,11 +2,10 @@
 //  searchIngredients.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 23/04/2024.
+//  Created by Saajidah Mohamed on
 //
 
 import Foundation
-
 
 struct RecipesBasedIngredients: Decodable {
     let id: Int
@@ -15,17 +14,12 @@ struct RecipesBasedIngredients: Decodable {
     let missedIngredientCount: Int
     let missedIngredients: [Ingredients]
     let usedIngredients: [Ingredients]
-
 }
 
 struct Ingredients: Decodable {
     let id: Int
     let original: String
     let originalName: String
-
-    static func == (lhs: Ingredients, rhs: Ingredients) -> Bool {
-            return lhs.originalName == rhs.originalName
-         }
 }
 
 struct RecipeStep: Decodable, Hashable {
@@ -37,7 +31,6 @@ struct Step: Decodable, Hashable {
     let number: Int
     let step: String
     let ingredients: [Ingredient]
-    
 }
 
 struct Ingredient : Decodable, Identifiable, Hashable {

@@ -265,7 +265,7 @@ struct ListView: View {
                                 // clear saved recipes
                                 Button(action: {
                                     showDeleteIng = true
-                                    SettingsView().clearIngredients()
+                                    Settings().clearIngredients()
                                     
                                 }) {
                                     Label ("Delete All Ingredients", systemImage: "trash")
@@ -277,7 +277,7 @@ struct ListView: View {
                                 Alert(title: Text( "Deleting All stored recipes"),
                                       message: Text("Are you sure you want to do this?"),
                                       primaryButton: .destructive(Text("Yes")){
-                                    SettingsView().clearIngredients()
+                                    Settings().clearIngredients()
                                     showDeleteIng = false
                                 }, secondaryButton: .cancel(Text("Cancel"))
                                 )

@@ -12,7 +12,8 @@
  */
 
 import SwiftUI
-// https://www.youtube.com/watch?v=olV5wVf-tsE&ab_channel=Ayhan
+
+// REUSED AND ADAPTED
 struct OnboardingView: View {
     
     @State private var currentPage: Int = 0
@@ -20,8 +21,20 @@ struct OnboardingView: View {
     
     // initialising the pages with my information
     let pages = [
+        /**
+         * The image "fact" was found and reused from storyset and was customised to change the colour to green for the pupose of my 'earth' and 'sustainability' theme.
+         * Freepik (2024), Water pollution Isometric Illustrations. Place of publication: Storyset. Link available at: https://storyset.com/illustration/water-pollution/amico
+         */
         OnboardingPage(title: "A Global Issue", description: "Did you know that 60% of food waste around the world comes from households?", imageName: "fact"),
+        /**
+         * The image "fact" was found and reused from storyset and was customised to change the colour to green for the pupose of my 'earth' and 'sustainability' theme.
+         * Freepik (2024), eating a variety of foods Flat Illustrations. Place of publication: Storyset. Link available at: https://storyset.com/illustration/eating-a-variety-of-foods/bro
+         */
         OnboardingPage(title: "Welcome to EcoMake",  description: "Never let food go to waste! Be notified of expiring ingredients. Say goodbye to wasted food and hello to tasty recipes!", imageName: "meals"),
+        /**
+         * The image "fact" was found and reused from storyset and was customised to change the colour to green for the pupose of my 'earth' and 'sustainability' theme. The image was also cropped to show 'community' and not orphanage.
+         * Freepik (2024), Orphanage Disproportionate Illustrations. Place of publication: Storyset. Link available at: https://storyset.com/illustration/orphanage/cuate
+         */
         OnboardingPage(title: "Make A Difference", description: "With EcoMake, you can find nearby food banks to donate unopened, unused ingredients.", imageName: "community")
     ]
     
@@ -55,7 +68,7 @@ struct OnboardingView: View {
  * Patel (2023), Create Beautiful Sliding OnBoarding Flow using App Storage and PageTabViewStyle in SwiftUI. Link available at:  https://medium.com/@meet237/create-beautiful-sliding-onboarding-flow-using-app-storage-and-pagetabviewstyle-in-swiftui-d733b84d6199
  */
 
-
+// REUSED AND ADAPTED
 struct OnboardingPage: View {
     @State private var showLogin: Bool = false
     
@@ -119,7 +132,7 @@ struct OnboardingPage: View {
  * This code was reused from Youtube, Ayhan: SwiftUI Final Part - launch screenon boarding screen [https://www.youtube.com/watch?v=olV5wVf-tsE&ab_channel=Ayhan]
  * Jibrael, A. (2024), Ayhan - SwiftUI Final Part - launch screenon boarding screen. Link available at:  https://www.youtube.com/watch?v=olV5wVf-tsE&ab_channel=Ayhan
  */
-
+// REUSED
 struct PageControl: View {
     var numberOfPages: Int
     @Binding var currentPage: Int

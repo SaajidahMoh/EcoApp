@@ -52,7 +52,7 @@ struct ContentView: View {
                     .tabItem { Label("Favourites", systemImage: "star")}
                     
                     //Text("Settings")
-                SettingsView()
+                Settings()
                     .tabItem { Label("Settings", systemImage:
                     //shape
                     "gear")}

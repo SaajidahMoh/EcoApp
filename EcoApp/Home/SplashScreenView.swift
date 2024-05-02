@@ -13,8 +13,8 @@
  */
 
 import SwiftUI
-// https://www.youtube.com/watch?v=0ytO3wCRKZU&t=197s&ab_channel=Indently SplashScreen
 
+// REUSED
 struct SplashScreenView: View {
     @State private var isActive = false //splashscreenactive
     @State private var size = 0.8
