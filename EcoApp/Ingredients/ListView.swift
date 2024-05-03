@@ -282,7 +282,7 @@ struct ListView: View {
         guard let userID = userID else {
             return
         }
-        
+        // code below was reused and developed to find the document of where the item is stored. https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
         let db = Firestore.firestore()
         let collectionRef = db.collection("items").document(userID).collection("Item")
         

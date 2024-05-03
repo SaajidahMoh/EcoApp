@@ -2,9 +2,8 @@
 //  AddItem.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 29/03/2024.
-// https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
-// https://www.youtube.com/watch?v=m0QQ-hWs8fc&t=31s&ab_channel=SeanAllen
+//  Created by Saajidah Mohamed
+// 
 
 import SwiftUI
 import Firebase
@@ -266,7 +265,6 @@ struct EditItem: View {
                 print("\(item.name) failed to save")
             }
         }
-        
     }
     
     
