@@ -12,7 +12,7 @@ import Firebase
 struct ScannerView: View {
     // Environemnt variable was reused from: https://stackoverflow.com/questions/63927231/navigate-back-after-saving-in-swift-ui
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @State private var barcode_string: String?
+    @State private var barcode_string: String? // code was reused from: https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
     @State private var foundProduct: Product? // code reused from https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
     @State private var quantity = 1
     @State private var expiryDate = Date()

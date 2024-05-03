@@ -1,9 +1,9 @@
 //
 //  barcodeScanning.swift
-//  barcode_scanner
+//  EcoApp
 //
-//  Created by Saajidah Mohamed on 03/04/2024.
-// https://www.patreon.com/posts/xcode-project-42828807
+//  Created by Saajidah Mohamed
+//
 
 
 import Foundation
@@ -12,7 +12,10 @@ import UIKit
 import SwiftUI
 import AVFoundation
 
-
+/**
+ * The barcode scanning file was reused from the video below. 
+ * Advent, B. (2020), Tutorial: Use APIs with Swift UI & Build a Book Barcode Scanner. YouTube video available at: https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
+ */
 struct BarcodeScanning : UIViewControllerRepresentable {
     
     @Binding var barcode_string: String?

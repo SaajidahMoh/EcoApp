@@ -19,19 +19,20 @@ struct ListView: View {
     @State private var showDeleteIng = false
     @State private var navigateToNextPage = false
     
-    @State private var sortedTab: Tab = .expiryDate
-    @State private var activeTab: seperateTab = .active
-    
+    // barcode string and found product was reused and adapted from: https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
     @State private var barcode_string: String?
     @State private var foundProduct: Product?
     
     @State private var recipesBasedOnIngredients : [RecipesBasedIngredients] = []
     @State private var recipesSteps: [RecipeStep] = []
     
-    enum seperateTab: String, CaseIterable {
-        case active = "Active"
-        case expired = "Expired"
-    }
+    /*
+     * Sort items, sorted tab and tab were adapted from the article below to implement filtering.
+     * Xavier (2023), SwiftUI List with Sort Options. Published: iOS Devx. Link available at: https://xavier7t.com/swiftui-list-with-sort-options
+     * Source code available at: https://github.com/xavier7t/iOSDevX/blob/main/iOSDevX/202303-Mar%202023/Sort%20Options/ContentView-DemoSortOptions20230320.swift
+     */
+    
+    @State private var sortedTab: Tab = .expiryDate
     
     enum Tab: String, CaseIterable{
         case expiryDate
@@ -203,11 +204,12 @@ struct ListView: View {
                 .disabled(!buttonStatus)
                 
                 .fullScreenCover(isPresented:$navigateToNextPage, onDismiss: nil) {
-                    NextPage(recipesBasedOnIngredients: recipesBasedOnIngredients)
+                    RecipeView(recipesBasedOnIngredients: recipesBasedOnIngredients)
                 }
                 
             }
-            .background(Color(UIColor.systemGroupedBackground)) // fixes generate button background!
+            // code reuse to fix the white bacground of the generate button https://stackoverflow.com/questions/59149705/how-to-set-the-background-color-of-a-swiftui-to-lightgray
+            .background(Color(UIColor.systemGroupedBackground))
         }
     }
     /**
@@ -242,8 +244,10 @@ struct ListView: View {
             triggerDateEvening.hour = 6
             triggerDateEvening.minute = 00
             
+            // repeats notification every day
             let trigger3 = UNCalendarNotificationTrigger(dateMatching: triggerDateEvening, repeats: true)
             
+            // sets the notification
             let request3 = UNNotificationRequest(identifier: item.id, content: content, trigger: trigger3)
             UNUserNotificationCenter.current().add(request3) { error in
                 if let error = error {
@@ -262,7 +266,13 @@ struct ListView: View {
         return status
     }
     
+    /**
+     * Generate items was reused and adapted from the video below to get the list of selected items and make the api call to get the list on recipes based on the items selected.
+     * Advent, B. (2020) iOS Swift Tutorial: Use APIs with Swift UI & Build a Book Barcode Scanner. Link available at: https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
+     * Source code: https://www.patreon.com/posts/42828807
+     */
     
+    // puts the ingredients in a list. e.g, 'egg, butter and milk' will become 'egg,butter,milk'.
     private func generateItems() {
         let selectedItems = itemsViewModel.items.filter { $0.isChecked }.map { $0.name }
         let items = selectedItems.joined(separator: ",")
@@ -272,7 +282,6 @@ struct ListView: View {
                 self.recipesBasedOnIngredients = fetchedData
                 let recipeIds = fetchedData.map { $0.id }
                 
-               // getRecipeStep(recipeIds: recipeIds)
                 print(recipesBasedOnIngredients)
             }
         }
@@ -296,7 +305,7 @@ struct ListView: View {
                 print("No documents found for item \(item.name)")
                 return
             }
-            
+            // if there is 2 unique id's of items that are the same, it would get the first to delete.
             if let document = documents.first {
                 let documentID = document.documentID
                 collectionRef.document(documentID).delete { error in
@@ -318,20 +327,17 @@ struct ListView: View {
         }
     }
     
+    /**
+     * The design of the recipe was reused and adapted to make the interface replicate my figma wireframe.
+     * Petras, R. (2021). Let's Design the Recipe Cards with SwiftUI and Present all the Recipes - Part 12. Youtube video available at: https://www.youtube.com/watch?v=8CbUTZPPNT4&ab_channel=CredoAcademy
+     */
     
-   /** private func getRecipeStep(recipeIds : [Int]) {
-        for recipeid in recipeIds {
-            RecipesSteps().sendRequest(id_number: recipeid){ fetchedData in
-                DispatchQueue.main.async {
-                    recipesSteps.append(contentsOf: fetchedData)
-                    self.recipesSteps = fetchedData
-                    print(recipesSteps)
-                }
-            }
-        }
-    }*/
+    /**
+     * The recipe view was reused and adapted to get all the recipe names and images. When selected, it would navigate to the recipe instruct view to also show the specific recipes ingredients and instructions.
+     * Hudson, P. (2022) How to push a new view when a list row is tapped. Published at: Hacking With Swift. Link avaliable at: https://www.hackingwithswift.com/quick-start/swiftui/how-to-push-a-new-view-when-a-list-row-is-tapped
+     */
     
-    struct NextPage: View {
+    struct RecipeView: View {
         @Environment(\.presentationMode) var presentationMode
         let recipesBasedOnIngredients: [RecipesBasedIngredients]
         
@@ -341,8 +347,13 @@ struct ListView: View {
                 ScrollView{
                     VStack{
                         ForEach(recipesBasedOnIngredients, id: \.id) { recipeBased in
-                        NavigationLink(destination: NextPage1(recipeBased: recipeBased)) {
+                        NavigationLink(destination: RecipeInstructView(recipeBased: recipeBased)) {
                             VStack(alignment: .leading, spacing: 10) {
+                                
+                                /**
+                                 * The image code was reused to display remote images in the app.
+                                 * Moiseienko, M. (2023), SwiftUI: Efficient Image Loading using AsyncImage. Link available at: https://m-mois.medium.com/swiftui-efficient-image-loading-using-asyncimage-a059fe4efc34
+                                 */
                                 if let photoURL = URL(string: recipeBased.image) {
                                     AsyncImage(url: photoURL) { image in
                                         image
@@ -383,20 +394,31 @@ struct ListView: View {
                 }.background(Color(UIColor.systemGroupedBackground)) // background
                     .padding(.trailing, -5)
                     .padding(.leading, -5)
-                
             }
-            
         }
         
-        struct NextPage1: View {
+        /**
+         * The design of the recipe was reused and adapted to make the interface replicate my figma wireframe.
+         * Petras, R. (2021). Let's Design the Recipe Cards with SwiftUI and Present all the Recipes - Part 12. Youtube video available at: https://www.youtube.com/watch?v=8CbUTZPPNT4&ab_channel=CredoAcademy
+         */
+        
+        /**
+         * The recipe instruct view was reused and adapted to get the recipes name, image, ingredients and instructions.
+         * Hudson, P. (2022) How to push a new view when a list row is tapped. Published at: Hacking With Swift. Link avaliable at: https://www.hackingwithswift.com/quick-start/swiftui/how-to-push-a-new-view-when-a-list-row-is-tapped
+         */
+                     
+        struct RecipeInstructView: View {
             let recipeBased: RecipesBasedIngredients
             
             @State private var recipeSteps: [RecipeStep] = []
-            @State private var uniqueIngredients: Set<String> = Set()
             
             var body: some View {
                 ScrollView(.vertical, showsIndicators: false){
                     VStack {
+                        /**
+                         * The image code was reused to display remote images in the app.
+                         * Moiseienko, M. (2023), SwiftUI: Efficient Image Loading using AsyncImage. Link available at: https://m-mois.medium.com/swiftui-efficient-image-loading-using-asyncimage-a059fe4efc34
+                         */
                         if let photoURL = URL(string: recipeBased.image) {
                             AsyncImage(url: photoURL) { image in
                                 image
@@ -411,7 +433,6 @@ struct ListView: View {
                         }
                         
                         HStack {
-                            
                             Group {
                                 Text(recipeBased.title)
                                     .font(.system(.title))
@@ -493,14 +514,18 @@ struct ListView: View {
                     }
                     
                     .onAppear {
-                        getRecipeStep(recipeId: recipeBased.id)
-                    } 
+                        getRecipeInstructions(recipeId: recipeBased.id)
+                    }
                     .padding(.leading, 8)
                     .padding(.trailing, 8)
                 }
             }
             
-            private func getRecipeStep(recipeId: Int) {
+            /** The get recipe instructions was reused and adaptedfrom the video below to do an API call to get the results from the API and store it into recipe steps.
+             * Advent, B. (2020) iOS Swift Tutorial: Use APIs with Swift UI & Build a Book Barcode Scanner. Link available at: https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
+             * Source code: https://www.patreon.com/posts/42828807
+             */
+            private func getRecipeInstructions(recipeId: Int) {
                 RecipesSteps().sendRequest(id_number: recipeId) { fetchedData in
                     DispatchQueue.main.async {
                         recipeSteps = fetchedData
@@ -508,32 +533,29 @@ struct ListView: View {
                 }
             }
             
-            //chatgpt
-            private func shareRecipe() {
-                // https://chat.openai.com/share/3b6d71c7-ab4b-4458-9a07-c11a5bf6a363
-                /** guard let shareURL = URL(string: url) else { return }
-                 let activityViewController = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
-                 UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil) */
-                guard let window = UIApplication.shared.windows.first else {
-                    print("Error!")
-                    return
+            // code was reused was chatgpt to allow screenshot of page, and sharing of the screenshot. https://chat.openai.com/share/75ea5027-cdf4-4dd8-b320-9f6173f65149
+            func takeScreenshot() -> UIImage? {
+                guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }),
+                      let rootView = window.rootViewController?.view else {
+                    return nil
                 }
                 
-                // Capture screenshot
-                UIGraphicsBeginImageContextWithOptions(window.frame.size, false, 0.0)
-                window.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
-                guard let image = UIGraphicsGetImageFromCurrentImageContext() else { return }
-                UIGraphicsEndImageContext()
+                let renderer = UIGraphicsImageRenderer(size: rootView.bounds.size)
+                let screenshot = renderer.image { context in
+                    rootView.drawHierarchy(in: rootView.bounds, afterScreenUpdates: true)
+                }
                 
-                // Share screenshot
-                let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-                UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+                return screenshot
+            }
+
+            func shareRecipe() {
+                if let screenshot = takeScreenshot() {
+                    let activityViewController = UIActivityViewController(activityItems: [screenshot], applicationActivities: nil)
+                    UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+                }
             }
         }
     }
-    
-    
-    
     
     
     // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
@@ -541,66 +563,16 @@ struct ListView: View {
     
     // https://www.youtube.com/watch?v=KcOvWU3xp1I&t=273s&ab_channel=JohnGallaugher
     // https://www.youtube.com/watch?v=KMtdBgHwvGY&list=PL9VJ9OpT-IPSM6dFSwQCIl409gNBsqKTe&index=64&ab_channel=JohnGallaugher
-    /** private func deleteItems(at offsets: IndexSet) {
-     // var itemsToDelete: [Items] = []
-     
-     //
-     for index in offsets {
-     let item = itemsViewModel.items[index]
-     
-     if let userID = userID {
-     let db = Firestore.firestore()
      // https://firebase.google.com/docs/firestore/query-data/queries
      // https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
      //https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
      // https://www.youtube.com/watch?v=KcOvWU3xp1I&list=PL9VJ9OpT-IPSM6dFSwQCIl409gNBsqKTe&index=102&ab_channel=JohnGallaugher??
-     let collectionRef = db.collection("items").document(userID).collection("Item")
-     
-     collectionRef.whereField("id", isEqualTo: item.id).addSnapshotListener { (querySnapshot, error) in
-     if let error = error {
-     print("Error getting documents for item \(item.name): \(error.localizedDescription)")
-     return
-     }
-     
-     guard let documents = querySnapshot?.documents else {
-     print("No documents found for item \(item.name)")
-     return
-     }
-     
-     if let document = documents.first {
-     let documentID = document.documentID
-     collectionRef.document(documentID).delete { error in
-     if let error = error {
-     print("Error deleting item \(item.name): \(error.localizedDescription)")
-     } else {
-     print("Item \(item.name) with id \(item.id) deleted successfully.")
-     
-     // https://stackoverflow.com/questions/71391214/how-to-remove-pending-notification-request-when-using-uuidstring-as-identifier-s
-     UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [item.id])
-     
-     
-     // chat GPT: https://chat.openai.com/share/b7135e73-7ca1-4b11-aae4-717e57f26e82
-     DispatchQueue.main.async {
-     if let index = itemsViewModel.items.firstIndex(where: { $0.id == item.id}) {
-     itemsViewModel.items.remove(at: index)
-     }
-     
-     }
-     }
-     }
-     } else {
-     print("No document found for item \(item.name)")
-     }
-     }
-     }
-     }
-     } */
+    
+      
 }
 
 
-
-
-
+// shows all the items with the checked circles and updates if the item is checked.
 struct ItemRow: View {
     let item: Items
     @EnvironmentObject var itemsViewModel: ItemsViewModel
@@ -662,7 +634,6 @@ struct ItemRow: View {
     }
     
     var body: some View {
-        
         HStack {
             Image(systemName: isChecked ? "circle.inset.filled" : "circle")
                 .resizable()

@@ -1,9 +1,9 @@
 //
-//  ItemsViewModel.swift
+//  Fav ViewModel.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 25/03/2024.
-//https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
+//  Created by Saajidah Mohamed 
+// https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
 
 import SwiftUI
 import Firebase
@@ -30,29 +30,7 @@ class FavViewModel : ObservableObject{
                     }
                 }
     }
-    
-   /** func updateSavedState(for recipe: Recipe, isSaved: Bool){
-        if let index = recipes.firstIndex(where: { $0.label == recipe.label && $0.url == recipe.url}){
-            self.recipes[index].isSaved = isSaved
-        }
-    } */
-    // Add a method to toggle the saved state for a recipe
-    /** func toggleSavedState(for recipe: Recipe) {
-        if let index = recipes.firstIndex(where: { $0.label == recipe.label && $0.url == recipe.url }) {
-           isSaved.toggle()
-        }
-    
-        /**
-        if let index = recipes.firstIndex(where: { $0.label == recipe.label && $0.url == recipe.url }) {
-           // recipes[index].isSaved.toggle()
-            
-            if !recipes[index].isSaved {
-             //   removeRecipe(recipe: recipes[index])
-            } else {
-                print("Stored")
-            }
-        }*/
-    } */
+
     
     func fetchFavs(){
         guard let userID = userID
@@ -66,23 +44,6 @@ class FavViewModel : ObservableObject{
         
         let db = Firestore.firestore()
         let ref = db.collection("favourites").document(userID).collection("Saved")
-        
-        // Reference to the collection
-        
-        /** ref.getDocuments { [weak self] snapshot, error in
-            guard let self = self else { return }
-            
-            if let error = error {
-                print("Error fetching favorites: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let snapshot = snapshot else {
-                print("Snapshot is empty")
-                return
-            }
-            
-            self.recipes.removeAll() */
         
         ref.addSnapshotListener { [weak self] snapshot, error in
             guard let self = self else { return }
@@ -123,11 +84,6 @@ class FavViewModel : ObservableObject{
         
         let db = Firestore.firestore()
         let favouritesRef = db.collection("favourites").document(userID).collection("Saved")
-        
-       /**
-        * 
-        *
-        */
         
         favouritesRef.whereField("url", isEqualTo: recipe.url)
             .whereField("ingredients", isEqualTo: recipe.ingredientLines).getDocuments { (querySnapshot, error) in

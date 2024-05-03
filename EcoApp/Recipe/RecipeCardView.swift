@@ -9,6 +9,10 @@
 import SwiftUI
 import Firebase
 
+/**
+ * The design of the recipe was reused and adapted to make the interface replicate my figma wireframe.
+ * Petras, R. (2021). Let's Design the Recipe Cards with SwiftUI and Present all the Recipes - Part 12. Youtube video available at: https://www.youtube.com/watch?v=8CbUTZPPNT4&ab_channel=CredoAcademy
+ */
 struct RecipeCardView : View {
     @State private var isSaved : Bool = false
     @ObservedObject var viewModel = FavViewModel()
@@ -18,8 +22,11 @@ struct RecipeCardView : View {
     
     var body: some View {
         
-        
         VStack(alignment: .leading, spacing: 0) {
+            /**
+             * The image code was reused to display remote images in the app.
+             * Moiseienko, M. (2023), SwiftUI: Efficient Image Loading using AsyncImage. Link available at: https://m-mois.medium.com/swiftui-efficient-image-loading-using-asyncimage-a059fe4efc34
+             */
             AsyncImage(url: URL(string: hit.recipe.image)) { image in
                 image
                     .resizable()
@@ -35,47 +42,41 @@ struct RecipeCardView : View {
                     .font(.headline)
                     .padding(.leading)
                     .padding(.vertical)
-                
-                
+            
                 Spacer()
                 
-                
+                // saves/ removes recipe.
                 Button(action: {
                     isSaved.toggle()
                     if isSaved == true
                     { storeRecipe()}
                     else { removeRecipe()
                     }
-                    
-                    //  else { storeRecipe}
                 })
+                
+                // fills the star if its saved
                 {
                     Image(systemName: isSaved ? "star.fill" : "star")
                         .resizable()
                         .frame(width: 26, height: 26)
-                    
                 }
-              //  .onAppear {
-                //    loadSavedState()
-                    
-                //}
+                
                 .padding(.trailing)
                 .padding(.vertical)
-              
             }
            
         }
+        // shows the star
         .onAppear {
             checkStar()
         }
-        // let lightest = Color(red: 0.4627, green: 0.8392, blue: 1.0)
-        // .background(Color(UIColor.lightGray)) // https://stackoverflow.com/questions/59149705/how-to-set-the-background-color-of-a-swiftui-to-lightgray
         
         .background(Color(.systemGray5))
         .padding(.horizontal)
         
     }
     
+    // checks if the recipe is saved, if it is set it to true
    private func checkStar() {
         guard let userID = userID else {
             print("User not logged in")
@@ -87,9 +88,6 @@ struct RecipeCardView : View {
         
         favouritesRef.whereField("label", isEqualTo: hit.recipe.label)
             .whereField("url", isEqualTo: hit.recipe.url)
-         //   .whereField("url", isEqualTo: hit.recipe.url)
-           // .whereField("imageURL", isEqualTo: hit.recipe.image)
-            //.whereField("ingredients", isEqualTo: hit.recipe.ingredientLines)
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
                     print("Error getting documents: \(error.localizedDescription)")
@@ -100,8 +98,6 @@ struct RecipeCardView : View {
                     print("No documents found")
                     return
                 }
-                
-              //  print("Documents count: \(documents.count)")
                 
                 if !documents.isEmpty {
                     print("Recipe is saved")
@@ -190,10 +186,7 @@ struct RecipeCardView : View {
                             print("Error deleting: \(error.localizedDescription)")
                         } else {
                             print("deleted successfully.")
-                            // let favouritesRef = db.collection("favourites").document(userID).collection("Saved")
                         }
-                        
-                        
                     }
                 }
                 else { print("none")
@@ -201,7 +194,3 @@ struct RecipeCardView : View {
             }
     isSaved = false }}
     
-    
-    /**Preview {
-     RecipeCardView()
-     }*/

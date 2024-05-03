@@ -1,3 +1,9 @@
+//
+//  FavView.swift
+//  EcoApp
+//
+//  Created by Saajidah Mohamed
+//
 
 
 import SwiftUI
@@ -20,26 +26,32 @@ struct RecipeListView: View {
                       .buttonStyle(PlainButtonStyle())
                       .listRowBackground(Color.clear)
                       .listRowSeparator(.hidden)
-              // https://stackoverflow.com/questions/56614080/how-to-remove-the-left-and-right-padding-of-a-list-in-swiftui
                       .listStyle(PlainListStyle())
                   }
                   .navigationTitle("Favorites")
                   .onAppear {
-                      viewModel.fetchFavs() // Fetch recipes when view appears
+                      viewModel.fetchFavs()
                   }
                   .background(Color(.systemGray5))
-                  //  .padding(.horizontal)
               }
           }
     
 }
 
+/**
+ * The design of the recipe was reused and adapted to make the interface replicate my figma wireframe.
+ * Petras, R. (2021). Let's Design the Recipe Cards with SwiftUI and Present all the Recipes - Part 12. Youtube video available at: https://www.youtube.com/watch?v=8CbUTZPPNT4&ab_channel=CredoAcademy
+ */
 struct RecipeRowView: View {
     @EnvironmentObject var viewModel : FavViewModel
-    let recipe: Recipe // Assuming you have a RecipeModel struct
+    let recipe: Recipe
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            /**
+             * The image code was reused to display remote images in the app.
+             * Moiseienko, M. (2023), SwiftUI: Efficient Image Loading using AsyncImage. Link available at: https://m-mois.medium.com/swiftui-efficient-image-loading-using-asyncimage-a059fe4efc34
+             */
             let imageURL = URL(string: recipe.image)
             AsyncImage(url: imageURL) { image in
                 image
@@ -61,15 +73,8 @@ struct RecipeRowView: View {
                 
                 Button(action: {
                     viewModel.removeRecipe(recipe: recipe)
-                    // Toggle isSaved or store/remove recipe
-                   // isSaved.toggle()
-                   // if isSaved {
-                        // Store recipe
-                  //  } else {
-                        // Remove recipe
-                   // }
-                }) {
-                   // Image(systemName: isSaved ? "star.fill" : "star")
+                })
+                {
                     Image(systemName: "star.fill" )
                         .resizable()
                         .frame(width: 26, height: 26)
@@ -81,11 +86,7 @@ struct RecipeRowView: View {
         }
         .frame(maxWidth: .infinity)
         .background(Color(.systemGray5))
-       // .padding(.horizontal, 2)
-       
     }
-        
-        
 }
 
 

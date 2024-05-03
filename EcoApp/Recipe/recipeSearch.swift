@@ -8,15 +8,14 @@
 
 import SwiftUI
 
-
 /*
- code adapted from:
- https://xavier7t.com/swiftui-list-with-sort-options
+ * Enum sort option was adapted from the article below to implement filtering.
+ * Xavier (2023), SwiftUI List with Sort Options. Published: iOS Devx. Link available at: https://xavier7t.com/swiftui-list-with-sort-options
+ * Source code available at: https://github.com/xavier7t/iOSDevX/blob/main/iOSDevX/202303-Mar%202023/Sort%20Options/ContentView-DemoSortOptions20230320.swift
  */
 enum SortOption {
     case defaultTime, quickest, longest
 }
-
 
 struct recipeSearch: View {
     @State private var searchText: String = ""
@@ -31,8 +30,9 @@ struct recipeSearch: View {
     
     
     /*
-     code adapted from:
-     https://xavier7t.com/swiftui-list-with-sort-options
+     * Sort option and sorted tasks were adapted from the article below to implement filtering.
+     * Xavier (2023), SwiftUI List with Sort Options. Published: iOS Devx. Link available at: https://xavier7t.com/swiftui-list-with-sort-options
+     * Source code available at: https://github.com/xavier7t/iOSDevX/blob/main/iOSDevX/202303-Mar%202023/Sort%20Options/ContentView-DemoSortOptions20230320.swift
      */
      @State private var sortOption: SortOption = .quickest
      var sortedTasks: [Hit] {
@@ -41,12 +41,8 @@ struct recipeSearch: View {
                 filteredData = recipes.filter { $0.recipe.cuisineType.contains(selectedTheme) }
             }; if selectedTheme == "Select Cuisine"{
                  filteredData = recipes
-            }/**;  if !selectedDiet.isEmpty {
-                filteredData = recipes.filter{ $0.recipe.dietLabels.contains(selectedDiet)}
-                }; if selectedDiet == "Select Diet"{
-                    filteredData = recipes
-                }*/
-                
+            }
+         
          switch sortOption {
          case .defaultTime:
              return filteredData
@@ -57,6 +53,11 @@ struct recipeSearch: View {
          }
      }
     
+    /**
+     *  The code showcasing the image, recipe name, total time, link to the instruction steps .. and the search was reused and adapted.
+     *  codeAcademy (2023), Building Lists in SwiftUI Link avaliable at: https://www.codecademy.com/article/building-lists-in-swiftui
+     *  Source code available at https://www.codecademy.com/resources/docs/swiftui/search
+     */
     var body: some View {
         VStack {
             if !isSearching() {
@@ -67,12 +68,6 @@ struct recipeSearch: View {
                         }
                     }.pickerStyle(.menu)
                     
-                    /**  Picker("Select Diet", selection: $selectedDiet) {
-                     ForEach(dietTypes, id: \.self) { dietLabels in
-                     Text(dietLabels).tag(dietLabels)
-                     }
-                     }.pickerStyle(.menu) */
-                    
                     Picker("Sort By", selection: $sortOption) {
                         Text("Default").tag(SortOption.defaultTime)
                         Text("Shortest Time").tag(SortOption.quickest)
@@ -81,53 +76,51 @@ struct recipeSearch: View {
                 }
             }
             
-            /** Button() {
-                
-            } label: {
-                Image(systemName: "arrow.up.arrow.down")
-            } */
-            
+            /**
+             * The code was reused and developed to implement list and allow users to navigate when clicking.
+             * Allen, S. (2021), SwiftUI List with Custom Cell & Passing Data. Link available at: https://www.youtube.com/watch?v=k5rupivxnMA&ab_channel=SeanAllen
+             */
             NavigationView {
                 List(sortedTasks, id: \.recipe.url) { hit in
-                    NavigationLink(destination: RecipeSearchView(title: hit.recipe.label, ingredients: hit.recipe.ingredientLines, cuisineTypes: hit.recipe.cuisineType, /**dietLabels: hit.recipe.dietLabels, */ image: hit.recipe.image, totalTime: hit.recipe.totalTime, url: hit.recipe.url)) {
+                    NavigationLink(destination: RecipeSearchView(title: hit.recipe.label, ingredients: hit.recipe.ingredientLines, cuisineTypes: hit.recipe.cuisineType, image: hit.recipe.image, totalTime: hit.recipe.totalTime, url: hit.recipe.url)) {
                         RecipeCardView(hit: hit)
                             .padding(.vertical, 2)
-                         
                     }
-                    
                     .buttonStyle(PlainButtonStyle())
                     .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
-            // https://stackoverflow.com/questions/56614080/how-to-remove-the-left-and-right-padding-of-a-list-in-swiftui
                     .listStyle(PlainListStyle())
                    
                 }
                 .navigationTitle("Recipes")
                 .searchable(text: $searchText)
                 
+                // gets the new recipes when the search is changed
                 .onChange(of: searchText) { _ in
                     getIngredients()
                 }
                 .onAppear {
-                   
-                    // Call getIngredients on initial appear
                     getIngredients()
                 }
             }
         }
     }
     
+    // Check if the searchText is not empty - the user is searching
     func isSearching() -> Bool {
-           // Check if the searchText is not empty, indicating the user is searching
            return !searchText.isEmpty
        }
     
+    //Update the recipes array with fetched data
+    /**
+     * The get ingredients function was reused and adapted to get the recipe name etc.. and stores the results into recipes.
+     * Advent, B. (2020) iOS Swift Tutorial: Use APIs with Swift UI & Build a Book Barcode Scanner. Link available at: https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
+     * Source code avaliable: https://www.patreon.com/posts/42828807
+     */
     func getIngredients() {
         networkModel().sendRequest(searchTerm: searchText) { fetchedData in
             DispatchQueue.main.async {
-                    // Update the recipes array with fetched data
                  recipes = fetchedData.hits
-                
             }
         }
     }

@@ -10,7 +10,6 @@
 		2801144B2BB18B6C00507B91 /* ItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2801144A2BB18B6C00507B91 /* ItemsViewModel.swift */; };
 		2817C1912BBB13F4008256EE /* EditItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2817C1902BBB13F4008256EE /* EditItem.swift */; };
 		2819535E2BD5C99900685A77 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2819535D2BD5C99900685A77 /* Location.swift */; };
-		281D781C2BD6CC3800A24BA7 /* barcodeToWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281D781B2BD6CC3800A24BA7 /* barcodeToWord.swift */; };
 		281D781E2BD6CC4300A24BA7 /* Barcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281D781D2BD6CC4300A24BA7 /* Barcode.swift */; };
 		281D78202BD6CC4900A24BA7 /* barcodeScanning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281D781F2BD6CC4900A24BA7 /* barcodeScanning.swift */; };
 		281D78222BD6CD5C00A24BA7 /* ScanItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281D78212BD6CD5C00A24BA7 /* ScanItem.swift */; };
@@ -56,7 +55,6 @@
 		2801144A2BB18B6C00507B91 /* ItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsViewModel.swift; sourceTree = "<group>"; };
 		2817C1902BBB13F4008256EE /* EditItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItem.swift; sourceTree = "<group>"; };
 		2819535D2BD5C99900685A77 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		281D781B2BD6CC3800A24BA7 /* barcodeToWord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = barcodeToWord.swift; sourceTree = "<group>"; };
 		281D781D2BD6CC4300A24BA7 /* Barcode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Barcode.swift; sourceTree = "<group>"; };
 		281D781F2BD6CC4900A24BA7 /* barcodeScanning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = barcodeScanning.swift; sourceTree = "<group>"; };
 		281D78212BD6CD5C00A24BA7 /* ScanItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanItem.swift; sourceTree = "<group>"; };
@@ -116,7 +114,6 @@
 				281D78212BD6CD5C00A24BA7 /* ScanItem.swift */,
 				281D781D2BD6CC4300A24BA7 /* Barcode.swift */,
 				281D781F2BD6CC4900A24BA7 /* barcodeScanning.swift */,
-				281D781B2BD6CC3800A24BA7 /* barcodeToWord.swift */,
 			);
 			path = Scan;
 			sourceTree = "<group>";
@@ -346,7 +343,6 @@
 				28AAF0422BD9577700720304 /* RecipeCardView.swift in Sources */,
 				28D122EA2BB071D50068BE7E /* Items.swift in Sources */,
 				2830130A2BD3E6370013900D /* LocationsPreviewView.swift in Sources */,
-				281D781C2BD6CC3800A24BA7 /* barcodeToWord.swift in Sources */,
 				28AAF04B2BDD2B6800720304 /* searchIngredients.swift in Sources */,
 				28D122F02BB0DE880068BE7E /* FavCardView.swift in Sources */,
 				28D5EA502BA8427900BF46DD /* EcoMakeApp.swift in Sources */,

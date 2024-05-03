@@ -1,8 +1,8 @@
 //
-//  AddItem.swift
+//  ScanItem.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 29/03/2024.
+//  Created by Saajidah Mohamed
 // https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
 // https://www.youtube.com/watch?v=m0QQ-hWs8fc&t=31s&ab_channel=SeanAllen
 
@@ -24,19 +24,19 @@ struct ScanItem: View {
     @State private var goBack  = false
     @State private var imageURL = ""
     
-//https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
+    /**
+     * The Picker was reused and adapted to allow users to keep track of where they are storing their ingredients.
+     * Hudson, P. (2022), How to let users pick options from a menu. Published: Hacking With Swift. Available at: https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
+     */
     @State private var selection = "Fridge"
     let placeStored = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer"]
     
-//https://www.youtube.com/watch?v=YgjYVbg1oiA&t=1327s&ab_channel=CodeWithChris
+//code below was reused from https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
     @State var isPickerShowing = false
     @State var selectedImage: UIImage?
     
-    //https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
-   // @State var isPickerShowing = false
-   // @State var selectedImage: UIImage?
-    
-    @State var shouldShowImagePicker = false // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+    // code below were reused from https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+    @State var shouldShowImagePicker = false
     
     @State var image: UIImage?
     
@@ -48,102 +48,45 @@ struct ScanItem: View {
     var body: some View {
         @StateObject var itemsViewModel = ItemsViewModel()
         
-        // Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         NavigationView{
-            /** Section(header: Text("Image")){
-             if let image =  selectedImage {
-                 Image(uiImage: image)
-                     .resizable()
-                     .scaledToFill()
-                     .frame(width: 208, height: 128)
-                    // .cornerRadius(64)
-                 //.aspectRatio(contentMode: .fit)
-                    // .frame(height: 100)
-             } else {
-                 Image(systemName: "persin.fill")
-                     .resizable()
-                     .aspectRatio(contentMode: .fit)
-                     .frame(height: 100)
-                     .padding()
-                     .foregroundColor(.gray)
-             }
-             Button("Select Image"){
-                 shouldShowImagePicker.toggle()
-             }
-             .multilineTextAlignment(.trailing)
-             .sheet(isPresented: $shouldShowImagePicker){
-                 ImagePicker(image: $selectedImage)
-             }
-                              }*/
+           
             Form {
-                
-                //  Section(header: Text("Image")){
-                // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                /**
+                 * The form was reused and adapted from a swiftui form video.
+                 * Allen, S. (2021), SwiftUI Form w/ TextField, DatePicker, Toggle, Stepper, Link and Sections w/ Header.
+                 * Youtube video available at: https://www.youtube.com/watch?v=m0QQ-hWs8fc&t=31s&ab_channel=SeanAllen
+                 */
+       /**
+        * The code relating to image and photo below has been reused and adapted from the video below. Aswell as the should show image picker and the image picker.
+        * Voong, B. (2021), SwiftUI Firebase Chat 03: Save Images to Firebase Storage.
+        * Youtube Link Available at: https://www.youtube.com/watch?v=5inXE5d2MUM&t=1056s&ab_channel=LetsBuildThatApp
+        * Source code Available at:  https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+        */
                  if let image = self.image {
-                 //if selectedImage != nil {
-                 //if let selectedImage = self.selectedImage {
-                 // https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
-                 // Image(uiImage: selectedImage!)
                  Image(uiImage: image)
                  .resizable()
                  .scaledToFill()
                  .frame(width: 128, height: 128)
-                 // .cornerRadius(64)
                  
                  }
-                /**
-                if selectedImage != nil {
-                    Image(uiImage: selectedImage!)
-                        .resizable()
-                        .frame(width: 200, height:200)
-                } 
-                Button
-                {
-                    isPickerShowing = true
-                } label : {
-                    Text("Select a photo")
-                }
-                 .sheet(isPresented: $isPickerShowing,  onDismiss: nil) {
-                    ImagePicker(image:  $selectedImage)
-                }
-                if selectedImage == nil {
-                    Image(systemName: "photo")
-                                  .resizable()
-                                  .font(.system(size: 64))
-                                  .padding()
-                              // .foregroundColor(Color(.label))
-                                  .foregroundColor(.gray)
-                                  .frame(height: 150)
-                    Button("Select Image"){
-                        isPickerShowing.toggle()
-                    }
-                } */
-                
                 else {Image(systemName: "photo")
                             .resizable()
                             .font(.system(size: 64))
                             .padding()
-                        // .foregroundColor(Color(.label))
                             .foregroundColor(.gray)
                             .frame(height: 150)
                         Button("Select Image"){
                             shouldShowImagePicker.toggle()
                         }
                         .foregroundColor(.green)
-                      //  .sheet(isPresented: $isPickerShowing, onDismiss: nil) {
-                      //      ImagePicker(selectedImage: $selectedImage, isPickerShowing: $isPickerShowing)}
-                    
-                            // ImagePicker(image: $self.image))
-                        // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+
+                        // code below was reused from https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
                         .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
                                    ImagePicker(image: $image)
                                }
-                            
-                            //Image(image)
                         
                     } 
-                
-               // }
+      
                 Section(header: Text("Ingredient name")) {
                     TextField("Item Name", text: $name)
                 }
@@ -172,18 +115,12 @@ struct ScanItem: View {
                         }
                     }
                     .pickerStyle(.menu)
-                  //  Text("Selected category: \(selection)")
-                    //.frame(minHeight: 80)
-                    //.frame(height: 40)
                         .multilineTextAlignment(.leading)
                     
                 }
                 
                 Section(header: Text("Description")) {
-                    //VStack(alignment: .leading){
                     TextField("Description - Optional", text: $description)
-                    //.frame(minHeight: 80)
-                    //.frame(height: 40)
                         .multilineTextAlignment(.leading)
                     
                 }
@@ -194,8 +131,6 @@ struct ScanItem: View {
             .navigationBarItems(leading:
                                     Button("Cancel") {
                 self.presentationMode.wrappedValue.dismiss()
-                //isPresented = false
-                //showEmailVerificationView = false
             }
                 .foregroundColor(.green), trailing:
                                     Button("Save") {
@@ -203,107 +138,21 @@ struct ScanItem: View {
                 
             } .foregroundColor(.green)
                 .bold()
-            
-                    
+     
             
             )
            
-
-        
-            
-          /**  .toolbar {
-                Button("  Save  "){
-                }
-                .foregroundColor(.green)
-                .bold()
-                
-                .overlay(alignment: .topTrailing, content:{ Button("Cancel"){
-                    showEmailVerificationView = false
-                    // Delete account in Firebase
-                    /** if let user = Auth.auth().currentUser{
-                     user.delete { _ in
-                     isLoading = false}
-                     } */
-                    
-                } .padding(15)
-                })
-               .padding(.bottom, 15)
-            } */
         }
         .alert(isPresented: $showAlert){
             Alert(title: Text("Alert"), message:Text(alertMessage), dismissButton: .default(Text("Ok")) {
-                //isPresented = false
                 self.presentationMode.wrappedValue.dismiss()
                 itemsViewModel.fetchItemsAfterButton()
-              //  self.persistImageToStorage() //copied LBTA
-               
-                    // goBack = true
             })
 
         }
         
     }
-    /**
-    private func persistImageToStorage(){
-        guard let userID = userID else {
-            print("User not logged in")
-            return
-        }
-        // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-        // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-        let storeImage = UUID().uuidString
-        let ref = Storage.storage().reference(withPath: "images/\(userID)/\(storeImage)")
-        
-        
-        //"images/\(userID)/\(UUID().uuidString).jpg")
-        
-               guard let imageData = self.image?.jpegData(compressionQuality: 0.5) else { return }
-        
-        ref.putData(imageData, metadata: nil) { metadata, err in
-                    if let err = err {
-                        showAlert(message: "Failed to push image to Storage: \(err)")
-                        return
-                    }
-                    
-                    ref.downloadURL { url, err in
-                        if let err = err {
-                            showAlert(message: "Failed to retrieve downloadURL: \(err)")
-                            return
-                        }
-                        showAlert(message: "Successfully stored image with url: \(url?.absoluteString ?? "")")
-                        
-                        print(url?.absoluteString)
-                        
-                        // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Installing-Firestore-and-Saving-User-Data-Collection
-                      //  self.storeItemImage(imageItemUrl: url)
-                    }
-                }
-            
-        
-    }
-     */
-    /**
-    // https://www.youtube.com/watch?v=YgjYVbg1oiA&t=1327s&ab_channel=CodeWithChris
-    func uploadPhoto(){
-        guard selectedImage != nil else {
-            return
-        }
-        
-        let storageRef = Storage.storage().reference()
-        
-        
-    } */
-    /**private func storeItemImage(imageItemUrl: URL) {
-        guard let userID = userID else {
-            print("User not logged in")
-            return
-        }
-    
-        Storage.storage.firestore.collection("items").document(userID).collection("Item").addDoc
-        
-        
-        
-    } */
+   
     func saveItem() {
         guard let userID = userID else {
             print("User not logged in")
@@ -347,7 +196,6 @@ struct ScanItem: View {
                         return
                     }
                     
-                    
                     let itemData : [String:Any] = [
                         "id" : UUID().uuidString,
                         "name": name,
@@ -358,9 +206,6 @@ struct ScanItem: View {
                         "imageURL": imageURLstring
                     ]
                     
-                    
-                    // db.collection("items").document(userID).collection("Item")
-                    //  let ref = db.collection("items").document(userID).collection("Item")
                     db.collection("items").document(userID).collection("Item").addDocument(data:itemData) { error in
                         if let error = error {
                             showAlert(message: "Error saving :\(error.localizedDescription)")
@@ -372,9 +217,6 @@ struct ScanItem: View {
                             selection = ""
                             description = ""
                             imageURL = ""
-                            // image = nil
-                            //ListView()
-                            //isPresented = false
                         }
                     }
                     
@@ -393,9 +235,6 @@ struct ScanItem: View {
                 "imageURL": imageURL,
             ]
             
-            
-            // db.collection("items").document(userID).collection("Item")
-            //  let ref = db.collection("items").document(userID).collection("Item")
             db.collection("items").document(userID).collection("Item").addDocument(data:itemData) { error in
                 if let error = error {
                     showAlert(message: "Error saving :\(error.localizedDescription)")
@@ -407,9 +246,6 @@ struct ScanItem: View {
                     selection = ""
                     description = ""
                     imageURL = ""
-                    // image = nil
-                    //ListView()
-                    //isPresented = false
                 }
                 
             }
@@ -419,7 +255,6 @@ struct ScanItem: View {
         func showAlert(message:String){
             alertMessage = message
             showAlert = true
-        
     }
 }
     

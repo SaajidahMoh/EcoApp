@@ -1,13 +1,16 @@
 //
 //  Barcode.swift
-//  barcode_scanner
+//  EcoApp
 //
-//  Created by Saajidah Mohamed on 03/04/2024.
-// https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
-// https://www.patreon.com/posts/xcode-project-42828807
+//  Created by Saajidah Mohamed on
+//
 
 import Foundation
 
+/**
+ * The code below was reused and adapted to present the scanner for items.
+ * Advent, B. (2020), Tutorial: Use APIs with Swift UI & Build a Book Barcode Scanner. YouTube video available at: https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
+ */
 
 struct Product: Decodable {
     let code: String
