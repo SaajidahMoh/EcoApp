@@ -30,8 +30,22 @@ struct LocationsView: View {
                 
             }
         }
+        .onAppear(perform: {
+            viewModel.checkIfLocationIsEnabled()
+        })
+        // code reused and developed from https://stackoverflow.com/questions/62178494/is-there-an-equivalent-of-opensettingsurlstring-in-swiftui
+        .alert(isPresented: $viewModel.locationDisabledAlert){
+            Alert(
+                title: Text ("Location Disabled"),
+                message: Text("Location Services is off. Please turn it on in Settings"),
+                primaryButton: .default(Text("Settings"), action: {
+                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                }),
+                secondaryButton: .cancel()
+            )
+        }
+        
     }
-    
     /** The map layer below adapted from the video below to display the map and what is on the map. The code was adapted to implement user location and tracking, which the video did not show (and the on appear).
      * The code was also adapted to show the locations information only when tapped (the tap gesture).
      * Sarno, N. (2021), Swiftful Thinking - Final review of MVVM Architecture and other features | SwiftUI Map App #9. Link available at :
@@ -51,9 +65,9 @@ struct LocationsView: View {
                     }
             }
         })
-        .onAppear(perform: {
-            viewModel.checkIfLocationIsEnabled()
-        })
+        /** .onAppear(perform: {
+         viewModel.checkIfLocationIsEnabled()
+         }) */
     }
     
     /** The locations preview stack was reused and adapted from the video below to only show for when the location preview is true (when tapped).
@@ -82,6 +96,7 @@ final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDeleg
     var locationManager: CLLocationManager?
     
     @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.52843913061934, longitude: -0.10237656930940268), span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2))
+    @Published var locationDisabledAlert = false
     
     var binding: Binding<MKCoordinateRegion> {
         Binding {
@@ -90,14 +105,16 @@ final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDeleg
             self.mapRegion = newRegion
         }
     }
-    
+    // adapted to implemenet an alert and checking its not denied 
     func checkIfLocationIsEnabled() {
-        if CLLocationManager.locationServicesEnabled() {
+        print ("Checking if enabled")
+        // as long as it is not denied, it will show the users current location
+        if CLLocationManager.locationServicesEnabled() && CLLocationManager.authorizationStatus() != .denied {
             locationManager = CLLocationManager()
             locationManager?.desiredAccuracy = kCLLocationAccuracyBest
             locationManager!.delegate = self
         } else {
-            print("Show an alert letting them know this is off")
+            locationDisabledAlert = true
         }
     }
     
