@@ -18,23 +18,23 @@ struct RecipeListView: View {
     
     var body: some View {
         NavigationView {
-                  List(viewModel.recipes, id: \.label) { recipe in
-                      NavigationLink(destination: FavCardView(isSaved: true , title: recipe.label, ingredients: recipe.ingredientLines, cuisineTypes: recipe.cuisineType, image: recipe.image, totalTime: recipe.totalTime, url: recipe.url)) {
-                          RecipeRowView(recipe: recipe)
-                              .environmentObject(viewModel)
-                      }
-                      .buttonStyle(PlainButtonStyle())
-                      .listRowBackground(Color.clear)
-                      .listRowSeparator(.hidden)
-                      .listStyle(PlainListStyle())
-                  }
-                  .navigationTitle("Favorites")
-                  .onAppear {
-                      viewModel.fetchFavs()
-                  }
-                  .background(Color(.systemGray5))
-              }
-          }
+            List(viewModel.recipes, id: \.label) { recipe in
+                NavigationLink(destination: FavCardView(isSaved: true , title: recipe.label, ingredients: recipe.ingredientLines, cuisineTypes: recipe.cuisineType, image: recipe.image, totalTime: recipe.totalTime, url: recipe.url)) {
+                    RecipeRowView(recipe: recipe)
+                        .environmentObject(viewModel)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
+                .listStyle(PlainListStyle())
+            }
+            .navigationTitle("Favorites")
+            .onAppear {
+                viewModel.fetchFavs()
+            }
+            .background(Color(.systemGray5))
+        }
+    }
     
 }
 

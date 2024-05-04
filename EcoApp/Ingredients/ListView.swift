@@ -11,6 +11,11 @@ import UserNotifications
 import Kingfisher
 import UIKit
 
+/**
+ * To being creating the list view, the video below helped as a starting point. But as time went on, the code became more adapted.
+ * Koshenka, L. (2022), Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data. YouTube video available at: https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
+ */
+
 struct ListView: View {
     @AppStorage("log_status") private var logStatus: Bool = false
     @EnvironmentObject var itemsViewModel: ItemsViewModel
@@ -32,7 +37,7 @@ struct ListView: View {
      * Xavier (2023), SwiftUI List with Sort Options. Published: iOS Devx. Link available at: https://xavier7t.com/swiftui-list-with-sort-options
      * Source code available at: https://github.com/xavier7t/iOSDevX/blob/main/iOSDevX/202303-Mar%202023/Sort%20Options/ContentView-DemoSortOptions20230320.swift
      */
-  
+    
     
     @State private var sortedTab: Tab = .expiryDate
     
@@ -101,7 +106,7 @@ struct ListView: View {
                                     // schedule notifications for the items
                                     scheduleNotification(for: item)
                                 } 
-                    
+                            
                             /**
                              * The swipe action was reused and implemented to allow users to delete by swiping, replicating a real ios application.
                              * Friese, P (2021) ,Swipe Actions in SwiftUI 3. The Ultimate Guide to SwiftUI List Views - Part 4
@@ -288,7 +293,7 @@ struct ListView: View {
             }
         }
     }
-
+    
     private func deleteItem(for item: Items) {
         guard let userID = userID else {
             return
@@ -349,40 +354,40 @@ struct ListView: View {
                 ScrollView{
                     VStack{
                         ForEach(recipesBasedOnIngredients, id: \.id) { recipeBased in
-                        NavigationLink(destination: RecipeInstructView(recipeBased: recipeBased)) {
-                            VStack(alignment: .leading, spacing: 10) {
-                                
-                                /**
-                                 * The image code was reused to display remote images in the app.
-                                 * Moiseienko, M. (2023), SwiftUI: Efficient Image Loading using AsyncImage. Link available at: https://m-mois.medium.com/swiftui-efficient-image-loading-using-asyncimage-a059fe4efc34
-                                 */
-                                if let photoURL = URL(string: recipeBased.image) {
-                                    AsyncImage(url: photoURL) { image in
-                                        image
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 350, height: 120)
-                                            .clipped()
-                                    } placeholder: {
-                                        ProgressView()
+                            NavigationLink(destination: RecipeInstructView(recipeBased: recipeBased)) {
+                                VStack(alignment: .leading, spacing: 10) {
+                                    
+                                    /**
+                                     * The image code was reused to display remote images in the app.
+                                     * Moiseienko, M. (2023), SwiftUI: Efficient Image Loading using AsyncImage. Link available at: https://m-mois.medium.com/swiftui-efficient-image-loading-using-asyncimage-a059fe4efc34
+                                     */
+                                    if let photoURL = URL(string: recipeBased.image) {
+                                        AsyncImage(url: photoURL) { image in
+                                            image
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 350, height: 120)
+                                                .clipped()
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
                                     }
+                                    
+                                    Text(recipeBased.title)
+                                        .font(.headline)
+                                        .padding(.horizontal)
                                 }
                                 
-                                Text(recipeBased.title)
-                                    .font(.headline)
-                                    .padding(.horizontal)
+                                .padding(.horizontal, 0)
+                                .padding(.vertical, 10)
+                                .background(Color(.systemGray5))
                             }
-                            
-                            .padding(.horizontal, 0)
-                            .padding(.vertical, 10)
-                            .background(Color(.systemGray5))
+                            .buttonStyle(PlainButtonStyle())
+                            .listRowSeparator(.hidden)
                         }
-                        .buttonStyle(PlainButtonStyle())
-                        .listRowSeparator(.hidden)
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 20)
-                    .listStyle(PlainListStyle())
+                        .padding(.horizontal)
+                        .padding(.top, 20)
+                        .listStyle(PlainListStyle())
                     }
                     
                     .navigationBarItems(leading: Button(action: {
@@ -408,7 +413,7 @@ struct ListView: View {
          * The recipe instruct view was reused and adapted to get the recipes name, image, ingredients and instructions.
          * Hudson, P. (2022) How to push a new view when a list row is tapped. Published at: Hacking With Swift. Link avaliable at: https://www.hackingwithswift.com/quick-start/swiftui/how-to-push-a-new-view-when-a-list-row-is-tapped
          */
-                     
+        
         struct RecipeInstructView: View {
             let recipeBased: RecipesBasedIngredients
             
@@ -434,29 +439,29 @@ struct ListView: View {
                             }
                         }
                         
-                       // HStack {
-                            Group {
-                                Text(recipeBased.title)
-                                    .font(.system(.title))
-                                    .fontWeight(.bold)
-                                    .multilineTextAlignment(.center)
-                                    .foregroundColor(Color (.systemGreen))
-                                    .padding(.top, 10)
-                            }
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 12)
-                            Spacer()
-                           /*
-                            Button(action: shareRecipe
-                            ){
-                                Image(systemName: "square.and.arrow.up")
-                                    .resizable()
-                                    .frame(width: 21, height: 30)
-                                    .padding(10)
-                                    .foregroundColor(.green)
-                            } */
-                      //  }
-                 
+                        // HStack {
+                        Group {
+                            Text(recipeBased.title)
+                                .font(.system(.title))
+                                .fontWeight(.bold)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(Color (.systemGreen))
+                                .padding(.top, 10)
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 12)
+                        Spacer()
+                        /*
+                         Button(action: shareRecipe
+                         ){
+                         Image(systemName: "square.and.arrow.up")
+                         .resizable()
+                         .frame(width: 21, height: 30)
+                         .padding(10)
+                         .foregroundColor(.green)
+                         } */
+                        //  }
+                        
                         VStack(alignment: .leading, spacing: 6){
                             
                             if !recipeBased.usedIngredients.isEmpty {
@@ -535,7 +540,7 @@ struct ListView: View {
                 }
             }
             
-            // code was reused was chatgpt to allow screenshot of page, and sharing of the screenshot. https://chat.openai.com/share/75ea5027-cdf4-4dd8-b320-9f6173f65149
+            // code was developed from chatgpt to allow screenshot of page, and sharing of the screenshot. https://chat.openai.com/share/75ea5027-cdf4-4dd8-b320-9f6173f65149
             func takeScreenshot() -> UIImage? {
                 guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }),
                       let rootView = window.rootViewController?.view else {
@@ -549,7 +554,7 @@ struct ListView: View {
                 
                 return screenshot
             }
-
+            
             func shareRecipe() {
                 if let screenshot = takeScreenshot() {
                     let activityViewController = UIActivityViewController(activityItems: [screenshot], applicationActivities: nil)
@@ -560,17 +565,6 @@ struct ListView: View {
     }
     
     
-    // https://www.youtube.com/watch?v=FPLQXCmvA7o&ab_channel=PaulHudson
-    // https://docs.airnativeextensions.com/docs/firebase/firestore/transactions-and-batched-writes/
-    
-    // https://www.youtube.com/watch?v=KcOvWU3xp1I&t=273s&ab_channel=JohnGallaugher
-    // https://www.youtube.com/watch?v=KMtdBgHwvGY&list=PL9VJ9OpT-IPSM6dFSwQCIl409gNBsqKTe&index=64&ab_channel=JohnGallaugher
-     // https://firebase.google.com/docs/firestore/query-data/queries
-     // https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
-     //https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
-     // https://www.youtube.com/watch?v=KcOvWU3xp1I&list=PL9VJ9OpT-IPSM6dFSwQCIl409gNBsqKTe&index=102&ab_channel=JohnGallaugher??
-    
-      
 }
 
 
@@ -580,7 +574,7 @@ struct ItemRow: View {
     @EnvironmentObject var itemsViewModel: ItemsViewModel
     @State private var isChecked: Bool = false
     @State private var isShown = false
-   
+    
     /**
      * The expiry date formatter variable was reused and adapted from the article to display the date as I wanted.
      * Ng, P (2020), [Swift] Work With Dates #1 Basic Types: Date, DateFormatter, DateComponent. Published: Medium. Article available at: https://medium.com/swlh/swift-working-with-dates-1-basic-types-date-dateformatter-datecomponent-4bfc376ee93b

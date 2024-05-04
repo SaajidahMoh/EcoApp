@@ -1,17 +1,17 @@
 //
-//  Fav ViewModel.swift
+//  FavViewModel.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed 
-// https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
+//  Created by Saajidah Mohamed
+//
 
 import SwiftUI
 import Firebase
 
+
 class FavViewModel : ObservableObject{
     @Published var recipes: [Recipe] = []
     @State private var isSaved : Bool = false
-    @EnvironmentObject var vieModel: FavViewModel
     
     var userID: String? {
         return Auth.auth().currentUser?.uid }
@@ -19,19 +19,22 @@ class FavViewModel : ObservableObject{
     init() {
         //fetchAllFavorites()
         Auth.auth().addStateDidChangeListener { [weak self] (_, user) in
-                    guard let self = self else { return }
-                    
-                    if let user = user {
-                        print("User : \(user.uid)")
-                        self.fetchFavs()
-                    } else {
-                        print("User is not logged in")
-                        self.recipes.removeAll()
-                    }
-                }
+            guard let self = self else { return }
+            
+            if let user = user {
+                print("User : \(user.uid)")
+                self.fetchFavs()
+            } else {
+                print("User is not logged in")
+                self.recipes.removeAll()
+            }
+        }
     }
-
     
+    /**
+     * To develop the fetch recipe function, code was reused and adapted from the Firebase documentation.
+     * Firebase, (2024), Get realtime updates with Cloud Firestore. Links Available at: https://firebase.google.com/docs/firestore/query-data/listen?,    // https://firebase.google.com/docs/firestore/query-data/queries,  https://firebase.google.com/docs/firestore/query-data/get-data? https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+     */
     func fetchFavs(){
         guard let userID = userID
         else {
@@ -75,7 +78,10 @@ class FavViewModel : ObservableObject{
             }
         }
     }
-    
+    /**
+     * To develop the remove recipe function, code was reused and adapted from the Firebase documentation.
+     * Firebase, (2024), Get realtime updates with Cloud Firestore. Links Available at: https://firebase.google.com/docs/firestore/query-data/listen?,    // https://firebase.google.com/docs/firestore/query-data/queries,  https://firebase.google.com/docs/firestore/query-data/get-data? https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+     */
     func removeRecipe(recipe: Recipe){
         guard let userID = userID else {
             print("user not logged in")

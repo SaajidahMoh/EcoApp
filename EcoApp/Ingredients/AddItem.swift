@@ -2,9 +2,12 @@
 //  AddItem.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 29/03/2024.
-// https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
-// https://www.youtube.com/watch?v=m0QQ-hWs8fc&t=31s&ab_channel=SeanAllen
+//  Created by Saajidah Mohamed 
+
+/**
+ * The add item was was adapted to be able to store items. However, new collections were made to ensure they don't overwrite each-other.
+ * Koshenka, L. (2022), Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data. YouTube video available at: https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
+ */
 
 import SwiftUI
 import Firebase
@@ -32,16 +35,12 @@ struct AddItem: View {
     @State private var selection = "Fridge"
     let placeStored = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer", "Countertop", "Cellar", "Fruit Basket", "Kitchen Cart"]
     
-//https://www.youtube.com/watch?v=YgjYVbg1oiA&t=1327s&ab_channel=CodeWithChris
+    // code reused from: https://www.youtube.com/watch?v=YgjYVbg1oiA&t=1327s&ab_channel=CodeWithChris
     @State var isPickerShowing = false
     @State var selectedImage: UIImage?
     
-    //https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
-   // @State var isPickerShowing = false
-   // @State var selectedImage: UIImage?
-    
-    @State var shouldShowImagePicker = false // https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-    
+    // code reused from:  https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+    @State var shouldShowImagePicker = false
     @State var image: UIImage?
     
     // public variable userID that sets the user ID to be the current users ID.
@@ -59,37 +58,37 @@ struct AddItem: View {
                  * Allen, S. (2021), SwiftUI Form w/ TextField, DatePicker, Toggle, Stepper, Link and Sections w/ Header.
                  * Youtube video available at: https://www.youtube.com/watch?v=m0QQ-hWs8fc&t=31s&ab_channel=SeanAllen
                  */
-       /**
-        * The code relating to image and photo below has been reused and adapted from the video below. Aswell as the should show image picker and the image picker.
-        * Voong, B. (2021), SwiftUI Firebase Chat 03: Save Images to Firebase Storage.
-        * Youtube Link Available at: https://www.youtube.com/watch?v=5inXE5d2MUM&t=1056s&ab_channel=LetsBuildThatApp
-        * Source code Available at:  https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-        */
-                 if let image = self.image {
-                 Image(uiImage: image)
-                 .resizable()
-                 .scaledToFill()
-                 .frame(width: 128, height: 128)
-                     Button("Select Image"){
-                         shouldShowImagePicker.toggle()
-                     }
-                     .foregroundColor(.green)
-                 }
-                else {Image(systemName: "photo")
-                            .resizable()
-                            .font(.system(size: 64))
-                            .padding()
-                            .foregroundColor(.gray)
-                            .frame(height: 168)
-                        Button("Select Image"){
-                            shouldShowImagePicker.toggle()
-                        }
-                        .foregroundColor(.green)
-                 
-                        .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
-                                   ImagePicker(image: $image)
-                               }
+                /**
+                 * The code relating to image and photo below has been reused and adapted from the video below. Aswell as the should show image picker and the image picker.
+                 * Voong, B. (2021), SwiftUI Firebase Chat 03: Save Images to Firebase Storage.
+                 * Youtube Link Available at: https://www.youtube.com/watch?v=5inXE5d2MUM&t=1056s&ab_channel=LetsBuildThatApp
+                 * Source code Available at:  https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                 */
+                if let image = self.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 128, height: 128)
+                    Button("Select Image"){
+                        shouldShowImagePicker.toggle()
                     }
+                    .foregroundColor(.green)
+                }
+                else {Image(systemName: "photo")
+                        .resizable()
+                        .font(.system(size: 64))
+                        .padding()
+                        .foregroundColor(.gray)
+                        .frame(height: 168)
+                    Button("Select Image"){
+                        shouldShowImagePicker.toggle()
+                    }
+                    .foregroundColor(.green)
+                    
+                    .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
+                        ImagePicker(image: $image)
+                    }
+                }
                 Section(header: Text("Ingredient name")) {
                     TextField("Item Name", text: $name)
                 }
@@ -100,7 +99,7 @@ struct AddItem: View {
                 }
                 
                 /** The forum linked below helped me solve the issue i had with setting the timestamp to 00:00:00 for accurate days difference for notifications.
-                 Link available at: https://www.hackingwithswift.com/forums/swiftui/help-with-onchange/24312 
+                 Link available at: https://www.hackingwithswift.com/forums/swiftui/help-with-onchange/24312
                  */
                 Section(header: Text("Expiry Date")) {
                     DatePicker("Expiry Date", selection: $expiryDate, displayedComponents: .date)
@@ -153,7 +152,12 @@ struct AddItem: View {
             })
         }
     }
-
+    
+    /**
+     * To develop the save item function, code was reused and adapted from the Firebase documentation.
+     * Firebase, (2024), Get realtime updates with Cloud Firestore. Links Available at:
+     * https://firebase.google.com/docs/firestore/manage-data/add-data https://firebase.google.com/docs/firestore/query-data/listen?,     https://firebase.google.com/docs/firestore/query-data/queries,  https://firebase.google.com/docs/firestore/query-data/get-data? https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+     */
     func saveItem() {
         guard let userID = userID else {
             print("User not logged in")
@@ -268,14 +272,14 @@ struct AddItem: View {
         }
     }
     
-        func showAlert(message:String){
-            alertMessage = message
-            showAlert = true
+    func showAlert(message:String){
+        alertMessage = message
+        showAlert = true
         
     }
 }
-    
-                     
+
+
 
 #Preview {
     AddItem()

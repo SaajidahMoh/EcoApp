@@ -29,15 +29,14 @@ struct ScanItem: View {
      * Hudson, P. (2022), How to let users pick options from a menu. Published: Hacking With Swift. Available at: https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
      */
     @State private var selection = "Fridge"
-    let placeStored = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer"]
+    let placeStored = ["Fridge", "Pantry", "Cupboard", "Cabinet", "Freezer", "Countertop", "Cellar", "Fruit Basket", "Kitchen Cart"]
     
-//code below was reused from https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
+    //code below was reused from https://www.youtube.com/watch?v=YgjYVbg1oiA&ab_channel=CodeWithChris
     @State var isPickerShowing = false
     @State var selectedImage: UIImage?
     
     // code below were reused from https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
     @State var shouldShowImagePicker = false
-    
     @State var image: UIImage?
     
     
@@ -49,44 +48,43 @@ struct ScanItem: View {
         @StateObject var itemsViewModel = ItemsViewModel()
         
         NavigationView{
-           
+            
             Form {
                 /**
                  * The form was reused and adapted from a swiftui form video.
                  * Allen, S. (2021), SwiftUI Form w/ TextField, DatePicker, Toggle, Stepper, Link and Sections w/ Header.
                  * Youtube video available at: https://www.youtube.com/watch?v=m0QQ-hWs8fc&t=31s&ab_channel=SeanAllen
                  */
-       /**
-        * The code relating to image and photo below has been reused and adapted from the video below. Aswell as the should show image picker and the image picker.
-        * Voong, B. (2021), SwiftUI Firebase Chat 03: Save Images to Firebase Storage.
-        * Youtube Link Available at: https://www.youtube.com/watch?v=5inXE5d2MUM&t=1056s&ab_channel=LetsBuildThatApp
-        * Source code Available at:  https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-        */
-                 if let image = self.image {
-                 Image(uiImage: image)
-                 .resizable()
-                 .scaledToFill()
-                 .frame(width: 128, height: 128)
-                 
-                 }
-                else {Image(systemName: "photo")
-                            .resizable()
-                            .font(.system(size: 64))
-                            .padding()
-                            .foregroundColor(.gray)
-                            .frame(height: 168)
-                        Button("Select Image"){
-                            shouldShowImagePicker.toggle()
-                        }
-                        .foregroundColor(.green)
-
-                        // code below was reused from https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-                        .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
-                                   ImagePicker(image: $image)
-                               }
-                        
-                    } 
-      
+                /**
+                 * The code relating to image and photo below has been reused and adapted from the video below. Aswell as the should show image picker and the image picker.
+                 * Voong, B. (2021), SwiftUI Firebase Chat 03: Save Images to Firebase Storage.
+                 * Youtube Link Available at: https://www.youtube.com/watch?v=5inXE5d2MUM&t=1056s&ab_channel=LetsBuildThatApp
+                 * Source code Available at:  https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                 */
+                if let image = self.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 128, height: 128)
+                }
+                else {
+                    Image(systemName: "photo")
+                        .resizable()
+                        .font(.system(size: 64))
+                        .padding()
+                        .foregroundColor(.gray)
+                        .frame(height: 168)
+                    Button("Select Image"){
+                        shouldShowImagePicker.toggle()
+                    }
+                    .foregroundColor(.green)
+                    
+                    // code below was reused from https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                    .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
+                        ImagePicker(image: $image)
+                    }
+                }
+                
                 Section(header: Text("Ingredient name")) {
                     TextField("Item Name", text: $name)
                 }
@@ -110,23 +108,20 @@ struct ScanItem: View {
                 
                 Section(header: Text("Category")) {
                     //VStack(alignment: .leading){
-                   //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
+                    //https://www.hackingwithswift.com/quick-start/swiftui/how-to-let-users-pick-options-from-a-menu
                     Picker("Select A Category", selection: $selection) {
                         ForEach(placeStored, id: \.self) {
                             Text($0)
                         }
                     }
                     .pickerStyle(.menu)
-                        .multilineTextAlignment(.leading)
-                    
+                    .multilineTextAlignment(.leading)
                 }
                 
                 Section(header: Text("Description")) {
                     TextField("Description - Optional", text: $description)
                         .multilineTextAlignment(.leading)
-                    
                 }
-                
             }
             .accentColor(.red)
             .navigationTitle("Ingredient")
@@ -140,21 +135,21 @@ struct ScanItem: View {
                 
             } .foregroundColor(.green)
                 .bold()
-     
-            
+                                
             )
-           
         }
         .alert(isPresented: $showAlert){
             Alert(title: Text("Alert"), message:Text(alertMessage), dismissButton: .default(Text("Ok")) {
                 self.presentationMode.wrappedValue.dismiss()
                 itemsViewModel.fetchItemsAfterButton()
             })
-
         }
-        
     }
-   
+    
+    /**
+     * To develop the save item function, code was reused and adapted from the Firebase documentation.
+     * Firebase, (2024), Get realtime updates with Cloud Firestore. Links Available at: https://firebase.google.com/docs/firestore/query-data/listen?,    // https://firebase.google.com/docs/firestore/query-data/queries,  https://firebase.google.com/docs/firestore/query-data/get-data? https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+     */
     func saveItem() {
         guard let userID = userID else {
             print("User not logged in")
@@ -162,8 +157,12 @@ struct ScanItem: View {
         }
         let db = Firestore.firestore()
         
-        //https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
-        
+        /**
+         * The code relating to image and imageURL has been reused and adapted from the video below. Changes were made to the reference and store image to ensure the images didn't overwrite eachother with unique ID's.
+         * Voong, B. (2021), SwiftUI Firebase Chat 03: Save Images to Firebase Storage.
+         * Youtube Link Available at: https://www.youtube.com/watch?v=5inXE5d2MUM&t=1056s&ab_channel=LetsBuildThatApp
+         * Source code Available at:  https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+         */
         
         if let image = image {
             let storeImage = UUID().uuidString
@@ -182,7 +181,7 @@ struct ScanItem: View {
                         showAlert(message: "Failed to retrieve downloadURL: \(err)")
                         return
                     }
-                    // showAlert(message: "Successfully stored image with url: \(url?.absoluteString ?? "")")
+                    
                     guard let imageURLstring = url?.absoluteString else {
                         showAlert(message: "Unable to store image with url: \(url?.absoluteString ?? "")")
                         return
@@ -221,9 +220,7 @@ struct ScanItem: View {
                             imageURL = ""
                         }
                     }
-                    
                 }
-                
             }
         }
         else {
@@ -254,14 +251,15 @@ struct ScanItem: View {
         }
     }
     
-        func showAlert(message:String){
-            alertMessage = message
-            showAlert = true
+    func showAlert(message:String){
+        alertMessage = message
+        showAlert = true
     }
 }
-    
-                     
+
+
 
 #Preview {
     ScanItem()
 }
+

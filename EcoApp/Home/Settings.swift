@@ -128,7 +128,7 @@ struct Settings: View {
                 .navigationTitle("Settings")
             }
             .background(Color(UIColor.systemGroupedBackground))
-           
+            
             /**
              * Alert was reused and adapted from the 'hackingwithswift' website to perform actions on an alert, to confirm users want to delete their account.
              * Hudson, P.  (2022), How to add actions to alert buttons . Link available at: https://www.hackingwithswift.com/quick-start/swiftui/how-to-add-actions-to-alert-buttons
@@ -148,6 +148,12 @@ struct Settings: View {
             }
         }
     }
+    
+    /**
+     * To develop all of the functions, code was reused and adapted from the Firebase documentation.
+     * Firebase, (2024), Get realtime updates with Cloud Firestore. Links Available at:
+     * https://firebase.google.com/docs/firestore/manage-data/add-data https://firebase.google.com/docs/firestore/query-data/listen?,     https://firebase.google.com/docs/firestore/query-data/queries,  https://firebase.google.com/docs/firestore/query-data/get-data? https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+     */
     
     // functon to get the users email and displays it on the settings page
     func getUserEmail() {

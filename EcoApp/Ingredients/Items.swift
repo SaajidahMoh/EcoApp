@@ -8,7 +8,7 @@
 import SwiftUI
 import Firebase
 
-// model was developed by me to initialise my items. 
+// model was developed by me to initialise my items.
 struct Items: Identifiable {
     var id: String
     var name: String

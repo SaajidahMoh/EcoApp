@@ -1,5 +1,5 @@
 //
-//  SlapshScreenView.swift
+//  SplashScreenView.swift
 //  EcoApp
 //
 //  Created by Saajidah Mohamed

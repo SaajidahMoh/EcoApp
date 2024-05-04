@@ -1,8 +1,8 @@
 //
-// LocationsMorePreView.swift
+//  LocationsMorePreView.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 20/04/2024.
+//  Created by Saajidah Mohamed
 //
 //
 
@@ -34,24 +34,24 @@ struct recipeSearch: View {
      * Xavier (2023), SwiftUI List with Sort Options. Published: iOS Devx. Link available at: https://xavier7t.com/swiftui-list-with-sort-options
      * Source code available at: https://github.com/xavier7t/iOSDevX/blob/main/iOSDevX/202303-Mar%202023/Sort%20Options/ContentView-DemoSortOptions20230320.swift
      */
-     @State private var sortOption: SortOption = .quickest
-     var sortedTasks: [Hit] {
-         var filteredData = [Hit]()
-            if !selectedTheme.isEmpty {
-                filteredData = recipes.filter { $0.recipe.cuisineType.contains(selectedTheme) }
-            }; if selectedTheme == "Select Cuisine"{
-                 filteredData = recipes
-            }
-         
-         switch sortOption {
-         case .defaultTime:
-             return filteredData
-         case .quickest:
-             return filteredData.sorted { $0.recipe.totalTime < $1.recipe.totalTime }
-         case .longest:
-             return filteredData.sorted { $0.recipe.totalTime > $1.recipe.totalTime }
-         }
-     }
+    @State private var sortOption: SortOption = .quickest
+    var sortedTasks: [Hit] {
+        var filteredData = [Hit]()
+        if !selectedTheme.isEmpty {
+            filteredData = recipes.filter { $0.recipe.cuisineType.contains(selectedTheme) }
+        }; if selectedTheme == "Select Cuisine"{
+            filteredData = recipes
+        }
+        
+        switch sortOption {
+        case .defaultTime:
+            return filteredData
+        case .quickest:
+            return filteredData.sorted { $0.recipe.totalTime < $1.recipe.totalTime }
+        case .longest:
+            return filteredData.sorted { $0.recipe.totalTime > $1.recipe.totalTime }
+        }
+    }
     
     /**
      *  The code showcasing the image, recipe name, total time, link to the instruction steps .. and the search was reused and adapted.
@@ -90,7 +90,7 @@ struct recipeSearch: View {
                     .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
                     .listStyle(PlainListStyle())
-                   
+                    
                 }
                 .navigationTitle("Recipes")
                 .searchable(text: $searchText)
@@ -108,8 +108,8 @@ struct recipeSearch: View {
     
     // Check if the searchText is not empty - the user is searching
     func isSearching() -> Bool {
-           return !searchText.isEmpty
-       }
+        return !searchText.isEmpty
+    }
     
     //Update the recipes array with fetched data
     /**
@@ -120,7 +120,7 @@ struct recipeSearch: View {
     func getIngredients() {
         networkModel().sendRequest(searchTerm: searchText) { fetchedData in
             DispatchQueue.main.async {
-                 recipes = fetchedData.hits
+                recipes = fetchedData.hits
             }
         }
     }
@@ -129,7 +129,7 @@ struct recipeSearch: View {
 
 
 #Preview {
-  recipeSearch()
+    recipeSearch()
 }
 
 

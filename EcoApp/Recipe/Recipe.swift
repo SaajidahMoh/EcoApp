@@ -17,12 +17,12 @@ struct Hit: Decodable {
 }
 
 struct Recipe: Decodable {
-// let id: String
+    // let id: String
     let label: String
     let image: String
     let totalTime: Float
     let cuisineType: [String]
-   // let dietLabels: [String]
+    // let dietLabels: [String]
     let ingredientLines: [String]
     let url: String
 }

@@ -1,8 +1,8 @@
 //
-// RecipeCardView.swift
+//  RecipeCardView.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 20/04/2024.
+//  Created by Saajidah Mohamed 
 //
 //
 
@@ -42,7 +42,7 @@ struct RecipeCardView : View {
                     .font(.headline)
                     .padding(.leading)
                     .padding(.vertical)
-            
+                
                 Spacer()
                 
                 // saves/ removes recipe.
@@ -64,7 +64,7 @@ struct RecipeCardView : View {
                 .padding(.trailing)
                 .padding(.vertical)
             }
-           
+            
         }
         // shows the star
         .onAppear {
@@ -77,7 +77,11 @@ struct RecipeCardView : View {
     }
     
     // checks if the recipe is saved, if it is set it to true
-   private func checkStar() {
+    /**
+     * To develop the check stat ffunction, code was reused and adapted from the Firebase documentation.
+     * Firebase, (2024), Get realtime updates with Cloud Firestore. Links Available at: https://firebase.google.com/docs/firestore/query-data/listen?,    // https://firebase.google.com/docs/firestore/query-data/queries,  https://firebase.google.com/docs/firestore/query-data/get-data? https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+     */
+    private func checkStar() {
         guard let userID = userID else {
             print("User not logged in")
             return
@@ -108,8 +112,11 @@ struct RecipeCardView : View {
                 }
             }
     }
-
     
+    /**
+     * To develop the store recipe function, code was reused and adapted from the Firebase documentation.
+     * Firebase, (2024), Get realtime updates with Cloud Firestore. Links Available at: https://firebase.google.com/docs/firestore/query-data/listen?,    // https://firebase.google.com/docs/firestore/query-data/queries,  https://firebase.google.com/docs/firestore/query-data/get-data? https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+     */
     private func storeRecipe(){
         guard let userID = userID else {
             print("User not logged in")
@@ -155,8 +162,11 @@ struct RecipeCardView : View {
             }
         isSaved = true
     }
-
-                
+    
+    /**
+     * To develop the remove recipe function, code was reused and adapted from the Firebase documentation.
+     * Firebase, (2024), Get realtime updates with Cloud Firestore. Links Available at: https://firebase.google.com/docs/firestore/query-data/listen?,    // https://firebase.google.com/docs/firestore/query-data/queries,  https://firebase.google.com/docs/firestore/query-data/get-data? https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+     */
     private func removeRecipe(){
         
         guard let userID = userID else {
@@ -192,5 +202,5 @@ struct RecipeCardView : View {
                 else { print("none")
                 }
             }
-    isSaved = false }}
-    
+        isSaved = false }}
+

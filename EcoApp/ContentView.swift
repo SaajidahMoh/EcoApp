@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on
+//  Created by Saajidah Mohamed 
 /**
  * TabView code was reused and adapted from the video below to allow ease of navigation through the main views.
  * Allen, S. (2021), SwiftUI - TabView Tutorial. YouTube video available at: https://www.youtube.com/watch?v=tnNFoZ7CkP8&ab_channel=SeanAllen

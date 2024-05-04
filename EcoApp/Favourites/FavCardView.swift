@@ -17,7 +17,7 @@ import UIKit
  *  Source code available at https://www.codecademy.com/resources/docs/swiftui/search
  */
 struct FavCardView: View {
- //   @State private var isSaved: Bool = false
+    //   @State private var isSaved: Bool = false
     
     let isSaved: Bool
     let title: String
@@ -26,13 +26,13 @@ struct FavCardView: View {
     let image: String
     let totalTime: Float
     let url: String
-
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             Rectangle()
                 .fill(Color.clear)
                 .frame(height: 90)
-
+            
             VStack(alignment: .center, spacing: 0) {
                 /**
                  * The image code was reused to display remote images in the app.
@@ -47,7 +47,7 @@ struct FavCardView: View {
                 } placeholder: {
                     ProgressView()
                 }
-
+                
                 Text("\(title)")
                     .font(.system(.title))
                     .fontWeight(.bold)
@@ -56,7 +56,7 @@ struct FavCardView: View {
                     .padding(.top, 10)
                     .padding(.horizontal, 24)
                     .padding(.vertical, 12)
-
+                
                 VStack(alignment: .leading) {
                     HStack {
                         if totalTime > 0.01 {
@@ -64,15 +64,15 @@ struct FavCardView: View {
                             Text(": \(Int(round(totalTime))) mins")
                         }
                     }
-
+                    
                     HStack {
                         Image(systemName: "globe")
                         ForEach(cuisineTypes, id: \.self) { cuisineType in
                             let globe = cuisineType.capitalized
                             Text("\(globe)")
-
+                            
                             Spacer()
-
+                            
                             // This is where you might want to fix the action
                             Button(action: {
                                 shareRecipe()
@@ -84,11 +84,11 @@ struct FavCardView: View {
                             }
                         }
                     }
-
+                    
                     Text("Ingredients")
                         .fontWeight(.bold)
                         .font(.system(.title2))
-
+                    
                     ForEach(ingredients, id: \.self) { ingredient in
                         VStack(alignment: .leading, spacing: 6) {
                             Spacer()
@@ -99,14 +99,14 @@ struct FavCardView: View {
                     }
                 }
                 .padding(.horizontal, 8)
-
+                
                 VStack(alignment: .center, spacing: 0) {
                     Spacer()
                     Text("")
                     Spacer()
                     Text("")
                     Spacer()
-
+                    
                     Link(destination: URL(string: url)!) {
                         HStack {
                             Image(systemName: "link")
@@ -141,7 +141,7 @@ struct FavCardView: View {
         
         return screenshot
     }
-
+    
     func shareRecipe() {
         if let screenshot = takeScreenshot() {
             let activityViewController = UIActivityViewController(activityItems: [screenshot], applicationActivities: nil)

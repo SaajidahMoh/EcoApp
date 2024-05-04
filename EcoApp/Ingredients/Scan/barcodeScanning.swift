@@ -13,7 +13,7 @@ import SwiftUI
 import AVFoundation
 
 /**
- * The barcode scanning file was reused from the video below. 
+ * The barcode scanning file was reused from the video below.
  * Advent, B. (2020), Tutorial: Use APIs with Swift UI & Build a Book Barcode Scanner. YouTube video available at: https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
  */
 struct BarcodeScanning : UIViewControllerRepresentable {
@@ -37,35 +37,35 @@ struct BarcodeScanning : UIViewControllerRepresentable {
         
         context.coordinator.captureSession = AVCaptureSession()
         
-
+        
         guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { fatalError() }
         let videoInput: AVCaptureDeviceInput
         videoInput = try! AVCaptureDeviceInput(device: videoCaptureDevice)
         
-
+        
         if (context.coordinator.captureSession.canAddInput(videoInput)) {
             context.coordinator.captureSession.addInput(videoInput)
         } else {
             print("Could not add input to capture session")
         }
-
+        
         let metadataOutput = AVCaptureMetadataOutput()
-
+        
         if (context.coordinator.captureSession.canAddOutput(metadataOutput)) {
             context.coordinator.captureSession.addOutput(metadataOutput)
-
+            
             metadataOutput.setMetadataObjectsDelegate(context.coordinator, queue: DispatchQueue.main)
             metadataOutput.metadataObjectTypes = [.ean8, .ean13, .pdf417]
         } else {
-           
+            
             print("Outputproblem")
         }
-
+        
         context.coordinator.previewLayer = AVCaptureVideoPreviewLayer(session: context.coordinator.captureSession)
         context.coordinator.previewLayer.frame = vc.view.layer.bounds
         context.coordinator.previewLayer.videoGravity = .resizeAspectFill
         vc.view.layer.addSublayer(context.coordinator.previewLayer)
-
+        
         context.coordinator.captureSession.startRunning()
         
         
@@ -73,7 +73,7 @@ struct BarcodeScanning : UIViewControllerRepresentable {
     }
     
     
-  
+    
     
     class Coordinator : NSObject, AVCaptureMetadataOutputObjectsDelegate {
         let parent: BarcodeScanning
@@ -101,13 +101,13 @@ struct BarcodeScanning : UIViewControllerRepresentable {
             print(code)
             parent.barcode_string = code
             
-          //  let barcodeToWordBe = BarcodeToWord()
+            //  let barcodeToWordBe = BarcodeToWord()
             barcodeToWord().getProductName(barcode: code) { productinfo in
                 DispatchQueue.main.async {
                     self.parent.foundProduct = productinfo
                 }
             }
-    
+            
         }
         
     }

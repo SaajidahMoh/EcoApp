@@ -3,7 +3,7 @@
 //  EcoApp
 //
 //  Created by Saajidah Mohamed
-//https://www.givefood.org.uk/api/2/docs/#foodbanks/search
+// https://www.givefood.org.uk/api/2/docs/#foodbanks/search
 
 import Foundation
 import MapKit

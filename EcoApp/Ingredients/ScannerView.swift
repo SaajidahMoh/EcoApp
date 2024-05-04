@@ -2,12 +2,12 @@
 //  ScannerView.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed 
-// https://www.youtube.com/watch?v=6b2WAePdiqA&ab_channel=LoganKoshenka: Complete SwiftUI Firebase Tutorial: Auth, Sign Up Page, Cloud Firestore, Read & Write Data
-// https://www.youtube.com/watch?v=m0QQ-hWs8fc&t=31s&ab_channel=SeanAllen
+//  Created by Saajidah Mohamed
+//
 
 import SwiftUI
 import Firebase
+import FirebaseStorage
 
 struct ScannerView: View {
     // Environemnt variable was reused from: https://stackoverflow.com/questions/63927231/navigate-back-after-saving-in-swift-ui
@@ -22,6 +22,14 @@ struct ScannerView: View {
     @State private var isPresented = false
     @State private var goBack  = false
     @State private var imageURL = ""
+    
+    // code reused from: https://www.youtube.com/watch?v=YgjYVbg1oiA&t=1327s&ab_channel=CodeWithChris
+    @State var isPickerShowing = false
+    @State var selectedImage: UIImage?
+    
+    // code reused from:  https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+    @State var shouldShowImagePicker = false
+    @State var image: UIImage?
     
     /**
      * The Picker was reused and adapted to allow users to keep track of where they are storing their ingredients.
@@ -46,6 +54,39 @@ struct ScannerView: View {
          */
         NavigationView{
             Form {
+                /**
+                 * The code relating to image and photo below has been reused and adapted from the video below. Aswell as the should show image picker and the image picker.
+                 * Voong, B. (2021), SwiftUI Firebase Chat 03: Save Images to Firebase Storage.
+                 * Youtube Link Available at: https://www.youtube.com/watch?v=5inXE5d2MUM&t=1056s&ab_channel=LetsBuildThatApp
+                 * Source code Available at:  https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
+                 */
+                
+                if let image = self.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 128, height: 128)
+                    Button("Select Image"){
+                        shouldShowImagePicker.toggle()
+                    }
+                    .foregroundColor(.green)
+                }
+                else {Image(systemName: "photo")
+                        .resizable()
+                        .font(.system(size: 64))
+                        .padding()
+                        .foregroundColor(.gray)
+                        .frame(height: 168)
+                    Button("Select Image"){
+                        shouldShowImagePicker.toggle()
+                    }
+                    .foregroundColor(.green)
+                    
+                    .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
+                        ImagePicker(image: $image)
+                    }
+                }
+                
                 Section(header: Text("Ingredient name")) {
                     HStack {
                         TextField("Item Name", text: $name)
@@ -126,7 +167,11 @@ struct ScannerView: View {
             })
         }
     }
-    
+    /**
+     * To develop the save item function, code was reused and adapted from the Firebase documentation.
+     * Firebase, (2024), Get realtime updates with Cloud Firestore. Links Available at:
+     * https://firebase.google.com/docs/firestore/manage-data/add-data https://firebase.google.com/docs/firestore/query-data/listen?,     https://firebase.google.com/docs/firestore/query-data/queries,  https://firebase.google.com/docs/firestore/query-data/get-data? https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+     */
     func saveItem() {
         @State var name = foundProduct?.product.product_name ?? "" // code adapted and reused from https://www.youtube.com/watch?v=44APgBnapag&ab_channel=BrianAdvent
         
@@ -144,40 +189,114 @@ struct ScannerView: View {
             showAlert(message: "Please select a category.")
             return
         }
-        // code was adapted and reused from https://firebase.google.com/docs/firestore/manage-data/add-data
+        
         let db = Firestore.firestore()
         
-        let itemData : [String:Any] = [
-            "id" : UUID().uuidString,
-            "name": name,
-            "quantity": quantity,
-            "expiryDate": expiryDate,
-            "selection": selection,
-            "description": description,
-            "imageURL": imageURL,
-        ]
-        // code was adapted and reused from https://firebase.google.com/docs/firestore/manage-data/add-data
-        db.collection("items").document(userID).collection("Item").addDocument(data:itemData) { error in
-            if let error = error {
-                showAlert(message: "Error saving :\(error.localizedDescription)")
-            } else {
-                showAlert(message: "Item saved.")
-                name = ""
-                quantity = 1
-                expiryDate = Date()
-                selection = ""
-                description = ""
-                imageURL = ""
-            }
+        //if there is an image, store with image
+        if image != nil {
+            let storeImage = UUID().uuidString
+            let ref = Storage.storage().reference(withPath: "images/\(userID)/\(storeImage).jpg")
             
+            guard let imageData = self.image?.jpegData(compressionQuality: 0.5) else { return }
+            
+            ref.putData(imageData, metadata: nil) { metadata, err in
+                if let err = err {
+                    showAlert(message: "Failed to push image to Storage: \(err)")
+                    return
+                }
+                ref.downloadURL { url, err in
+                    if let err = err {
+                        showAlert(message: "Failed to retrieve downloadURL: \(err)")
+                        return
+                    }
+                    guard let imageURLstring = url?.absoluteString else {
+                        showAlert(message: "Unable to store image with url: \(url?.absoluteString ?? "")")
+                        return
+                    }
+                    
+                    // if the ingredients name is empty,show alert
+                    guard !name.isEmpty else {
+                        showAlert(message: "Please enter your ingredient name.")
+                        return
+                    }
+                    
+                    // if no category is selected, select category
+                    guard !selection.isEmpty else {
+                        showAlert(message: "Please select a category.")
+                        return
+                    }
+                    // code was adapted and reused from https://firebase.google.com/docs/firestore/manage-data/add-data
+                    let itemData : [String:Any] = [
+                        "id" : UUID().uuidString,
+                        "name": name,
+                        "quantity": quantity,
+                        "expiryDate": expiryDate,
+                        "selection": selection,
+                        "description": description,
+                        "imageURL": imageURLstring
+                    ]
+                    
+                    // code was adapted and reused from https://firebase.google.com/docs/firestore/manage-data/add-data
+                    db.collection("items").document(userID).collection("Item").addDocument(data:itemData) { error in
+                        if let error = error {
+                            showAlert(message: "Error saving :\(error.localizedDescription)")
+                        } else {
+                            showAlert(message: "Item saved with photo")
+                            name = ""
+                            quantity = 1
+                            expiryDate = Date()
+                            selection = ""
+                            description = ""
+                            imageURL = ""
+                        }
+                    }
+                }
+            }
+        }
+        // save without image
+        else {
+            // if the ingredients name is empty,show alert
+            guard !name.isEmpty else {
+                showAlert(message: "Please enter the ingredient name.")
+                return
+            }
+            // if no category is selected, select category
+            guard !selection.isEmpty else {
+                showAlert(message: "Please select a category.")
+                return
+            }
+            /// code was adapted and reused from https://firebase.google.com/docs/firestore/manage-data/add-data
+            let itemData : [String:Any] = [
+                "id" : UUID().uuidString,
+                "name": name,
+                "quantity": quantity,
+                "expiryDate": expiryDate,
+                "selection": selection,
+                "description": description,
+                "imageURL": imageURL,
+            ]
+            // code was adapted and reused from https://firebase.google.com/docs/firestore/manage-data/add-data
+            db.collection("items").document(userID).collection("Item").addDocument(data:itemData) { error in
+                if let error = error {
+                    showAlert(message: "Error saving :\(error.localizedDescription)")
+                } else {
+                    showAlert(message: "Item saved.")
+                    name = ""
+                    quantity = 1
+                    expiryDate = Date()
+                    selection = ""
+                    description = ""
+                    imageURL = ""
+                }
+            }
         }
     }
-
+    
     func showAlert(message:String){
         alertMessage = message
         showAlert = true
-    
-}
+        
+    }
 }
 
 #Preview {

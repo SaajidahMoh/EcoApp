@@ -172,8 +172,12 @@ struct EditItem: View {
             })
         }
     }
+    /**
+     * To develop the save item function, code was reused and adapted from the Firebase documentation.
+     * Firebase, (2024), Get realtime updates with Cloud Firestore. Links Available at:
+     * https://firebase.google.com/docs/firestore/manage-data/add-data https://firebase.google.com/docs/firestore/query-data/listen?,     https://firebase.google.com/docs/firestore/query-data/queries,  https://firebase.google.com/docs/firestore/query-data/get-data? https://firebase.google.com/docs/firestore/solutions/swift-codable-data-mapping
+     */
     
-   // the update new item function was reused and adapted to find the document of where the ID is stored and to replace it with the new data https://firebase.google.com/docs/firestore/query-data/queries
     func updateNewItem() {
         guard let userID = userID else {
             print("User not logged in")
@@ -189,6 +193,7 @@ struct EditItem: View {
         let collectionRef = db.collection("items").document(userID).collection("Item")
         
         // code below was reused and developed to find the document of where the item is stored. https://peterfriese.dev/blog/2020/swiftui-firebase-fetch-data/
+        
         collectionRef.whereField("id", isEqualTo: item.id).addSnapshotListener { (querySnapshot, error) in
             if let error = error {
                 print("Error getting documents for item \(item.name): \(error.localizedDescription)")
@@ -213,7 +218,7 @@ struct EditItem: View {
                     "imageURL": imageURL?.absoluteString ?? ""
                 ]
                 /**
-                 * The code relating to image has been reused and adapted from the video below. Changes were made to the reference and store image to ensure the images didn't overwrite eachother with unique ID's.
+                 * The code relating to image and imageURL has been reused and adapted from the video below. Changes were made to the reference and store image to ensure the images didn't overwrite eachother with unique ID's.
                  * Voong, B. (2021), SwiftUI Firebase Chat 03: Save Images to Firebase Storage.
                  * Youtube Link Available at: https://www.youtube.com/watch?v=5inXE5d2MUM&t=1056s&ab_channel=LetsBuildThatApp
                  * Source code Available at:  https://www.letsbuildthatapp.com/courses/SwiftUI-Firebase-Real-Time-Chat/Save-Images-to-Firebase-Storage
@@ -252,7 +257,8 @@ struct EditItem: View {
                         }
                     }
                 } else {
-                    // the code below was reused from Firebase to update the data https://firebase.google.com/docs/firestore/manage-data/add-data
+                    // the update new item function was reused and adapted to find the document of where the ID is stored and to replace it with the new data https://firebase.google.com/docs/firestore/query-data/queries, 
+                    // https://firebase.google.com/docs/firestore/manage-data/add-data
                     collectionRef.document(documentID).setData(updateData, merge: true){ error in
                         if let error = error {
                             print("Error updating item \(item.name): \(error.localizedDescription)")
