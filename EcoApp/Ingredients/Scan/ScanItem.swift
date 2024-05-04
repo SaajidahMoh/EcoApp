@@ -74,7 +74,7 @@ struct ScanItem: View {
                             .font(.system(size: 64))
                             .padding()
                             .foregroundColor(.gray)
-                            .frame(height: 150)
+                            .frame(height: 168)
                         Button("Select Image"){
                             shouldShowImagePicker.toggle()
                         }
@@ -96,7 +96,9 @@ struct ScanItem: View {
                             value: $quantity,in: 1...100)
                 }
                 
-                // https://www.hackingwithswift.com/forums/swiftui/help-with-onchange/24312 TimeStamp 00:00:00
+                /** The forum linked below helped me solve the issue i had with setting the timestamp to 00:00:00 for accurate days difference for notifications.
+                 Link available at: https://www.hackingwithswift.com/forums/swiftui/help-with-onchange/24312
+                 */
                 Section(header: Text("Expiry Date")) {
                     DatePicker("Expiry Date", selection: $expiryDate, displayedComponents: .date)
                         .onChange(of: expiryDate) { _, newValue in

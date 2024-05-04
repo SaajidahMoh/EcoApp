@@ -2,7 +2,7 @@
 //  Barcode.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on
+//  Created by Saajidah Mohamed
 //
 
 import Foundation

@@ -2,89 +2,48 @@
 //  ContentView.swift
 //  EcoApp
 //
-//  Created by Saajidah Mohamed on 18/03/2024.
-// https://www.youtube.com/watch?v=tnNFoZ7CkP8&ab_channel=SeanAllen
+//  Created by Saajidah Mohamed on
+/**
+ * TabView code was reused and adapted from the video below to allow ease of navigation through the main views.
+ * Allen, S. (2021), SwiftUI - TabView Tutorial. YouTube video available at: https://www.youtube.com/watch?v=tnNFoZ7CkP8&ab_channel=SeanAllen
+ */
 
 import SwiftUI
 import Firebase
 
 struct ContentView: View {
     @StateObject var itemsViewModel = ItemsViewModel()
-    @StateObject private var vm = LocationsViewModel()
-   // @StateObject var viewModel = FavViewModel()
+    @StateObject private var locationsViewModel = LocationsViewModel()
     @AppStorage("log_status") private var logStatus: Bool = false
     @AppStorage("isOnboarding") var isOnBoarding: Bool = true
     
     var body: some View {
+        // User Logged in
         if logStatus {
-            // Home
-            //Home()
-            
+            // To navigate through the pages.
             TabView {
                 ListView()
-                    . environmentObject(itemsViewModel)
-                    .tabItem {
-                    Label("Home", systemImage:"globe.europe.africa")
-                    //.foregroundColor(Color.green)//"house"
-                    }
-               // MapView()
+                    .environmentObject(itemsViewModel)
+                    .tabItem { Label("Home", systemImage:"globe.europe.africa")}
+                
                 LocationsView()
-                    .environmentObject(vm)
-                //FoodBanks()
-                    //Text("Maps")
-                    .tabItem { Label("Food Banks",
-                    ////systemImage: "mappin"
-                    systemImage: //"figure.walk"
-                    "mappin.and.ellipse")}
-                    
+                    .environmentObject(locationsViewModel)
+                    .tabItem { Label("Food Banks", systemImage: "mappin.and.ellipse")}
+                
                 recipeSearch()
-                    //Text("Recipes")
-                    .tabItem { Label("Recipes", systemImage: "fork.knife")
-                    // .foregroundColor(Color.green)
-                    }
-                //FavouritesCardView(recipeDocument: recipeDocument)
-                     /// RecipeListView()
-                //    .environmentObject(viewModel)
-              
-                   // Text("Favourites")
-                //RecipeCardsView()
+                    .tabItem { Label("Recipes", systemImage: "fork.knife")}
+                
                 RecipeListView()
                     .tabItem { Label("Favourites", systemImage: "star")}
-                    
-                    //Text("Settings")
+                
                 Settings()
-                    .tabItem { Label("Settings", systemImage:
-                    //shape
-                    "gear")}
-             //Home()
-        
-             
-             
-             
-             }
-             .accentColor(.green)
+                    .tabItem { Label("Settings", systemImage: "gear")}
+            }
+            .accentColor(.green)
         } else {
-        SplashScreenView()
-         //   OnboardingView()
-           // TabView { ForEach()}
-           // OnboardingContentView()
-            //Login()
-            
-          /**  TabView{
-                ForEach(OnboardingData){
-                    ote, o
-            
-                }
-            } */
+            // User not logged in, directs user to the logo
+            SplashScreenView()
         }
-       /** VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding() */
-        //Text("Hello, world!")
     }
 }
 

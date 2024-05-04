@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import UserNotifications
 import Kingfisher
+import UIKit
 
 struct ListView: View {
     @AppStorage("log_status") private var logStatus: Bool = false
@@ -31,6 +32,7 @@ struct ListView: View {
      * Xavier (2023), SwiftUI List with Sort Options. Published: iOS Devx. Link available at: https://xavier7t.com/swiftui-list-with-sort-options
      * Source code available at: https://github.com/xavier7t/iOSDevX/blob/main/iOSDevX/202303-Mar%202023/Sort%20Options/ContentView-DemoSortOptions20230320.swift
      */
+  
     
     @State private var sortedTab: Tab = .expiryDate
     
@@ -432,7 +434,7 @@ struct ListView: View {
                             }
                         }
                         
-                        HStack {
+                       // HStack {
                             Group {
                                 Text(recipeBased.title)
                                     .font(.system(.title))
@@ -444,7 +446,7 @@ struct ListView: View {
                             .padding(.horizontal, 24)
                             .padding(.vertical, 12)
                             Spacer()
-                            
+                           /*
                             Button(action: shareRecipe
                             ){
                                 Image(systemName: "square.and.arrow.up")
@@ -452,8 +454,8 @@ struct ListView: View {
                                     .frame(width: 21, height: 30)
                                     .padding(10)
                                     .foregroundColor(.green)
-                            }
-                        }
+                            } */
+                      //  }
                  
                         VStack(alignment: .leading, spacing: 6){
                             

@@ -65,9 +65,6 @@ struct LocationsView: View {
                     }
             }
         })
-        /** .onAppear(perform: {
-         viewModel.checkIfLocationIsEnabled()
-         }) */
     }
     
     /** The locations preview stack was reused and adapted from the video below to only show for when the location preview is true (when tapped).
@@ -105,7 +102,7 @@ final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDeleg
             self.mapRegion = newRegion
         }
     }
-    // adapted to implemenet an alert and checking its not denied 
+    // adapted to implemenet an alert and checking its not denied
     func checkIfLocationIsEnabled() {
         print ("Checking if enabled")
         // as long as it is not denied, it will show the users current location

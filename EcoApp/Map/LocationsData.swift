@@ -4,7 +4,6 @@
 //
 //  Created by Saajidah Mohamed
 //https://www.givefood.org.uk/api/2/docs/#foodbanks/search
-//https://www.givefood.org.uk/api/2/docs/#foodbanks/search
 
 import Foundation
 import MapKit
@@ -19,7 +18,7 @@ class LocationsData {
     /**
      *The locations and information below were found from the Give Food API through entering the following links manually. For the locations that had missing information, I searched them on the internet and collected the coordinates from the map and the information through google searches.
      *https://www.givefood.org.uk/api/2/foodbanks/search/?address=E11bj
-     *https://www.givefood.org.uk/api/2/foodbanks/search/?address=W30AD
+     *https://www.givefood.org.uk/api/2/foodbanks/search/?address=NW107NS
      *https://www.givefood.org.uk/api/2/foodbanks/search/?address=E177JR
      *https://www.givefood.org.uk/api/2/foodbanks/search/?address=SW25BZ
      *https://www.givefood.org.uk/api/2/foodbanks/search/?address=SE129PP

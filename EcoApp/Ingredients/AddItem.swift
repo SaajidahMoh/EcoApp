@@ -80,7 +80,7 @@ struct AddItem: View {
                             .font(.system(size: 64))
                             .padding()
                             .foregroundColor(.gray)
-                            .frame(height: 150)
+                            .frame(height: 168)
                         Button("Select Image"){
                             shouldShowImagePicker.toggle()
                         }

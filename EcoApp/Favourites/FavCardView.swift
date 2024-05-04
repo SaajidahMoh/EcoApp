@@ -11,6 +11,11 @@ import UIKit
  * The design of the recipe was reused and adapted to make the interface replicate my figma wireframe.
  * Petras, R. (2021). Let's Design the Recipe Cards with SwiftUI and Present all the Recipes - Part 12. Youtube video available at: https://www.youtube.com/watch?v=8CbUTZPPNT4&ab_channel=CredoAcademy
  */
+/**
+ *  The code showcasing the image, recipe name, total time, link to the instruction steps .. and the search was reused and adapted.
+ *  codeAcademy (2023), Building Lists in SwiftUI Link avaliable at: https://www.codecademy.com/article/building-lists-in-swiftui
+ *  Source code available at https://www.codecademy.com/resources/docs/swiftui/search
+ */
 struct FavCardView: View {
  //   @State private var isSaved: Bool = false
     

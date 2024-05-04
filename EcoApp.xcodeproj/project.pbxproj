@@ -191,7 +191,6 @@
 				28AAF0492BDACD0A00720304 /* Favourites */,
 				28AAF03F2BD92A6200720304 /* Network.swift */,
 				28AAF0342BD9220E00720304 /* Recipe */,
-				281D781A2BD6CC2A00A24BA7 /* Scan */,
 				28BC59252BD3CFFA00F66D4F /* Map */,
 				28D5EAA02BA8483900BF46DD /* Ingredients */,
 				28D5EA4F2BA8427900BF46DD /* EcoMakeApp.swift */,
@@ -220,6 +219,7 @@
 		28D5EAA02BA8483900BF46DD /* Ingredients */ = {
 			isa = PBXGroup;
 			children = (
+				281D781A2BD6CC2A00A24BA7 /* Scan */,
 				2801144A2BB18B6C00507B91 /* ItemsViewModel.swift */,
 				281D78242BD6E9C000A24BA7 /* ScannerView.swift */,
 				28AAF04A2BDD2B6800720304 /* searchIngredients.swift */,
