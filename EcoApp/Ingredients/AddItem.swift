@@ -275,7 +275,6 @@ struct AddItem: View {
     func showAlert(message:String){
         alertMessage = message
         showAlert = true
-        
     }
 }
 
