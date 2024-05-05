@@ -263,6 +263,8 @@ struct EditItem: View {
                         if let error = error {
                             print("Error updating item \(item.name): \(error.localizedDescription)")
                         } else {
+                            // remove previous notification 
+                            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [item.id])
                             print("Item \(item.name) with id \(item.id) updated successfully.")
                         }
                     }

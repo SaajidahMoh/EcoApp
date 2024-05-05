@@ -225,9 +225,11 @@ struct ListView: View {
      * Link Available at : https://vikramios.medium.com/mastering-swift-local-notifications-a-developers-guide-f56b77ab64cc
      */
     private func scheduleNotification(for item: Items) {
-        let today = Date()
-        let expiryDate = item.expiryDate.dateValue()
+        // Setting the time to 00:00 for accurate notification display
+        let today = Calendar.current.startOfDay(for: Date())
+        let expiryDate = Calendar.current.startOfDay(for: item.expiryDate.dateValue())
         
+        // guard not to return notifications of previous items
         guard expiryDate >= today else {
             return
         }
@@ -242,14 +244,23 @@ struct ListView: View {
         if daysDifference >= 0 && daysDifference <= 3 {
             let content = UNMutableNotificationContent()
             content.title = "Your Ingredient is Expiring"
+            
+            if daysDifference == 0 {
+                content.body = "\(item.name)is expiring today!"
+            } else if daysDifference == 1 {
+                content.body = "\(item.name) is expiring tomorrow, don't forget to use or donate!"
+            } else {
+                content.body = "\(item.name) is expiring very soon, use or donate!"
+            }
+                
             // personalise notification based on expiry date
-            content.body = "\(item.name) is expiring \(daysDifference == 0 ? "today" : "very soon, use or donate")!"
+            //content.body = "\(item.name) is expiring \(daysDifference == 0 ? "today" : "very soon, use or donate")!"
             content.sound = UNNotificationSound.default
             
-            // notification time
+            // notification time is set to 6:30 am
             var triggerDateEvening = DateComponents()
             triggerDateEvening.hour = 6
-            triggerDateEvening.minute = 00
+            triggerDateEvening.minute = 30
             
             // repeats notification every day
             let trigger3 = UNCalendarNotificationTrigger(dateMatching: triggerDateEvening, repeats: true)
@@ -592,9 +603,8 @@ struct ItemRow: View {
      */
     private var expiryDateStatus: String {
         //setting the day so it accurately displays the date
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
-        let expiryDate = calendar.startOfDay(for: item.expiryDate.dateValue())
+        let today = Calendar.current.startOfDay(for: Date())
+        let expiryDate = Calendar.current.startOfDay(for: item.expiryDate.dateValue())
         let daysDifference = Calendar.current.dateComponents([.day], from: today, to: expiryDate).day ?? 0
         
         // accurately displays the status of expiry
