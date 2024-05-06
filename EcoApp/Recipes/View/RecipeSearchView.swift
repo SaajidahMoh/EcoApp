@@ -1,5 +1,5 @@
 //
-//  FavCardView.swift
+//  RecipeSearchView.swift
 //  EcoApp
 //
 //  Created by Saajidah Mohamed
@@ -7,37 +7,35 @@
 
 import SwiftUI
 import UIKit
-/**
- * The design of the recipe was reused and adapted to make the interface replicate my figma wireframe.
- * Petras, R. (2021). Let's Design the Recipe Cards with SwiftUI and Present all the Recipes - Part 12. Youtube video available at: https://www.youtube.com/watch?v=8CbUTZPPNT4&ab_channel=CredoAcademy
- */
-/**
- *  The code showcasing the image, recipe name, total time, link to the instruction steps .. and the search was reused and adapted.
- *  codeAcademy (2023), Building Lists in SwiftUI Link avaliable at: https://www.codecademy.com/article/building-lists-in-swiftui
- *  Source code available at https://www.codecademy.com/resources/docs/swiftui/search
- */
-struct FavCardView: View {
-    //   @State private var isSaved: Bool = false
-    
-    let isSaved: Bool
+
+enum sortCookingTime {
+    case asc;
+    case desc;
+}
+
+struct RecipeSearchView: View {
+    @State private var isSaved : Bool = false
     let title: String
     let ingredients: [String]
     let cuisineTypes: [String]
+    //  let dietLabels: [String]
     let image: String
     let totalTime: Float
     let url: String
     
+    /**
+     * The design of the recipe was reused and adapted to make the interface replicate my figma wireframe.
+     * Petras, R. (2021). Let's Design the Recipe Cards with SwiftUI and Present all the Recipes - Part 12. Youtube video available at: https://www.youtube.com/watch?v=8CbUTZPPNT4&ab_channel=CredoAcademy
+     */
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
+        ScrollView(.vertical, showsIndicators: false){
+            
+            //  "Failed to produce diagnostic for expression; please submit a bug report (https://swift.org/contributing/#reporting-bugs)"
             Rectangle()
                 .fill(Color.clear)
                 .frame(height: 90)
             
-            VStack(alignment: .center, spacing: 0) {
-                /**
-                 * The image code was reused to display remote images in the app.
-                 * Moiseienko, M. (2023), SwiftUI: Efficient Image Loading using AsyncImage. Link available at: https://m-mois.medium.com/swiftui-efficient-image-loading-using-asyncimage-a059fe4efc34
-                 */
+            VStack(alignment: .center, spacing : 0){
                 let photoURL = URL(string: image)
                 AsyncImage(url: photoURL) { image in
                     image
@@ -48,16 +46,18 @@ struct FavCardView: View {
                     ProgressView()
                 }
                 
-                Text("\(title)")
-                    .font(.system(.title))
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(Color(.systemGreen))
-                    .padding(.top, 10)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
+                Group {
+                    Text("\(title)")
+                        .font(.system(.title))
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color (.systemGreen))
+                        .padding(.top, 10)
+                }
+                .padding(.horizontal, 24)
+                .padding(.vertical, 12)
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading){
                     HStack {
                         if totalTime > 0.01 {
                             Image(systemName: "clock.arrow.circlepath")
@@ -67,46 +67,47 @@ struct FavCardView: View {
                     
                     HStack {
                         Image(systemName: "globe")
-                        ForEach(cuisineTypes, id: \.self) { cuisineType in
-                            let globe = cuisineType.capitalized
-                            Text("\(globe)")
-                            
-                            Spacer()
-                            
-                            // This is where you might want to fix the action
-                            Button(action: {
-                                shareRecipe()
-                            }) {
-                                Image(systemName: "square.and.arrow.up")
-                                    .resizable()
-                                    .frame(width: 21, height: 30)
-                                    .padding(10)
-                            }
+                        // If there is more than one, present them together in a list.
+                        if cuisineTypes.count > 1 {
+                            let cuisineTypes2 = cuisineTypes.map{$0.capitalized}.joined(separator: ", ")
+                            Text(cuisineTypes2)
+                        } else { // show the first one as long as it's not empty.
+                            Text(cuisineTypes.first?.capitalized ?? "")
                         }
+                        
+                        Spacer()
+                        Button(action: shareRecipe
+                        ){
+                            Image(systemName: "square.and.arrow.up")
+                                .resizable()
+                                .frame(width: 21, height: 30)
+                                .padding(10)
+                        }
+                        
                     }
-                    
                     Text("Ingredients")
                         .fontWeight(.bold)
                         .font(.system(.title2))
                     
                     ForEach(ingredients, id: \.self) { ingredient in
-                        VStack(alignment: .leading, spacing: 6) {
+                        VStack(alignment: .leading, spacing:6){
                             Spacer()
+                            
                             Text(ingredient)
                                 .font(.system(size: 16))
                             Divider()
                         }
                     }
-                }
-                .padding(.horizontal, 8)
-                
-                VStack(alignment: .center, spacing: 0) {
-                    Spacer()
-                    Text("")
-                    Spacer()
-                    Text("")
-                    Spacer()
                     
+                } .padding(.leading, 8)
+                    .padding(.trailing, 8)
+                
+                VStack(alignment: .center, spacing: 0){
+                    Spacer()
+                    Text("")
+                    Spacer()
+                    Text ("")
+                    Spacer()
                     Link(destination: URL(string: url)!) {
                         HStack {
                             Image(systemName: "link")
@@ -114,15 +115,15 @@ struct FavCardView: View {
                                 .frame(width: 150, height: 40)
                                 .multilineTextAlignment(.center)
                                 .font(.system(.title3))
-                        }
-                        .multilineTextAlignment(.center)
+                        }  .multilineTextAlignment(.center)
                     }
                     .padding()
                     .buttonStyle(.borderedProminent)
                     .multilineTextAlignment(.center)
                 }
-            }
-            .padding(.horizontal)
+                
+            } .padding(.leading)
+                .padding(.trailing)
         }
         .edgesIgnoringSafeArea(.top)
     }
@@ -149,3 +150,9 @@ struct FavCardView: View {
         }
     }
 }
+
+/**
+ #Preview {
+ RecipeSearchView(title: "Egg Sandwich", ingredients: ["1 large Egg", "1 English Muffin", "1 ounce fontina fontal cheese"], cuisineTypes: ["American","British], image: "image_url", totalTime: 20.0, url: "https//www.marthastewart.com/1553018/baked-eggs")
+ }
+ */

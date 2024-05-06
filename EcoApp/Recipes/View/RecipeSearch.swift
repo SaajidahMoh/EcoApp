@@ -17,7 +17,7 @@ enum SortOption {
     case defaultTime, quickest, longest
 }
 
-struct recipeSearch: View {
+struct RecipeSearch: View {
     @State private var searchText: String = ""
     @State private var recipes: [Hit] = []
     @State private var isSaved : Bool = false
@@ -129,7 +129,7 @@ struct recipeSearch: View {
 
 
 #Preview {
-    recipeSearch()
+    RecipeSearch()
 }
 
 

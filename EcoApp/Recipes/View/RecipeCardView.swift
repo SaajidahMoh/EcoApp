@@ -52,10 +52,7 @@ struct RecipeCardView : View {
                     { storeRecipe()}
                     else { removeRecipe()
                     }
-                })
-                
-                // fills the star if its saved
-                {
+                }) {  // fills the star if its saved
                     Image(systemName: isSaved ? "star.fill" : "star")
                         .resizable()
                         .frame(width: 26, height: 26)

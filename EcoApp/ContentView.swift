@@ -30,7 +30,7 @@ struct ContentView: View {
                     .environmentObject(locationsViewModel)
                     .tabItem { Label("Food Banks", systemImage: "mappin.and.ellipse")}
                 
-                recipeSearch()
+                RecipeSearch()
                     .tabItem { Label("Recipes", systemImage: "fork.knife")}
                 
                 RecipeListView()
