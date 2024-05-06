@@ -21,7 +21,6 @@
 		285740CB2BAF1DD600DA80B2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */; };
 		28623A122BE022F90092E33E /* LottieAnimationGreen.json in Resources */ = {isa = PBXBuildFile; fileRef = 28623A112BE022F80092E33E /* LottieAnimationGreen.json */; };
 		2899C12B2BB70066007006E2 /* AddItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2899C12A2BB70066007006E2 /* AddItem.swift */; };
-		289BA5A82BE2E52C00C662DA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 289BA5A72BE2E52C00C662DA /* GoogleService-Info.plist */; };
 		28A8DFFB2BB839DD001981C1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 28A8DFFA2BB839DD001981C1 /* FirebaseStorage */; };
 		28AAF0332BD85ACA00720304 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 28AAF0322BD85ACA00720304 /* Kingfisher */; };
 		28AAF0362BD9222600720304 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF0352BD9222600720304 /* Settings.swift */; };
@@ -34,6 +33,7 @@
 		28AAF0482BDAC01800720304 /* FavView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF0472BDAC01700720304 /* FavView.swift */; };
 		28AAF04B2BDD2B6800720304 /* searchIngredients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAF04A2BDD2B6800720304 /* searchIngredients.swift */; };
 		28BC59242BD301C800F66D4F /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BC59232BD301C800F66D4F /* LocationsView.swift */; };
+		28C283262BE92E5F0065F3D9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 28C283252BE92E5F0065F3D9 /* GoogleService-Info.plist */; };
 		28C445D72BD3D547002D60D1 /* LocationsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C445D62BD3D547002D60D1 /* LocationsData.swift */; };
 		28D122EA2BB071D50068BE7E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122E92BB071D40068BE7E /* Items.swift */; };
 		28D122EE2BB074FF0068BE7E /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D122ED2BB074FF0068BE7E /* ListView.swift */; };
@@ -64,7 +64,6 @@
 		285740CA2BAF1DD500DA80B2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		28623A112BE022F80092E33E /* LottieAnimationGreen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LottieAnimationGreen.json; sourceTree = "<group>"; };
 		2899C12A2BB70066007006E2 /* AddItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItem.swift; sourceTree = "<group>"; };
-		289BA5A72BE2E52C00C662DA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28AAF0352BD9222600720304 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		28AAF0372BD9222D00720304 /* Recipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		28AAF0392BD9247800720304 /* RecipeSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeSearchView.swift; sourceTree = "<group>"; };
@@ -75,6 +74,7 @@
 		28AAF0472BDAC01700720304 /* FavView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavView.swift; sourceTree = "<group>"; };
 		28AAF04A2BDD2B6800720304 /* searchIngredients.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = searchIngredients.swift; sourceTree = "<group>"; };
 		28BC59232BD301C800F66D4F /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
+		28C283252BE92E5F0065F3D9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28C445D62BD3D547002D60D1 /* LocationsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsData.swift; sourceTree = "<group>"; };
 		28D122E92BB071D40068BE7E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		28D122ED2BB074FF0068BE7E /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
@@ -239,7 +239,7 @@
 		28D5EA432BA8427900BF46DD = {
 			isa = PBXGroup;
 			children = (
-				289BA5A72BE2E52C00C662DA /* GoogleService-Info.plist */,
+				28C283252BE92E5F0065F3D9 /* GoogleService-Info.plist */,
 				28623A112BE022F80092E33E /* LottieAnimationGreen.json */,
 				28D5EA4E2BA8427900BF46DD /* EcoApp */,
 				28D5EA4D2BA8427900BF46DD /* Products */,
@@ -369,9 +369,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				28D5EA572BA8427D00BF46DD /* Preview Assets.xcassets in Resources */,
+				28C283262BE92E5F0065F3D9 /* GoogleService-Info.plist in Resources */,
 				28D5EA542BA8427D00BF46DD /* Assets.xcassets in Resources */,
 				28623A122BE022F90092E33E /* LottieAnimationGreen.json in Resources */,
-				289BA5A82BE2E52C00C662DA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,7 +567,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = disso.EcoApp22;
+				PRODUCT_BUNDLE_IDENTIFIER = disso.EcoAppfinal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -602,7 +602,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = disso.EcoApp22;
+				PRODUCT_BUNDLE_IDENTIFIER = disso.EcoAppfinal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

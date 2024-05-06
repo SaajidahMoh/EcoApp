@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCqF048le_pxQlec3u-aSJbIrn0zSlZUDs</string>
+	<string>AIzaSyC_jY5FgwklPBRJsEADgYEw_i3JgvnaQXU</string>
 	<key>GCM_SENDER_ID</key>
-	<string>201218771019</string>
+	<string>534399503375</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>disso.EcoApp22</string>
+	<string>disso.EcoAppfinal</string>
 	<key>PROJECT_ID</key>
-	<string>ecoapp-dafd1</string>
+	<string>ecoapp-2a851</string>
 	<key>STORAGE_BUCKET</key>
-	<string>ecoapp-dafd1.appspot.com</string>
+	<string>ecoapp-2a851.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:201218771019:ios:087d26266b38e1a23b65ce</string>
+	<string>1:534399503375:ios:68d742a4dcd65443d8277a</string>
 </dict>
 </plist>
