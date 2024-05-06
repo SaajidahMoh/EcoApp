@@ -225,7 +225,7 @@ struct ListView: View {
      * Link Available at : https://vikramios.medium.com/mastering-swift-local-notifications-a-developers-guide-f56b77ab64cc
      */
     private func scheduleNotification(for item: Items) {
-        // Setting the time to 00:00 for accurate notification display
+        // Setting the time to 00:00 at the start of the day for accurate notification display
         let today = Calendar.current.startOfDay(for: Date())
         let expiryDate = Calendar.current.startOfDay(for: item.expiryDate.dateValue())
         
@@ -243,8 +243,9 @@ struct ListView: View {
         // set notifications for ingredients expiring from tommorow to 3 days.
         if daysDifference >= 0 && daysDifference <= 3 {
             let content = UNMutableNotificationContent()
-            content.title = "Your Ingredient is Expiring"
+            content.title = "Your Ingredient is Expiring" // Title of notification
             
+            //Content body is the message of the notification
             if daysDifference == 0 {
                 content.body = "\(item.name)is expiring today!"
             } else if daysDifference == 1 {
@@ -257,7 +258,7 @@ struct ListView: View {
             //content.body = "\(item.name) is expiring \(daysDifference == 0 ? "today" : "very soon, use or donate")!"
             content.sound = UNNotificationSound.default
             
-            // notification time is set to 6:30 am
+            // notification time, 6:30 am 
             var triggerDateEvening = DateComponents()
             triggerDateEvening.hour = 6
             triggerDateEvening.minute = 30

@@ -19,7 +19,7 @@ struct ContentView: View {
     
     var body: some View {
         // User Logged in
-        if logStatus {
+        if logStatus == true {
             // To navigate through the pages.
             TabView {
                 ListView()
