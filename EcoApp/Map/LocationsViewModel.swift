@@ -44,6 +44,7 @@ class LocationsViewModel : ObservableObject {
     }
     
     // code was created by me to show the information of the location when tapped and to remove it when tapped again.
+    // If a new location is selected it is updated, but if the same one is selected it toggles it (usually remove) 
     func toggleLocationPreview(location: Location) {
         if mapLocation == location {
             showLocationsPreview.toggle()
