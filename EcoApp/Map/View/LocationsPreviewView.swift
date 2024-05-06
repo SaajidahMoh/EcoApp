@@ -123,7 +123,7 @@ struct LocationsPreviewView: View {
     }
     
     /**
-     * Lines 132 and 133 were reused from the article to allow redirection of the link when clicked.
+     * Lines 131 and 132 were reused from the article to allow redirection of the link when clicked.
      * Hudson, P.. (2021), Hacking with Swift - How to open a URL in Safari. Link available at :  https://www.hackingwithswift.com/example-code/system/how-to-open-a-url-in-safari
      */
     private var websiteSection: some View {
@@ -140,7 +140,7 @@ struct LocationsPreviewView: View {
     }
     
     /**
-     * Line 150 was reused from the YouTube video below to allows users to be redirected to the 'Maps' application for the current location clicked. T
+     * Line 149 was reused from the YouTube video below to allows users to be redirected to the 'Maps' application for the current location clicked. T
      * Wells, C. (2023), A Swiftly Tilting Planet - How to Implement Map Integration in SwiftUI – Step by Step for Beginners (2023). Link available at :  https://www.youtube.com/watch?v=YVKuMJPGCj8&t=464s&ab_channel=ASwiftlyTiltingPlanet
      */
     private var directionsection: some View {

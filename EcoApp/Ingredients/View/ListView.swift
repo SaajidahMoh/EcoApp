@@ -253,7 +253,7 @@ struct ListView: View {
             } else {
                 content.body = "\(item.name) is expiring very soon, use or donate!"
             }
-                
+            
             // personalise notification based on expiry date
             //content.body = "\(item.name) is expiring \(daysDifference == 0 ? "today" : "very soon, use or donate")!"
             content.sound = UNNotificationSound.default
@@ -552,7 +552,10 @@ struct ListView: View {
                 }
             }
             
-            // code was developed from chatgpt to allow screenshot of page, and sharing of the screenshot. https://chat.openai.com/share/75ea5027-cdf4-4dd8-b320-9f6173f65149
+            /** Previous developed code would share the link and not show a screenshot of the page.
+             * The takeScreenshot and shareRecipe functions were reused and generated from ChatGPT to allow screenshot of page, and sharing of the screenshot.
+             * Avaialable at: https://chat.openai.com/share/75ea5027-cdf4-4dd8-b320-9f6173f65149
+             */
             func takeScreenshot() -> UIImage? {
                 guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }),
                       let rootView = window.rootViewController?.view else {
