@@ -134,8 +134,8 @@
 			children = (
 				28AAF03A2BD9247800720304 /* recipeSearch.swift */,
 				28AAF0412BD9577600720304 /* RecipeCardView.swift */,
-				28AAF0392BD9247800720304 /* RecipeSearchView.swift */,
 				28AAF0372BD9222D00720304 /* Recipe.swift */,
+				28AAF0392BD9247800720304 /* RecipeSearchView.swift */,
 			);
 			path = Recipe;
 			sourceTree = "<group>";
