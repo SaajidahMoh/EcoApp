@@ -46,8 +46,6 @@
 		28D5EA9B2BA8457E00BF46DD /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 28D5EA9A2BA8457E00BF46DD /* Lottie */; };
 		28D5EA9D2BA8459100BF46DD /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 28D5EA9C2BA8459100BF46DD /* FirebaseFirestoreSwift */; };
 		28D5EAA22BA8484C00BF46DD /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D5EAA12BA8484C00BF46DD /* Login.swift */; };
-		28D5EAA62BA85EAA00BF46DD /* EmailAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 28D5EAA52BA85EAA00BF46DD /* EmailAnimation.json */; };
-		28D5EAAA2BA8621800BF46DD /* EmailAnim.json in Resources */ = {isa = PBXBuildFile; fileRef = 28D5EAA92BA8621800BF46DD /* EmailAnim.json */; };
 		28D5EAAC2BA866A400BF46DD /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D5EAAB2BA866A400BF46DD /* OnboardingView.swift */; };
 /* End PBXBuildFile section */
 
@@ -87,8 +85,6 @@
 		28D5EA532BA8427D00BF46DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		28D5EA562BA8427D00BF46DD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		28D5EAA12BA8484C00BF46DD /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
-		28D5EAA52BA85EAA00BF46DD /* EmailAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EmailAnimation.json; sourceTree = "<group>"; };
-		28D5EAA92BA8621800BF46DD /* EmailAnim.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EmailAnim.json; sourceTree = "<group>"; };
 		28D5EAAB2BA866A400BF46DD /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -244,9 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				289BA5A72BE2E52C00C662DA /* GoogleService-Info.plist */,
-				28D5EAA92BA8621800BF46DD /* EmailAnim.json */,
 				28623A112BE022F80092E33E /* LottieAnimationGreen.json */,
-				28D5EAA52BA85EAA00BF46DD /* EmailAnimation.json */,
 				28D5EA4E2BA8427900BF46DD /* EcoApp */,
 				28D5EA4D2BA8427900BF46DD /* Products */,
 				28D5EA972BA8457100BF46DD /* Frameworks */,
@@ -377,8 +371,6 @@
 				28D5EA572BA8427D00BF46DD /* Preview Assets.xcassets in Resources */,
 				28D5EA542BA8427D00BF46DD /* Assets.xcassets in Resources */,
 				28623A122BE022F90092E33E /* LottieAnimationGreen.json in Resources */,
-				28D5EAA62BA85EAA00BF46DD /* EmailAnimation.json in Resources */,
-				28D5EAAA2BA8621800BF46DD /* EmailAnim.json in Resources */,
 				289BA5A82BE2E52C00C662DA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
